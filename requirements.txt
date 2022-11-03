@@ -1,0 +1,4 @@
+airtest==1.2.7
+pocoui==1.0.88
+pocounit==1.0.40
+loguru==0.6.0
