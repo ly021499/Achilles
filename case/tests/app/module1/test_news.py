@@ -3,7 +3,7 @@ from airtest.core.api import device as current_device, connect_device
 from airtest.core.api import start_app, stop_app
 
 from case.lib.engine.android_app import AndroidAppCase
-from case.lib.installation import install_android_app
+from case.lib.utils.installation import install_android_app
 
 import time
 

@@ -1,5 +1,3 @@
-
-
 class LRunException(Exception):
     
     raise NotImplementedError

@@ -11,13 +11,6 @@ LOG_DIR = os.path.join(BASE_DIR, "report\\logs")
 WEBHOOK = ''    # 调试webhook
 # WEBHOOK = ''  # 正式webhook
 
-# Email
-EMAIL_USERNAME = ''
-EMAIL_PASSWORD = ''
-EMAIL_HOST = ''
-EMAIL_RECEIVER = ''
-EMAIL_SUBJECT = ''
-
 # Other
 SYSTEM = platform.system()
 ENV = 'prod'
