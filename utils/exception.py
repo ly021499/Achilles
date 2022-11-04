@@ -1,15 +1,40 @@
+
 class LRunException(Exception):
-    
+
     raise NotImplementedError
 
 
 class NoSuchNodeException(LRunException):
-    raise NotImplementedError
+    """
+        This is NoSuchNodeException
+    """
+    pass
 
 
 class InvalidOperationException(LRunException):
-    raise NotImplementedError
+    """
+        This is InvalidOperationException
+    """
+    pass
 
 
 class TargetTimeout(LRunException):
-    raise NotImplementedError
+    """
+        This is TargetTimeout
+    """
+    pass
+
+
+class ConnectError(LRunException):
+    """
+        This is ConnectError
+    """
+    pass
+
+
+class AdbError(LRunException):
+    """
+        This is AdbError
+    """
+    pass
+

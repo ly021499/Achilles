@@ -2,7 +2,7 @@
 # @Desc: 日志工具
 
 from loguru import logger
-from config import LOG_DIR, IS_WRITE
+from setting import LOG_DIR, IS_WRITE
 import time
 import os
 

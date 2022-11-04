@@ -5,23 +5,23 @@ from utils import log
 import time
 
 
-
 class Poco2:
 
     def __init__(self, agent, **options):
         self.poco = Poco(agent, **options)
 
-    def click(self, position):
+    def click(self, pos):
         try:
-            return self.poco.click(position)
+            return self.poco.click(pos)
         except InvalidOperationException:
             try:
                 for i in range(3):
                     self.sleep(1)
-                    return self.poco.click(position)
+                    return self.poco.click(pos)
             except InvalidOperationException:
                 raise InvalidOperationException('Click position out of screen. pos={}'.format(repr(pos)))
-
+            except Exception as e:
+                raise e
 
     def wait_for_any(self, objects, timeout=120):
         return self.poco.wait_for_any(objects, timeout)
@@ -30,10 +30,24 @@ class Poco2:
         return self.poco.wait_for_all(objects, timeout)
 
     def swipe(self, p1, p2=None, direction=None, duration=2.0):
-        return self.poco.swipe(p1, p2, direction, duration)
+        try:
+            return self.poco.swipe(p1, p2, direction, duration)
+        except Exception as e:
+            log.error(f'Swipe origin out of screen. {repr(p1)}')
+            raise e
 
     def long_click(self, pos, duration=2.0):
-        return self.poco.long_click(pos=pos, duration=duration)
+        try:
+            self.poco.long_click(pos=pos, duration=duration)
+        except InvalidOperationException:
+            try:
+                # 重试两次
+                for i in range(2):
+                    return self.poco.long_click(pos=pos, duration=duration)
+            except InvalidOperationException:
+                raise InvalidOperationException('Click position out of screen. pos={}'.format(repr(pos)))
+            except Exception as e:
+                raise e
 
     def scroll(self, direction='vertical', percent=0.6, duration=2.0):
         return self.poco.scroll(direction, percent, duration)

@@ -17,7 +17,7 @@ class AndroidAppCase(PocoTestCase):
     def setUpClass(cls):
         super(AndroidAppCase, cls).setUpClass()
         log.info(f'Connect device host ...')
-        if not current_device():
+        if not current_device():        # 判断 device 是否为空，如果为空则连接默认地址
             device_host = 'Android://127.0.0.1:7555'
             connect_device(device_host)
             log.info(f'Connect success! host: {device_host}')
@@ -27,9 +27,24 @@ class AndroidAppCase(PocoTestCase):
         if device_platform() == 'Android':
             meta_info_emitter.snapshot_device_info(dev.serialno, dev.adb.get_device_info())
 
-        cls.poco = AndroidUiautomationPoco(screenshot_each_action=False)
+        cls.poco = AndroidUiautomationPoco(screenshot_each_action=False)    # 实例化poco对象
 
         action_tracker = ActionTracker(cls.poco)
         cls.register_addon(action_tracker)
         cls.site_capturer = SiteCaptor(cls.poco)
         cls.register_addon(cls.site_capturer)
+
+
+def get_poco_instance():
+    log.info(f'Connect device host ...')
+    if not current_device():  # 判断 device 是否为空，如果为空则连接默认地址
+        device_host = 'Android://127.0.0.1:7555'
+        connect_device(device_host)
+        log.info(f'Connect success! host: {device_host}')
+
+    poco = AndroidUiautomationPoco(screenshot_each_action=False)  # 实例化poco对象
+    return poco
+
+
+
+

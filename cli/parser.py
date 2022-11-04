@@ -6,7 +6,7 @@ from airtest.cli.runner import setup_by_args
 
 def get_parser():
     ap = argparse.ArgumentParser()
-    subparsers = ap.add_subparsers(dest="action", help="version/run/info/report")
+    subparsers = ap.add_subparsers(dest="action", help="version/run/info/result")
     # subparser version
     subparsers.add_parser("version", help="show version and exit")
     # subparser run
@@ -15,8 +15,8 @@ def get_parser():
     # subparser info
     ap_info = subparsers.add_parser("info", help="get & print author/title/desc info of script")
     ap_info.add_argument("script", help="script filename")
-    # subparser report
-    ap_report = subparsers.add_parser("report", help="generate report of script")
+    # subparser result
+    ap_report = subparsers.add_parser("result", help="generate result of script")
     report_parser(ap_report)
     return ap
 
@@ -43,7 +43,7 @@ def cli_setup(args=None):
     print(args)
 
     ap = argparse.ArgumentParser()
-    if "--report" in args:
+    if "--result" in args:
         from airtest.report.report import main as report_main
         ap = report_parser(ap)
         args = ap.parse_args(args)
