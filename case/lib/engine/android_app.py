@@ -36,15 +36,12 @@ class AndroidAppCase(PocoTestCase):
 
 
 def get_poco_instance():
-    log.info(f'Connect device host ...')
+    log.info('Connecting device host ...')
     if not current_device():  # 判断 device 是否为空，如果为空则连接默认地址
-        device_host = 'Android://127.0.0.1:7555'
+        device_host = 'Android:///127.0.0.1:7555'
         connect_device(device_host)
-        log.info(f'Connect success! host: {device_host}')
+        log.info(f'Connection succeeded! host: {device_host}')
+    log.info('Connecting device host failed...')
 
     poco = AndroidUiautomationPoco(screenshot_each_action=False)  # 实例化poco对象
     return poco
-
-
-
-
