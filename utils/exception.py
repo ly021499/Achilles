@@ -1,7 +1,7 @@
 
 class LRunException(Exception):
 
-    raise NotImplementedError
+    pass
 
 
 class NoSuchNodeException(LRunException):
@@ -25,7 +25,7 @@ class TargetTimeout(LRunException):
     pass
 
 
-class ConnectError(LRunException):
+class ConnectionError(LRunException):
     """
         This is ConnectError
     """

@@ -1,56 +1,50 @@
 import argparse
-import sys
-from airtest.report.report import get_parger as report_parser
-from airtest.cli.runner import setup_by_args
+from loguru import logger
 
+def runner_parser():
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        '-V', '--version', dest='version', action='store_true',
+        help="show version")
+    parser.add_argument(
+        'testcase_paths', nargs='*',
+        help="testcase file path")
+    parser.add_argument(
+        '--no-html-report', action='store_true', default=False,
+        help="do not generate html report.")
+    parser.add_argument(
+        '--html-report-name',
+        help="specify html report name, only effective when generating html report.")
+    parser.add_argument(
+        '--html-report-template',
+        help="specify html report template path.")
+    parser.add_argument(
+        '--log-level', default='INFO',
+        help="Specify logging level, default is INFO.")
+    parser.add_argument(
+        '--log-file',
+        help="Write logs to specified file path.")
+    parser.add_argument(
+        '--dot-env-path',
+        help="Specify .env file path, which is useful for keeping sensitive data.")
+    parser.add_argument(
+        '--failfast', action='store_true', default=False,
+        help="Stop the test run on the first error or failure.")
+    parser.add_argument(
+        '--startproject',
+        help="Specify new project name.")
+    parser.add_argument(
+        '--validate', nargs='*',
+        help="Validate JSON testcase format.")
+    parser.add_argument(
+        '--prettify', nargs='*',
+        help="Prettify JSON testcase format.")
 
-def get_parser():
-    ap = argparse.ArgumentParser()
-    subparsers = ap.add_subparsers(dest="action", help="version/run/info/result")
-    # subparser version
-    subparsers.add_parser("version", help="show version and exit")
-    # subparser run
-    ap_run = subparsers.add_parser("run", help="run script")
-    runner_parser(ap_run)
-    # subparser info
-    ap_info = subparsers.add_parser("info", help="get & print author/title/desc info of script")
-    ap_info.add_argument("script", help="script filename")
-    # subparser result
-    ap_report = subparsers.add_parser("result", help="generate result of script")
-    report_parser(ap_report)
-    return ap
-
-
-def runner_parser(ap=None):
-    if not ap:
-        ap = argparse.ArgumentParser()
-    ap.add_argument("script", help="air path")
-    ap.add_argument("--device", help="connect dev by uri string, e.g. Android:///", nargs="?", action="append")
-    ap.add_argument("--log", help="set log dir, default to be script dir", nargs="?", const=True)
-    ap.add_argument("--compress", required=False, type=int, choices=range(1, 100), help="set snapshot quality, 1-99", default=10)
-    ap.add_argument("--recording", help="record screen when running", nargs="?", const=True)
-    ap.add_argument("--no-image", help="Do not save screenshots", nargs="?", const=True)
-    return ap
-
-
-def cli_setup(args=None):
-    """future api for setup env by cli"""
-    if not args:
-        if len(sys.argv) < 2:
-            print("no cmdline args")
-            return False
-        args = sys.argv
-    print(args)
-
-    ap = argparse.ArgumentParser()
-    if "--result" in args:
-        from airtest.report.report import main as report_main
-        ap = report_parser(ap)
-        args = ap.parse_args(args)
-        report_main(args)
+    args = parser.parse_args()
+    if args.version:
+        logger.info('1,0')
         exit(0)
-    else:
-        ap = runner_parser(ap)
-        args = ap.parse_args(args)
-        setup_by_args(args)
-    return True
+
+
+if __name__ == '__main__':
+    runner_parser()

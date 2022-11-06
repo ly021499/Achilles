@@ -12,25 +12,39 @@ class Poco2:
 
     def click(self, pos):
         try:
+            log.info(f'Click position: {pos}')
             return self.poco.click(pos)
         except InvalidOperationException:
             try:
-                for i in range(3):
+                for i in range(2):
                     self.sleep(1)
                     return self.poco.click(pos)
             except InvalidOperationException:
-                raise InvalidOperationException('Click position out of screen. pos={}'.format(repr(pos)))
+                log.error(f'Click position out of screen. pos={repr(pos)}')
+                raise InvalidOperationException(f'Click position out of screen. pos={repr(pos)}')
             except Exception as e:
+                log.error(f'Failed to click position, Exc:{e}')
                 raise e
 
     def wait_for_any(self, objects, timeout=120):
-        return self.poco.wait_for_any(objects, timeout)
+        try:
+            log.info(f'Wait for any {objects}')
+            return self.poco.wait_for_any(objects, timeout)
+        except Exception as e:
+            log.error(f'Failed to wait for any {objects}')
+            raise e
 
     def wait_for_all(self, objects, timeout=120):
-        return self.poco.wait_for_all(objects, timeout)
+        try:
+            log.info(f'Wait for all {objects}, timeout: {timeout}')
+            return self.poco.wait_for_all(objects, timeout)
+        except Exception as e:
+            log.error(f'Failed to wait for all {objects}')
+            raise e
 
     def swipe(self, p1, p2=None, direction=None, duration=2.0):
         try:
+            log.info(f'Swipe origin {repr(p1)}, duration: {duration}')
             return self.poco.swipe(p1, p2, direction, duration)
         except Exception as e:
             log.error(f'Swipe origin out of screen. {repr(p1)}')
@@ -38,15 +52,18 @@ class Poco2:
 
     def long_click(self, pos, duration=2.0):
         try:
-            self.poco.long_click(pos=pos, duration=duration)
+            log.info(f'Long click position: {pos}, duration: {duration}')
+            return self.poco.long_click(pos=pos, duration=duration)
         except InvalidOperationException:
             try:
                 # 重试两次
                 for i in range(2):
                     return self.poco.long_click(pos=pos, duration=duration)
             except InvalidOperationException:
+                log.error(f'Long click position out of screen. pos={repr(pos)}')
                 raise InvalidOperationException('Click position out of screen. pos={}'.format(repr(pos)))
             except Exception as e:
+                log.error(f'Failed to long click position, Exc:{e}')
                 raise e
 
     def scroll(self, direction='vertical', percent=0.6, duration=2.0):

@@ -1,12 +1,26 @@
 from airtest.core import api
+from utils.logger import log
+from utils.exception import ConnectionError
 
 
 def init_device(platform=None, uuid=None, **kwargs):
-    api.init_device(platform=platform, uuid=uuid, **kwargs)
+    try:
+        api.init_device(platform=platform, uuid=uuid, **kwargs)
+        log.info(f"init device success")
+    except Exception as e:
+        log.error(f"failed init device")
+        raise e
 
 
 def connect_device(uri):
-    api.connect_device(uri)
+    log.info('Ready to connect device host ...')
+    try:
+        api.connect_device(uri)
+        log.info(f'Connection device succeeded... host: {uri}')
+    except ConnectionError as e:
+        log.info(f'Connecting device failed... host: {uri}')
+        raise ConnectionError
+
 
 
 def device():
@@ -26,11 +40,21 @@ def shell(cmd):
 
 
 def start_app(package, activity=None):
-    api.start_app(package, activity)
+    try:
+        api.start_app(package, activity)
+        log.info(f"start app: {package}, activity: {activity}")
+    except Exception as e:
+        log.error(f"failed start app {package}, activity: {activity}")
+        raise e
 
 
 def stop_app(package):
-    api.start_app(package)
+    try:
+        api.stop_app(package)
+        log.info(f"stop app {package}")
+    except Exception as e:
+        log.error(f"failed stop app {package}")
+        raise e
 
 
 

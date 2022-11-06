@@ -17,3 +17,8 @@ def install_app():
 @pytest.fixture(scope='session')
 def start_app():
     pass
+
+
+@pytest.fixture(scope='session')
+def uninstall_app():
+    pass
