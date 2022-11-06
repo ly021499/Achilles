@@ -12,7 +12,8 @@ from airtest.core.helper import device_platform
 from utils import log
 from utils import exception
 from core.app.airtest2 import connect_device, start_app
-from setting import DEVICE_HOST, PACKAGE_NAME
+from setting import ANDROID_DEVICE_HOST, PACKAGE_NAME
+from core.app.poco2 import AndroidPoco
 
 
 class AndroidAppCase(PocoTestCase):
@@ -43,10 +44,10 @@ class AndroidAppCase(PocoTestCase):
 
 def get_poco_instance():
     if not current_device():  # 判断 device 是否为空，如果为空则连接默认地址
-        device_host = DEVICE_HOST
+        device_host = ANDROID_DEVICE_HOST
         connect_device(device_host)
 
-    poco = AndroidUiautomationPoco(screenshot_each_action=False)  # 实例化poco对象
+    poco = AndroidPoco(screenshot_each_action=False)  # 实例化poco对象
 
     start_app(PACKAGE_NAME)
 

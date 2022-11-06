@@ -2,7 +2,8 @@ import platform
 import os
 
 # Device
-DEVICE_HOST = 'Android:///127.0.0.1:7555'
+ANDROID_DEVICE_HOST = 'Android:///127.0.0.1:7555'
+IOS_DEVICE_HOST = 'iOS:///127.0.0.1:7555'
 PACKAGE_NAME = 'com.netease.cloudmusic'
 
 # Path

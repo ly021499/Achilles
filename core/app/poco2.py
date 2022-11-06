@@ -1,24 +1,21 @@
-from poco import Poco
+from poco.drivers.android.uiautomation import AndroidUiautomationPoco
 from poco.exceptions import InvalidOperationException
 from utils import log
 
 import time
 
 
-class Poco2:
-
-    def __init__(self, agent, **options):
-        self.poco = Poco(agent, **options)
+class AndroidPoco(AndroidUiautomationPoco):
 
     def click(self, pos):
         try:
             log.info(f'Click position: {pos}')
-            return self.poco.click(pos)
+            return super().click(pos)
         except InvalidOperationException:
             try:
                 for i in range(2):
                     self.sleep(1)
-                    return self.poco.click(pos)
+                    return super().click(pos)
             except InvalidOperationException:
                 log.error(f'Click position out of screen. pos={repr(pos)}')
                 raise InvalidOperationException(f'Click position out of screen. pos={repr(pos)}')
@@ -29,7 +26,7 @@ class Poco2:
     def wait_for_any(self, objects, timeout=120):
         try:
             log.info(f'Wait for any {objects}')
-            return self.poco.wait_for_any(objects, timeout)
+            return super().wait_for_any(objects, timeout)
         except Exception as e:
             log.error(f'Failed to wait for any {objects}')
             raise e
@@ -37,7 +34,7 @@ class Poco2:
     def wait_for_all(self, objects, timeout=120):
         try:
             log.info(f'Wait for all {objects}, timeout: {timeout}')
-            return self.poco.wait_for_all(objects, timeout)
+            return super().wait_for_all(objects, timeout)
         except Exception as e:
             log.error(f'Failed to wait for all {objects}')
             raise e
@@ -45,7 +42,7 @@ class Poco2:
     def swipe(self, p1, p2=None, direction=None, duration=2.0):
         try:
             log.info(f'Swipe origin {repr(p1)}, duration: {duration}')
-            return self.poco.swipe(p1, p2, direction, duration)
+            return super().swipe(p1, p2, direction, duration)
         except Exception as e:
             log.error(f'Swipe origin out of screen. {repr(p1)}')
             raise e
@@ -53,12 +50,12 @@ class Poco2:
     def long_click(self, pos, duration=2.0):
         try:
             log.info(f'Long click position: {pos}, duration: {duration}')
-            return self.poco.long_click(pos=pos, duration=duration)
+            return super().long_click(pos=pos, duration=duration)
         except InvalidOperationException:
             try:
                 # 重试两次
                 for i in range(2):
-                    return self.poco.long_click(pos=pos, duration=duration)
+                    return super().long_click(pos=pos, duration=duration)
             except InvalidOperationException:
                 log.error(f'Long click position out of screen. pos={repr(pos)}')
                 raise InvalidOperationException('Click position out of screen. pos={}'.format(repr(pos)))
@@ -67,16 +64,32 @@ class Poco2:
                 raise e
 
     def scroll(self, direction='vertical', percent=0.6, duration=2.0):
-        return self.poco.scroll(direction, percent, duration)
+        try:
+            log.info(f'Scroll to position, direction: {direction}, percent: {percent}, duration: {duration}')
+            return super().scroll(direction, percent, duration)
+        except Exception as e:
+            log.info(f'Failed to scroll position, direction: {direction}, percent: {percent}, duration: {duration}')
+            raise e
 
     def pinch(self, direction='in', percent=0.6, duration=2.0, dead_zone=0.1):
-        return self.poco.pinch(direction, percent, duration, dead_zone)
+        return super().pinch(direction, percent, duration, dead_zone)
 
     def snapshot(self, width=720):
-        return self.poco.snapshot(width=width)
+        try:
+            log.info(f'Save the snapshot, width: {width}')
+            return super().snapshot(width=width)
+        except Exception as e:
+            log.info(f'Failed to save the snapshot, width: {width}')
+            raise e
 
     def get_screen_size(self):
-        return self.poco.get_screen_size()
+        try:
+            screen_size = super().get_screen_size()
+            log.info(f'Get screen size: {screen_size}')
+            return screen_size
+        except Exception as e:
+            log.info(f'Failed to get screen size')
+            raise e
 
     def sleep(self, sec):
         log.info(f"sleep {sec} second .")

@@ -15,7 +15,8 @@ class TestCloudMusic(unittest.TestCase):
         time.sleep(7)
 
     def test_login_music(self):
-        print(1111)
+        self.poco("android.view.ViewGroup")[0].click()
+        self.poco.snapshot()
 
     @classmethod
     def tearDownClass(cls) -> None:pass
