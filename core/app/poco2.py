@@ -3,7 +3,7 @@
 # @Desc   : poco核心api的二次封装
 
 from poco import Poco
-from poco.exceptions import InvalidOperationException
+from poco.exceptions import InvalidOperationException, PocoNoSuchNodeException
 from utils import log
 
 import time
@@ -13,13 +13,12 @@ class Poco2(Poco):
 
     def click(self, pos):
         try:
-            log.info(f'Click position: {pos}')
             return super().click(pos)
-        except InvalidOperationException:
+        except (InvalidOperationException, PocoNoSuchNodeException):
             try:
-                for i in range(2):
-                    self.sleep(1)
-                    return super().click(pos)
+                # Retry twice
+                self.sleep(1)
+                return super().click(pos)
             except InvalidOperationException:
                 log.error(f'Click position out of screen. pos={repr(pos)}')
                 raise InvalidOperationException(f'Click position out of screen. pos={repr(pos)}')
@@ -57,7 +56,7 @@ class Poco2(Poco):
             return super().long_click(pos=pos, duration=duration)
         except InvalidOperationException:
             try:
-                # 重试两次
+                # Retry twice
                 for i in range(2):
                     return super().long_click(pos=pos, duration=duration)
             except InvalidOperationException:
@@ -111,8 +110,8 @@ class Poco2(Poco):
             log.info(f'Failed to apply motion tracks: {tracks}, accuracy: {accuracy}')
             raise e
 
-    def sleep(self, sec):
-        log.info(f"sleep {sec} second .")
+    def sleep(self, sec=1.0):
+        log.info(f"sleep {sec} seconds .")
         time.sleep(sec)
 
 

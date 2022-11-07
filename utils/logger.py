@@ -1,9 +1,10 @@
-# @Time   : 2022/11/2 19:05
+# @Time   : 2022/11/10 19:05
 # @Author : LOUIE
 # @Desc   : 日志工具
 
 from loguru import logger
 from setting import LOG_DIR, IS_WRITE
+import functools
 import time
 import os
 
@@ -14,7 +15,6 @@ class Logger:
     通过单例模式，只实例化一个日志对象
     直接调用log实例对象进行日志调用
     """
-    
     def __new__(cls, *args, **kwargs):
         
         if not hasattr(cls, '_instance'):
@@ -49,7 +49,33 @@ class Logger:
         return logger
 
 
-log = Logger().get_logger()
+log = Logger().get_logger()     # 日志记录器
+
+
+def logwrap(msg: str = None):
+    """
+    日志装饰器，简单记录函数的日志
+
+    Args:
+        msg (function): 函数
+    """
+    def wrapper(func):
+        @functools.wraps(func)
+        def inner(*args, **kwargs):
+            start_time = time.time()
+            res = func(*args, **kwargs)
+            end_time = time.time()
+            duration = round(end_time - start_time, 2)
+            log.debug(f"{msg} [ Func: {func.__name__} -> {res} - Duration: {duration} ]")
+            return res
+        return inner
+    return wrapper
+
+
+@logwrap('hello louie')
+def login(username, password):
+    print(username, password)
+    return object
 
 
 if __name__ == '__main__':
@@ -58,3 +84,4 @@ if __name__ == '__main__':
     log.critical(1111)
     log.error(1111)
     log.debug(1111)
+    login('louie', '123')
