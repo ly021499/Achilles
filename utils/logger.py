@@ -1,5 +1,6 @@
-# @Author： LOUIE
-# @Desc: 日志工具
+# @Time   : 2022/11/2 19:05
+# @Author : LOUIE
+# @Desc   : 日志工具
 
 from loguru import logger
 from setting import LOG_DIR, IS_WRITE

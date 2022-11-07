@@ -16,10 +16,6 @@ class CalculatorSuite(PocoTestSuite):
             connect_device('Android:///')
         # apk包名
         self.package_name = 'com.google.android.calculator'
-        # 获取apk路径
-        # apk_path = self.R('res/engine/com.google.android.calculator.apk')
-        # 安装apk
-        # install_android_app(current_device().adb, apk_path)
         # 启动应用
         start_app(self.package_name)
 

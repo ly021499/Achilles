@@ -1,11 +1,15 @@
-from poco.drivers.android.uiautomation import AndroidUiautomationPoco
+# @Time   : 2022/11/4 14:14
+# @Author : LOUIE
+# @Desc   : poco核心api的二次封装
+
+from poco import Poco
 from poco.exceptions import InvalidOperationException
 from utils import log
 
 import time
 
 
-class AndroidPoco(AndroidUiautomationPoco):
+class Poco2(Poco):
 
     def click(self, pos):
         try:
@@ -89,6 +93,22 @@ class AndroidPoco(AndroidUiautomationPoco):
             return screen_size
         except Exception as e:
             log.info(f'Failed to get screen size')
+            raise e
+
+    def start_gesture(self, pos):
+        try:
+            log.info(f'Start gesture, position: {pos}')
+            return super().start_gesture(pos)
+        except Exception as e:
+            log.info(f'Failed to start gesture, position: {pos}')
+            raise e
+
+    def apply_motion_tracks(self, tracks, accuracy=0.004):
+        try:
+            log.info(f'Apply motion tracks: {tracks}, accuracy: {accuracy}')
+            return super().apply_motion_tracks(tracks, accuracy)
+        except Exception as e:
+            log.info(f'Failed to apply motion tracks: {tracks}, accuracy: {accuracy}')
             raise e
 
     def sleep(self, sec):
