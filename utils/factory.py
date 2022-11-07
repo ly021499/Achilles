@@ -1,6 +1,7 @@
 # @Time   : 2022/11/2 19:05
 # @Author : LOUIE
 # @Desc   : 随机数据生成类
+
 import random
 import string
 import time

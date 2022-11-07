@@ -8,5 +8,8 @@ class HomePosition:
     back_btn_pos = ''
     receive_btn_pos = ''
 
+
+class HomePage:
+
     def transaction(self):
         pass

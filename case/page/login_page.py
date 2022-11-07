@@ -9,5 +9,8 @@ class LoginPosition:
     back_btn_pos = ''
     login_btn_pos = ''
 
+
+class LoginPage:
+
     def transaction(self):
         pass
