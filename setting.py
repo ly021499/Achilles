@@ -3,8 +3,9 @@ import os
 
 # Device
 ANDROID_DEVICE_HOST = 'Android:///127.0.0.1:7555'
+ANDROID_PACKAGE_NAME = 'com.netease.cloudmusic'
 IOS_DEVICE_HOST = 'iOS:///127.0.0.1:7555'
-PACKAGE_NAME = 'com.netease.cloudmusic'
+IOS_PACKAGE_NAME = 'com.netease.cloudmusic'
 
 # Path
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -22,3 +23,7 @@ ENV = 'prod'
 
 # Log
 IS_WRITE = False
+LOG_FORMAT = "<green>{time:YYYY-MM-DD HH:mm:ss}</green> | " \
+             "<green>{level: <8}</green> | " \
+             "<cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> - " \
+             "<green>{message}</green>"

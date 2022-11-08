@@ -111,7 +111,7 @@ class Poco2(Poco):
             raise e
 
     def sleep(self, sec=1.0):
-        log.info(f"sleep {sec} seconds .")
+        log.debug(f"sleep {sec} seconds .")
         time.sleep(sec)
 
 

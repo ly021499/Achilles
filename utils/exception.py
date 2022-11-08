@@ -25,7 +25,7 @@ class TargetTimeout(LRunException):
     pass
 
 
-class ConnectionError(LRunException):
+class ConnectError(LRunException):
     """
         This is ConnectError
     """

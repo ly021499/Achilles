@@ -7,7 +7,10 @@ class Wechat:
     
     def __init__(self) -> None:
         pass
-    
+
+    def build_content(self):
+        pass
     
     def send_msg(self):
         pass
+

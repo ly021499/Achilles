@@ -3,7 +3,7 @@
 # @Desc   : 日志工具
 
 from loguru import logger
-from setting import LOG_DIR, IS_WRITE
+from setting import LOG_DIR, IS_WRITE, LOG_FORMAT
 import functools
 import time
 import os
@@ -33,16 +33,18 @@ class Logger:
             all_log_path = os.path.join(LOG_DIR, "all") + "/" + date + ".log"
             logger.add(all_log_path,     # 日志存放位置
                        retention=7,      # 清理周期
-                       level="INFO",     # 日志级别
+                       level="DEBUG",     # 日志级别
                        enqueue=True,      # 具有使日志记录调用非阻塞的优点
-                       encoding="utf-8"
+                       encoding="utf-8",
+                       format=LOG_FORMAT
                        )
             error_log_path = os.path.join(LOG_DIR, "error") + "/" + date + ".log"
             logger.add(error_log_path,
                        retention=7,
                        level="ERROR",
                        enqueue=True,
-                       encoding="utf-8"
+                       encoding="utf-8",
+                       format=LOG_FORMAT
                        )
 
     def get_logger(self) -> logger:
@@ -66,22 +68,38 @@ def logwrap(msg: str = None):
             res = func(*args, **kwargs)
             end_time = time.time()
             duration = round(end_time - start_time, 2)
-            log.debug(f"{msg} [ Func: {func.__name__} -> {res} - Duration: {duration} ]")
+            log.debug(f"📣 📣 📣  {msg}  ... [ Func: {func.__name__} - Duration: {duration} ]")
             return res
         return inner
     return wrapper
 
 
-@logwrap('hello louie')
-def login(username, password):
-    print(username, password)
-    return object
+def logcase(func):
+    @functools.wraps(func)
+    def inner(*args, **kwargs):
+        log.info(f"(`･ω･´)ゞ  Start of running testcase: {func.__name__}")
+        start_time = time.time()
+        res = func(*args, **kwargs)
+        end_time = time.time()
+        duration = round(end_time - start_time, 2)
+        log.info(f"(ง •̀_•́)ง  End of running testcase : {func.__name__} ... [ Case duration: {duration} ]")
+        log.info(f"{'- ' * 16} 分割线 {' -' * 16}")
+        return res
+    return inner
 
 
 if __name__ == '__main__':
+    # 测试代码
     log.info(1111)
     log.warning(1111)
     log.critical(1111)
     log.error(1111)
     log.debug(1111)
+
+    @logcase
+    @logwrap('hello louie')
+    def login(username, password):
+        print(username, password)
+        return object
+
     login('louie', '123')

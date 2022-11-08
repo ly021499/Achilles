@@ -1,31 +1,22 @@
-import unittest
-from case.lib.driver.android_app import get_android_poco_instance
-from core.app.airtest2 import *
-from setting import PACKAGE_NAME
+from case.lib.driver.android_app import AndroidPocoUnit
 from case.page.home_page import HomePage
-
-import logging
-
-logger = logging.getLogger("airtest")
-logger.setLevel(logging.INFO)
+from utils import logcase
 
 
-class TestCloudMusic(unittest.TestCase):
+class TestCloudMusic(AndroidPocoUnit):
 
-    @classmethod
-    def setUpClass(cls) -> None:
-        cls.poco = get_android_poco_instance()
-        cls.poco.sleep(10)
-        cls.home_page = HomePage(cls.poco)
+    def setUp(self) -> None:
+        self.home_page = HomePage(self.poco)
 
-    def test_login_music(self):
+    @logcase
+    def test_1login_music(self):
         self.home_page.transaction()
 
-    @classmethod
-    def tearDownClass(cls) -> None:
-        cls.poco.sleep(3)
-        stop_app(PACKAGE_NAME)
+    @logcase
+    def test_2add_my_favorite(self):
+        self.home_page.transaction2()
 
 
 if __name__ == '__main__':
+    import unittest
     unittest.main()
