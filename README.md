@@ -1,4 +1,4 @@
-# appRunner
+# Achilles
 ## 介绍
 基于airtest、poco框架搭建的APP自动化测试框架。是一款投入于测试用例快速开发，便捷维护于一体的测试工具。
 ## 平台
