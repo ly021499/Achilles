@@ -1,7 +1,7 @@
 from .logger import log, logwrap, logcase
-from .wechat import Wechat
+from .wechat import wechat
 from .email import EMail
-from .exception import InvalidOperationException, AdbError, ConnectionError, NoSuchNodeException
+from .exception import InvalidOperationException, AdbError, ConnectError, NoSuchNodeException
 import logging
 
 logger = logging.getLogger("airtest")

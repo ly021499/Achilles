@@ -4,7 +4,7 @@
 
 from airtest.core import api
 from utils.logger import log
-from utils.exception import ConnectionError
+from utils.exception import ConnectError
 
 
 def init_device(platform=None, uuid=None, **kwargs):

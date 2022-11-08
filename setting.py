@@ -13,7 +13,8 @@ CASE_DIR = os.path.join(BASE_DIR, "case")
 RESULT_DIR = os.path.join(BASE_DIR, "result")
 LOG_DIR = os.path.join(BASE_DIR, "result\\logs")
 
-# WeboHook
+# Wechat
+URL = ''
 WEBHOOK = ''    # 调试webhook
 # WEBHOOK = ''  # 正式webhook
 
@@ -27,3 +28,11 @@ LOG_FORMAT = "<green>{time:YYYY-MM-DD HH:mm:ss}</green> | " \
              "<green>{level: <8}</green> | " \
              "<cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> - " \
              "<green>{message}</green>"
+
+# Report
+TESTER = 'LOUIE'
+TITLE = 'Achilles Report'
+DESCRIPTION = 'describe: Before the Trojan War broke out, Tethys heard a prophecy about Achilles: ' \
+              'he would be famous in history, but he was doomed to die on the battlefield when he was young.'
+RERUN = 1
+

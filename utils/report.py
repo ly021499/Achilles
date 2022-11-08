@@ -1,29 +1,13 @@
+# @Time   : 2022/11/8 17:31
+# @Author : LOUIE
+# @Desc   : to do something ...
+
 from utils.logger import log
 import setting
 import os
 import sys
 import pytest
 import shutil
-
-
-def add_arguments():
-    args = sys.argv[1:][0].split('--')[1].lower()
-    arguments = ['test', 'prod', 'fat', 'pre']
-    if args not in arguments:
-        help_text = """
-        prompt: only four environment parameters are supported\n
-        :params: --test
-        :params: --fat
-        :params: --pre
-        :params: --prod
-        """
-        print(help_text)
-        log.error(help_text)
-        return
-    else:
-        setting.ENV = args
-        print('Current Operating Environment:  {}'.format(setting.ENV))
-        log.info(f'Current Operating Environment:{setting.ENV}\n')
 
 
 def open_allure():
@@ -54,12 +38,6 @@ def open_allure():
 
 
 def main(env=None):
-    if env:
-        add_arguments()
-    else:
-        if env is None:
-            env = 'prod'
-        setting.ENV = env
 
     output_dir = os.path.join(setting.RESULT_DIR, 'output')
     options = ["--alluredir={}".format(output_dir), "--clean-alluredir", setting.CASE_DIR]
@@ -69,7 +47,3 @@ def main(env=None):
     pytest.main(options)
     log.info(" = " * 8 + " Process finished, Testing is completed " + " = " * 8)
     open_allure()
-
-
-if __name__ == '__main__':
-    main()
