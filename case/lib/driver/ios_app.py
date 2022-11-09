@@ -19,10 +19,7 @@ class IosPoco(iosPoco, Poco2):
 def get_ios_poco_instance():
     connect_device(IOS_DEVICE_HOST)
 
-    poco_instance = IosPoco()
-    start_app(IOS_PACKAGE_NAME)
-
-    return poco_instance
+    return IosPoco()
 
 
 class IOSPocoUnit(TestCase):

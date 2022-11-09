@@ -19,9 +19,9 @@ class Poco2(Poco):
                 # Retry twice
                 self.sleep(1)
                 return super().click(pos)
-            except InvalidOperationException:
+            except InvalidOperationException as e:
                 log.error(f'Click position out of screen. pos={repr(pos)}')
-                raise InvalidOperationException(f'Click position out of screen. pos={repr(pos)}')
+                raise InvalidOperationException(f'Click position out of screen. pos={repr(pos)}') from e
             except Exception as e:
                 log.error(f'Failed to click position, Exc:{e}')
                 raise e
@@ -57,11 +57,11 @@ class Poco2(Poco):
         except InvalidOperationException:
             try:
                 # Retry twice
-                for i in range(2):
+                for _ in range(2):
                     return super().long_click(pos=pos, duration=duration)
-            except InvalidOperationException:
+            except InvalidOperationException as e:
                 log.error(f'Long click position out of screen. pos={repr(pos)}')
-                raise InvalidOperationException('Click position out of screen. pos={}'.format(repr(pos)))
+                raise InvalidOperationException(f'Click position out of screen. pos={repr(pos)}') from e
             except Exception as e:
                 log.error(f'Failed to long click position, Exc:{e}')
                 raise e
@@ -91,7 +91,7 @@ class Poco2(Poco):
             log.info(f'Get screen size: {screen_size}')
             return screen_size
         except Exception as e:
-            log.info(f'Failed to get screen size')
+            log.info('Failed to get screen size')
             raise e
 
     def start_gesture(self, pos):

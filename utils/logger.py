@@ -3,7 +3,7 @@
 # @Desc   : 日志工具
 
 from loguru import logger
-from setting import LOG_DIR, IS_WRITE, LOG_FORMAT
+from setting import REPORT_DIR, IS_WRITE, LOG_FORMAT
 import functools
 import time
 import os
@@ -30,7 +30,7 @@ class Logger:
         date = time.strftime("%Y-%m-%d %H-%M-%S", time.localtime(time.time()))
 
         if IS_WRITE:
-            all_log_path = os.path.join(LOG_DIR, "all") + "/" + date + ".log"
+            all_log_path = os.path.join(REPORT_DIR, "all") + "/" + date + ".log"
             logger.add(all_log_path,     # 日志存放位置
                        retention=7,      # 清理周期
                        level="DEBUG",     # 日志级别
@@ -38,7 +38,7 @@ class Logger:
                        encoding="utf-8",
                        format=LOG_FORMAT
                        )
-            error_log_path = os.path.join(LOG_DIR, "error") + "/" + date + ".log"
+            error_log_path = os.path.join(REPORT_DIR, "error") + "/" + date + ".log"
             logger.add(error_log_path,
                        retention=7,
                        level="ERROR",

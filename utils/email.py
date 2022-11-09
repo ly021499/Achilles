@@ -47,11 +47,11 @@ class EMail(object):
         定义邮件附件
         :return: None
         """
-        list_dir = os.listdir(setting.RESULT_DIR)
+        list_dir = os.listdir(setting.REPORT_DIR)
         # 根据文件的修改时间进行排序
-        list_dir.sort(key=lambda x: os.path.getmtime(setting.RESULT_DIR + "\\" + x))
+        list_dir.sort(key=lambda x: os.path.getmtime(setting.REPORT_DIR + "\\" + x))
         # 构建文件路径，-1代表最新时间的文件
-        att_file_path = os.path.join(setting.RESULT_DIR, list_dir[-1])
+        att_file_path = os.path.join(setting.REPORT_DIR, list_dir[-1])
         att_file = MIMEApplication(open(att_file_path, 'rb').read())
         att_file.add_header('Content-Disposition', 'attachment', filename=self.filename)
         self.mmp.attach(att_file)

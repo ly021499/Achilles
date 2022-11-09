@@ -24,7 +24,7 @@ class Wechat:
         if res['errmsg'] == 'ok':
             log.info("Message sent successfully")
         else:
-            log.error(f"Message sending failed")
+            log.error("Message sending failed")
 
 
 wechat = Wechat()

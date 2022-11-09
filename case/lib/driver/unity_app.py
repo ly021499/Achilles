@@ -19,10 +19,7 @@ class Unity3dPoco(UnityPoco, Poco2):
 def get_unity3d_poco_instance():
     connect_device(ANDROID_DEVICE_HOST)
 
-    poco_instance = Unity3dPoco()
-    start_app(ANDROID_PACKAGE_NAME)
-
-    return poco_instance
+    return Unity3dPoco()
 
 
 class Unity3dPocoUnit(TestCase):

@@ -34,7 +34,7 @@ def connect_device(uri):
         log.info(f'Connection device succeeded... host: {uri}')
     except ConnectionError as e:
         log.info(f'Connecting device failed... host: {uri}')
-        raise ConnectionError
+        raise ConnectionError from e
 
 
 def device():

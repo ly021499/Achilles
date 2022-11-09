@@ -17,13 +17,13 @@ def open_allure():
     """
 
     # 复制environment.properties文件
-    raw_file_path = os.path.join(setting.RESULT_DIR, 'environment.properties')
-    new_file_path = os.path.join(setting.RESULT_DIR, 'output/environment.properties')
+    raw_file_path = os.path.join(setting.REPORT_DIR, 'environment.properties')
+    new_file_path = os.path.join(setting.REPORT_DIR, 'output/environment.properties')
 
     shutil.copy(raw_file_path, new_file_path)
 
-    output_dir = os.path.join(setting.RESULT_DIR, 'output')
-    summary_dir = os.path.join(setting.RESULT_DIR, 'summary')
+    output_dir = os.path.join(setting.REPORT_DIR, 'output')
+    summary_dir = os.path.join(setting.REPORT_DIR, 'summary')
 
     if not os.path.exists(output_dir):
         os.mkdir(output_dir)
@@ -39,7 +39,7 @@ def open_allure():
 
 def main(env=None):
 
-    output_dir = os.path.join(setting.RESULT_DIR, 'output')
+    output_dir = os.path.join(setting.REPORT_DIR, 'output')
     options = ["--alluredir={}".format(output_dir), "--clean-alluredir", setting.CASE_DIR]
     log.info("options list: {}".format(options))
 

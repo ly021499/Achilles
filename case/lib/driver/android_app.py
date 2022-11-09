@@ -19,9 +19,7 @@ def get_android_poco_instance():
         device_host = ANDROID_DEVICE_HOST
         connect_device(device_host)
 
-    poco_instance = AndroidPoco(screenshot_each_action=False)  # 实例化poco对象
-
-    return poco_instance
+    return AndroidPoco(screenshot_each_action=False)  # 实例化poco对象
 
 
 class AndroidPocoUnit(TestCase):
