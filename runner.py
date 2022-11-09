@@ -1,4 +1,4 @@
-# @Time   : 2022/11/08 17:05
+# @Time   : 2022/11/09 19:05
 # @Author : LOUIE
 # @Desc   : 日志工具
 
@@ -18,7 +18,11 @@ class Runner:
         self.test_loader = unittest.TestLoader()
 
     def _load_tests(self, case_dir):
-
+        """
+        加载测试用例
+        :param case_dir: 用例目录
+        :return: test_suite
+        """
         test_suite = unittest.TestSuite()
 
         # 收集测试用例，添加进测试套件
@@ -31,7 +35,8 @@ class Runner:
     def _run_suite(self, test_suite, result_path):
         """
         运行测试套件
-        :param test_suite:
+        :param test_suite: 测试套件
+        :param result_path: 日志、报告存放路径
         :return:
         """
 
@@ -59,8 +64,8 @@ class Runner:
 
     def run(self, case_dir=None):
         """
-
-        :param case_dir:
+        运行驱动器
+        :param case_dir: 用例目录
         :return:
         """
         # 设置airtest日志等级，debug会输出很多日志
