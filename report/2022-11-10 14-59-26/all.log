@@ -1,0 +1,26 @@
+2022-11-10 14:59:26 | INFO     | __main__:run:76 -  =  =  =  =  =  =  =  =  Program started, Running testcases   =  =  =  =  =  =  =  = 
+2022-11-10 14:59:27 | WARNING  | __main__:_load_tests:31 - <unittest.suite.TestSuite tests=[<unittest.suite.TestSuite tests=[]>, <unittest.suite.TestSuite tests=[]>, <unittest.suite.TestSuite tests=[<unittest.suite.TestSuite tests=[]>, <unittest.suite.TestSuite tests=[<app.test_cloud_music.TestCloudMusic testMethod=test_1login_music>, <app.test_cloud_music.TestCloudMusic testMethod=test_2add_my_favorite>]>]>, <unittest.suite.TestSuite tests=[]>]>
+2022-11-10 14:59:27 | INFO     | core.app.airtest2:connect_device:31 - Ready to connect device host ...
+2022-11-10 14:59:32 | INFO     | core.app.airtest2:connect_device:34 - Connection device succeeded... host: Android:///127.0.0.1:7555
+2022-11-10 14:59:35 | INFO     | core.app.airtest2:start_app:71 - Start app: com.netease.cloudmusic, activity: None
+2022-11-10 14:59:35 | DEBUG    | core.app.poco2:sleep:114 - sleep 10 seconds .
+2022-11-10 14:59:45 | INFO     | utils.logger:inner:80 - (`･ω･´)ゞ  Start of running testcase: test_1login_music
+2022-11-10 14:59:53 | DEBUG    | utils.logger:inner:71 - 📣 📣 📣  operation: 打开每日推荐  ... [ Func: daily_menu - Duration: 7.9 ]
+2022-11-10 14:59:55 | DEBUG    | utils.logger:inner:71 - 📣 📣 📣  operation: 点击播放全部  ... [ Func: click_play_all_btn - Duration: 1.88 ]
+2022-11-10 14:59:58 | DEBUG    | utils.logger:inner:71 - 📣 📣 📣  operation: 点击返回  ... [ Func: click_daily_back - Duration: 2.59 ]
+2022-11-10 15:00:00 | DEBUG    | utils.logger:inner:71 - 📣 📣 📣  operation: 点击返回  ... [ Func: click_daily_back - Duration: 2.92 ]
+2022-11-10 15:00:00 | INFO     | utils.logger:inner:85 - (ง •̀_•́)ง  End of running testcase : test_1login_music ... [ Case duration: 15.29 ]
+2022-11-10 15:00:00 | INFO     | utils.logger:inner:86 - - - - - - - - - - - - - - - - -  分割线  - - - - - - - - - - - - - - - -
+2022-11-10 15:00:00 | INFO     | utils.logger:inner:80 - (`･ω･´)ゞ  Start of running testcase: test_2add_my_favorite
+2022-11-10 15:00:04 | DEBUG    | utils.logger:inner:71 - 📣 📣 📣  operation: 打开排行榜  ... [ Func: ranking_list_menu - Duration: 3.78 ]
+2022-11-10 15:00:17 | DEBUG    | utils.logger:inner:71 - 📣 📣 📣  operation: 点击飙升榜单  ... [ Func: click_soaring_list - Duration: 12.3 ]
+2022-11-10 15:00:17 | DEBUG    | core.app.poco2:sleep:114 - sleep 2 seconds .
+2022-11-10 15:00:32 | DEBUG    | utils.logger:inner:71 - 📣 📣 📣  operation: 点击更多按钮  ... [ Func: click_more_btn - Duration: 15.48 ]
+2022-11-10 15:00:34 | DEBUG    | utils.logger:inner:71 - 📣 📣 📣  operation: 收藏到歌单  ... [ Func: click_collect_btn - Duration: 1.8 ]
+2022-11-10 15:00:36 | DEBUG    | utils.logger:inner:71 - 📣 📣 📣  operation: 添加至我喜欢的音乐  ... [ Func: add_my_favorite - Duration: 1.67 ]
+2022-11-10 15:00:36 | INFO     | utils.logger:inner:85 - (ง •̀_•́)ง  End of running testcase : test_2add_my_favorite ... [ Case duration: 35.03 ]
+2022-11-10 15:00:36 | INFO     | utils.logger:inner:86 - - - - - - - - - - - - - - - - -  分割线  - - - - - - - - - - - - - - - -
+2022-11-10 15:00:36 | DEBUG    | core.app.poco2:sleep:114 - sleep 3 seconds .
+2022-11-10 15:00:39 | INFO     | core.app.airtest2:stop_app:80 - stop app com.netease.cloudmusic
+2022-11-10 15:00:39 | INFO     | __main__:_run_suite:57 - Generating HTML reports... filepath: C:\Users\Administrator\PycharmProjects\airtestDemo\report\2022-11-10 14-59-26\achilles.html
+2022-11-10 15:00:39 | INFO     | __main__:run:85 -  =  =  =  =  =  =  =  =  Program finished, Testing is completed  =  =  =  =  =  =  =  = 

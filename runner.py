@@ -40,8 +40,7 @@ class Runner:
         :return:
         """
 
-        filename = 'achilles-' + str(datetime.datetime.now().strftime("%Y-%m-%d %H-%M-%S")) + '.html'
-        filepath = os.path.join(result_path, filename)
+        filepath = os.path.join(result_path, 'achilles.html')
         with open(filepath, 'wb+') as fp:
             runner = HTMLTestRunner(
                 stream=fp,
@@ -72,11 +71,6 @@ class Runner:
         logger = logging.getLogger("airtest")
         logger.setLevel(logging.INFO)
 
-        dir_name = "achilles" + str(time.strftime("%Y-%m-%d %H-%M-%S", time.localtime(time.time())))
-        result_path = os.path.join(setting.REPORT_DIR, dir_name)
-        if not os.path.exists(result_path):
-            os.mkdir(result_path)
-
         case_dir = case_dir or setting.CASE_DIR
 
         log.info(" = " * 8 + " Program started, Running testcases  " + " = " * 8)
@@ -85,7 +79,7 @@ class Runner:
 
         # runner = unittest.TextTestRunner()
         # runner.run(test_suite)
-        self._run_suite(test_suite, result_path)
+        self._run_suite(test_suite, setting.REPORT_DIR)
         # wechat.send_msg()
 
         log.info(" = " * 8 + " Program finished, Testing is completed " + " = " * 8)
