@@ -7,9 +7,7 @@ from XTestRunner import HTMLTestRunner
 import unittest
 import setting
 import os
-import datetime
 import logging
-import time
 
 
 class Runner:
@@ -76,9 +74,6 @@ class Runner:
         log.info(" = " * 8 + " Program started, Running testcases  " + " = " * 8)
 
         test_suite = self._load_tests(case_dir)
-
-        # runner = unittest.TextTestRunner()
-        # runner.run(test_suite)
         self._run_suite(test_suite, setting.REPORT_DIR)
         # wechat.send_msg()
 

@@ -38,3 +38,10 @@ class AdbError(LRunException):
     """
     pass
 
+
+class InvalidParamError(LRunException):
+    """
+        This is InvalidParamError
+    """
+    pass
+

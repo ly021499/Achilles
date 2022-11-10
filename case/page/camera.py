@@ -3,14 +3,7 @@
 # @Desc   : to do something ...
 
 
-class LoginPosition:
-
-    _account_input_pos = ''
-    back_btn_pos = ''
-    login_btn_pos = ''
-
-
-class LoginPage:
+class CameraPage:
 
     def transaction(self):
         pass
