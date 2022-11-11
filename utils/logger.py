@@ -3,6 +3,7 @@
 # @Desc   : 日志工具
 
 from loguru import logger
+from typing import Callable
 from setting import REPORT_DIR, IS_WRITE, LOG_FORMAT
 import functools
 import time
@@ -54,7 +55,7 @@ class Logger:
 log = Logger().get_logger()     # 日志记录器
 
 
-def logwrap(msg: str = None):
+def logwrap(msg: str = None) -> Callable:
     """
     日志装饰器，简单记录函数的日志
 
@@ -74,7 +75,7 @@ def logwrap(msg: str = None):
     return wrapper
 
 
-def logcase(func):
+def logcase(func: Callable[[str], str]) -> Callable:
     @functools.wraps(func)
     def inner(*args, **kwargs):
         log.info(f"(`･ω･´)ゞ  Start of running testcase: {func.__name__}")

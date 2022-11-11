@@ -37,7 +37,7 @@ def open_allure():
     os.system(open_allure_cmd)
 
 
-def main(env=None):
+def main(env: str = None):
 
     output_dir = os.path.join(setting.REPORT_DIR, 'output')
     options = ["--alluredir={}".format(output_dir), "--clean-alluredir", setting.CASE_DIR]
