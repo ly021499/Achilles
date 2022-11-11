@@ -18,7 +18,7 @@ def __raise_exception(msg=None):
 def assert_equal(first, second, msg=None):
 
     if not (first and second):
-        raise InvalidParamError("Invalid parameter ..")
+        raise InvalidParamError(f"Invalid parameter .. {(first, second)}")
 
     if not first == second:
         __raise_exception(__format_message(msg, f'{first} == {second}'))
@@ -27,7 +27,7 @@ def assert_equal(first, second, msg=None):
 def assert_not_equal(first, second, msg=None):
 
     if not (first and second):
-        raise InvalidParamError("Invalid parameter ..")
+        raise InvalidParamError(f"Invalid parameter .. {(first, second)}")
 
     if not first != second:
         __raise_exception(__format_message(msg, f'{first} != {second}'))
@@ -69,4 +69,4 @@ def assert_regex(text, expected_regex, msg=None):
 
 
 if __name__ == '__main__':
-    assert_equal(1, [])
+    assert_equal(1, 2)
