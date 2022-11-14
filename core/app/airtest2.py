@@ -3,8 +3,7 @@
 # @Desc   : airtest核心api的二次封装
 
 from airtest.core import api
-from utils.logger import log
-from utils.exception import ConnectError
+from utils.logger import log, logwrap
 
 
 def init_device(platform=None, uuid=None, **kwargs):
@@ -77,23 +76,116 @@ def start_app(package, activity=None):
 def stop_app(package):
     try:
         api.stop_app(package)
-        log.info(f"stop app {package}")
+        log.info(f"Stop app {package}")
     except Exception as e:
         log.error(f"Failed to stop app {package}")
         raise e
 
 
+def clear_app(package):
+    try:
+        api.clear_app(package)
+        log.info(f"Clear app {package}")
+    except Exception as e:
+        log.error(f"Failed to clear app {package}")
+        raise e
 
 
+def install(filepath, **kwargs):
+    try:
+        log.info(f"Install app {filepath}")
+        return api.install(filepath, **kwargs)
+    except Exception as e:
+        log.error(f"Failed to install app {filepath}")
+        raise e
 
 
+def uninstall(package):
+    try:
+        log.info(f"Uninstall app {package}")
+        return api.uninstall(package)
+    except Exception as e:
+        log.error(f"Failed to uninstall app {package}")
+        raise e
 
 
+def snapshot(package):
+    raise NotImplementedError
 
 
+def wake():
+    try:
+        log.info(f"Wake app")
+        return api.wake
+    except Exception as e:
+        log.error(f"Failed to wake app")
+        raise e
 
 
+def home(package):
+    raise NotImplementedError
 
 
+def touch(v, times=1, **kwargs):
+    try:
+        log.info(f"touch app {v}")
+        return api.touch(v, times=1, **kwargs)
+    except Exception as e:
+        log.error(f"Failed to uninstall app {v}")
+        raise e
 
 
+def double_click(package):
+    raise NotImplementedError
+
+
+def swipe(package):
+    raise NotImplementedError
+
+
+def pinch():
+    raise NotImplementedError
+
+
+def keyevent():
+    raise NotImplementedError
+
+
+def text():
+    try:
+        log.info(f"touch app {v}")
+        return api.exists(v)
+    except Exception as e:
+        log.error(f"Failed to uninstall app {v}")
+        raise e
+
+
+def sleep(secs=1.0):
+    import time
+    time.sleep(secs)
+    log.info(f'time sleep {secs} seconds')
+
+
+def wait():
+    raise NotImplementedError
+
+
+def exists(v):
+    try:
+        log.info(f"touch app {v}")
+        return api.exists(v)
+    except Exception as e:
+        log.error(f"Failed to uninstall app {v}")
+        raise e
+
+
+@logwrap('1111111')
+def find_all():
+    try:
+        assert 1 == 2
+    except:
+        print(222)
+
+
+if __name__ == '__main__':
+    sleep()

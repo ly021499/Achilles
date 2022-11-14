@@ -3,16 +3,45 @@
 # @Desc   : to do something ...
 from utils import logwrap
 from case.position import music_pos
+import re
+from case.lib.driver.android_app import get_android_poco_instance
 
 
 class MusicPage:
 
     def __init__(self, poco_instance):
-        self.poco = poco_instance
+        self.poco = get_android_poco_instance()
+
+    def _regex(self, pos):
+        recompile = re.compile(r'(?<=\[)\d+?(?=\])')
+        s = recompile.search(pos)
+        if s:
+            index = s.group()
+            rep_pos = pos.replace(f"[{index}]", "")
+            return rep_pos, int(index)
+        return pos, 0
+
+    def _parser_pos(self, pos):
+        identifier = '&'
+        if identifier not in pos:
+            if re.search(r'(?<=\[)\d+?(?=\])', pos):
+                rep_pos, index = self._regex(pos)
+                print(rep_pos, index)
+                return self.poco(rep_pos)[index]
+            return self.poco(pos)
+
+        value_list = pos.split(identifier)
+        pos_list = []
+        for value in value_list:
+            pos_list.append(self._regex(value))
+        p0, n0 = pos_list[0]
+        p1, n1 = pos_list[1]
+        return self.poco(p0)[n0].offspring(p1)[n1]
 
     @logwrap('operation: 打开每日推荐')
     def daily_menu(self):
-        self.poco(music_pos.daily_menu_pos)[0].click()
+        self._parser_pos(music_pos.daily_menu_pos).click()
+        # self.poco(music_pos.daily_menu_pos)[0].click()
 
     @logwrap('operation: 点击返回')
     def click_daily_back(self):
@@ -53,9 +82,9 @@ class MusicPage:
 
     def transaction(self):
         self.daily_menu()
-        self.click_play_all_btn()
-        self.click_daily_back()
-        self.click_daily_back()
+        # self.click_play_all_btn()
+        # self.click_daily_back()
+        # self.click_daily_back()
 
     def transaction2(self):
         self.ranking_list_menu()
@@ -65,7 +94,8 @@ class MusicPage:
         self.add_my_favorite()
 
 
-
+if __name__ == '__main__':
+    MusicPage(1).transaction()
 
 
 

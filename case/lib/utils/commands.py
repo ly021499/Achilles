@@ -53,10 +53,15 @@ def complete_target_task(pid: int, task_id: int, count: int):
     execute_command(cmd)
 
 
-def set_main_task(pid, ):
-    """重置主线剧情到指定的剧情"""
+def set_main_task(pid: int, plot_id: int):
+    """
+    重置主线剧情到指定的剧情
+    :param pid:
+    :param plot_id: 剧情ID
+    :return:
+    """
 
-    cmd = 'setMainTask pid 剧情id'
+    cmd = f'setMainTask {pid} {plot_id}'
     execute_command(cmd)
 
 
@@ -70,6 +75,7 @@ def set_dungeon_progress(pid: int, level_type: int, chapter_index: int, level_co
     :return:
         example: setDungeonProgress 95756 1 11 6
     """
+
     if level_type not in [1, 2]:
         return
     cmd = f'setDungeonProgress {pid} {level_type} {chapter_index} {level_count}'
@@ -95,6 +101,7 @@ def set_hero_up(pid: int, count: int):
     :param count: 进阶数量
     :return:
     """
+
     cmd = f'batchSetHeroAttr {pid} 502 {count}'
     execute_command(cmd)
 
@@ -129,6 +136,7 @@ def set_server_time(pid: int, time_fmt: str):
     :param time_fmt: 时间日期字符串
     :return:
     """
+
     # 对时间日期字符串进行判断是否为指定格式
     if time_fmt:
         pass
@@ -145,6 +153,7 @@ def add_res(pid: int, res_type: int, point: int):
     :param point: 声望值
     :return:
     """
+
     cmd = f'addRes {pid} {res_type} {point}'
     execute_command(cmd)
 
@@ -156,6 +165,7 @@ def refresh_opponent(pid: int, opponent_id: int):
     :param opponent_id: 对手ID
     :return:
     """
+
     cmd = f'refreshOpponent {pid} {opponent_id}'
     execute_command(cmd)
 
@@ -167,6 +177,7 @@ def set_arena_score(pid: int, score: int):
     :param score: 积分数
     :return:
     """
+
     cmd = f'setArenaScore {pid} {score}'
     execute_command(cmd)
 

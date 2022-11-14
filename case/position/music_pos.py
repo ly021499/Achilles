@@ -2,7 +2,7 @@
 # @Author : LOUIE
 # @Desc   : to do something ...
 
-daily_menu_pos = 'android.view.ViewGroup'
+daily_menu_pos = 'android.view.ViewGroup[0]'
 daily_back_btn_pos = '转到上一层级'
 play_all_btn_pos = 'com.netease.cloudmusic:id/playAllTextView'
 private_fm_menu_pos = "私人FM"

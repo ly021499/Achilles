@@ -13,22 +13,13 @@ import os
 
 class EMail(object):
 
-    """
-    1. 导入邮件所需模块
-    2. 定义邮箱头部
-    3. 定义邮箱附件
-    4. 获取最新的报告
-    5. 写入附件
-    6. 发送邮件
-    """
-
     def __init__(self):
         self.username = "username"
         self.password = "password"
         self.host = "host"
         self.content = "content"
         self.subject = "subject"
-        self.reciever = "reciever"
+        self.receiver = "receiver"
         self.filename = "filename"
         self.mmp = MIMEMultipart()
         self.smtp = SMTP()
@@ -39,7 +30,7 @@ class EMail(object):
         :return: None
         """
         self.mmp["From"] = self.username
-        self.mmp["To"] = self.reciever
+        self.mmp["To"] = self.receiver
         self.mmp["subject"] = self.subject
 
     def email_attachment(self):
@@ -83,7 +74,7 @@ class EMail(object):
         try:
             self.smtp.connect(self.host)
             self.smtp.login(self.username, self.password)
-            self.smtp.sendmail(self.username, self.reciever, self.mmp.as_string().encode())
+            self.smtp.sendmail(self.username, self.receiver, self.mmp.as_string().encode())
             log.info("biubiubiu !!!~~~  导弹发射成功!@#$%  颤抖吧~~~  *&^%愚蠢的人类")
         except Exception as e:
             log.error(f"warning warning !!! ===> 导弹未进入指定发射轨道，赶紧抢救，否则你家要炸了啊~~~\n 错误信息：{e}")

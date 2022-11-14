@@ -33,13 +33,13 @@ class AndroidPocoUnit(TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.poco = get_android_poco_instance()
-        start_app(ANDROID_PACKAGE_NAME)
-        cls.poco.sleep(10)
-
-    @classmethod
-    def tearDownClass(cls) -> None:
-        cls.poco.sleep(3)
-        stop_app(ANDROID_PACKAGE_NAME)
+        # start_app(ANDROID_PACKAGE_NAME)
+        # cls.poco.sleep(10)
+    #
+    # @classmethod
+    # def tearDownClass(cls) -> None:
+    #     cls.poco.sleep(3)
+    #     stop_app(ANDROID_PACKAGE_NAME)
 
 
 

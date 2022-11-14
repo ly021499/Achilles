@@ -1,20 +1,19 @@
+# @Time   : 2022/11/14 16:31
+# @Author : LOUIE
+# @Desc   : to do something ...
 from case.lib.driver.android_app import AndroidPocoUnit
-from case.page.music import MusicPage
+from case.page.login import LoginPage
 from utils import logcase
 
 
 class TestCloudMusic(AndroidPocoUnit):
 
     def setUp(self) -> None:
-        self.home_page = MusicPage(self.poco)
+        self.home_page = LoginPage(self.poco)
 
     @logcase
-    def test_1login_music(self):
+    def test_1_login_music(self):
         self.home_page.transaction()
-
-    # @logcase
-    # def test_2add_my_favorite(self):
-    #     self.home_page.transaction2()
 
 
 if __name__ == '__main__':

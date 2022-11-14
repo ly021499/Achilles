@@ -57,10 +57,9 @@ log = Logger().get_logger()     # 日志记录器
 
 def logwrap(msg: str = None) -> Callable:
     """
-    日志装饰器，简单记录函数的日志
-
-    Args:
-        msg (function): 函数
+    函数日志装饰器
+    :param msg: 消息内容
+    :return:
     """
     def wrapper(func):
         @functools.wraps(func)
@@ -69,13 +68,18 @@ def logwrap(msg: str = None) -> Callable:
             res = func(*args, **kwargs)
             end_time = time.time()
             duration = round(end_time - start_time, 2)
-            log.debug(f"📣 📣 📣  {msg}  ... [ Func: {func.__name__} - Duration: {duration} ]")
+            log.debug(f"📣 📣 📣  {msg}  ... - Func: {func.__name__} - duration: {duration} - end_time: {round(end_time)}")
             return res
         return inner
     return wrapper
 
 
 def logcase(func: Callable[[str], str]) -> Callable:
+    """
+    测试用例日志装饰器
+    :param func: 用例函数对象
+    :return:
+    """
     @functools.wraps(func)
     def inner(*args, **kwargs):
         log.info(f"(`･ω･´)ゞ  Start of running testcase: {func.__name__}")

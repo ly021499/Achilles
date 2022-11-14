@@ -11,6 +11,9 @@ import time
 
 class Poco2(Poco):
 
+    def __init__(self, agent, **options):
+        super(Poco2, self).__init__(agent, **options)
+
     def click(self, pos: str):
         try:
             return super().click(pos)
@@ -110,8 +113,8 @@ class Poco2(Poco):
             log.info(f'Failed to apply motion tracks: {tracks}, accuracy: {accuracy}')
             raise e
 
-    def sleep(self, sec: float = 1.0):
-        log.debug(f"sleep {sec} seconds .")
-        time.sleep(sec)
+    def sleep(self, secs: float = 1.0):
+        log.debug(f"sleep {secs} seconds .")
+        time.sleep(secs)
 
 
