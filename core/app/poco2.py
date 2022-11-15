@@ -1,6 +1,6 @@
 # @Time   : 2022/11/4 14:14
 # @Author : LOUIE
-# @Desc   : poco核心api的二次封装
+# @Desc   : 基于全局的poco核心api的二次封装
 
 from poco import Poco
 from poco.exceptions import InvalidOperationException, PocoNoSuchNodeException
@@ -20,7 +20,7 @@ class Poco2(Poco):
         except (InvalidOperationException, PocoNoSuchNodeException):
             try:
                 # Retry twice
-                self.sleep(1)
+                self.sleep(0.5)
                 return super().click(pos)
             except InvalidOperationException as e:
                 log.error(f'Click position out of screen. pos={repr(pos)}')

@@ -3,11 +3,15 @@ import os
 import time
 
 
+__ENV = 'TEST'
+
+
 def __get_result_path():
     dir_name = str(time.strftime("%Y-%m-%d %H-%M-%S", time.localtime(time.time())))
     result_path = os.path.join(os.path.join(BASE_DIR, "report"), dir_name)
-    if not os.path.exists(result_path):
-        os.mkdir(result_path)
+    if __ENV.upper() == 'PROD':
+        if not os.path.exists(result_path):
+            os.mkdir(result_path)
     return result_path
 
 
@@ -17,8 +21,8 @@ CASE_DIR = os.path.join(BASE_DIR, "case\\tests")
 LOG_DIR = os.path.join(BASE_DIR, "report\\logs")
 REPORT_DIR = __get_result_path()
 
+
 # Config, Only the CONFIG parameters need to be modified
-__ENV = 'TEST'
 __TEST_CONFIG = {
     'wx_url': '',
     'webhook': '',
@@ -45,11 +49,10 @@ __PROD_CONFIG = {
 
 
 def __get_env_conf():
-    env = __ENV.upper()
     env_list = ['PROD', 'TEST']
-    if env not in env_list:
+    if __ENV.upper() not in env_list:
         raise FileNotFoundError
-    if env == 'TEST':
+    if __ENV.upper() == 'TEST':
         return __TEST_CONFIG
     else:
         return __PROD_CONFIG
@@ -57,11 +60,13 @@ def __get_env_conf():
 
 CONF = __get_env_conf()
 
+
 # Device
 ANDROID_DEVICE_HOST = CONF.get('android_device_host')
 ANDROID_PACKAGE_NAME = 'com.netease.cloudmusic'
 IOS_DEVICE_HOST = CONF.get('ios_device_host')
 IOS_PACKAGE_NAME = 'com.netease.cloudmusic'
+
 
 # Log
 IS_WRITE = CONF.get('is_write')
@@ -70,6 +75,7 @@ LOG_FORMAT = "<green>{time:YYYY-MM-DD HH:mm:ss}</green> | " \
              "<cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> - " \
              "<green>{message}</green>"
 SYSTEM = platform.system()
+
 
 # Report
 TESTER = 'LOUIE'

@@ -1,17 +1,28 @@
 # @Time   : 2022/11/10 10:42
 # @Author : LOUIE
-# @Desc   : to do something ...
+# @Desc   : 断言方法
 from utils.exception import InvalidParamError
 import re
 
 
 def __format_message(msg, standard_msg):
+    """
+    格式化消息体
+    :param msg: 自定义消息
+    :param standard_msg: 固定消息
+    :return:
+    """
     if msg is None:
         return standard_msg
     return f'{standard_msg} : {msg}'
 
 
 def __raise_exception(msg=None):
+    """
+    抛出异常
+    :param msg:
+    :return:
+    """
     raise AssertionError(msg)
 
 
