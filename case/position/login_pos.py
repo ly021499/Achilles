@@ -3,7 +3,8 @@
 # @Desc   : to do something ...
 
 
-
+pre_env_pos = 'Env 2&Checkbox'
+ok_btn_pos = "确定"
 
 
 

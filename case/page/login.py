@@ -3,21 +3,20 @@
 # @Desc   : to do something ...
 from utils import logwrap
 from case.position import login_pos
+from case.lib.page import Page
 
 
-class LoginPage:
-
-    def __init__(self, poco_instance):
-        self.poco = poco_instance
+class LoginPage(Page):
 
     def choose_env(self):
-        self.poco(login_pos.pre_env)
+        self.click(login_pos.pre_env_pos)
 
     def click_ok(self):
-        pass
+        self.click(login_pos.ok_btn_pos)
 
     def transaction(self):
         self.choose_env()
+        self.click_ok()
 
 
 

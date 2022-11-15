@@ -1,19 +1,19 @@
 # @Time   : 2022/11/14 16:31
 # @Author : LOUIE
 # @Desc   : to do something ...
-from case.lib.driver.android_app import AndroidPocoUnit
+from case.lib.driver.unity_app import Unity3dPocoUnit
 from case.page.login import LoginPage
 from utils import logcase
 
 
-class TestCloudMusic(AndroidPocoUnit):
+class TestPapa2(Unity3dPocoUnit):
 
     def setUp(self) -> None:
-        self.home_page = LoginPage(self.poco)
+        self.login_page = LoginPage(self.poco)
 
     @logcase
     def test_1_login_music(self):
-        self.home_page.transaction()
+        self.login_page.transaction()
 
 
 if __name__ == '__main__':

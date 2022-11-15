@@ -6,7 +6,12 @@ import requests
 import setting
 
 
-def execute_command(cmd):
+def __execute_command(cmd):
+    """
+    执行GM命令，执行前必须配置好GM_COOKIE
+    :param cmd:
+    :return:
+    """
     url = setting.GM_URL
     headers = {
         "Content-Type": "application/x-www-form-urlencoded",
@@ -37,7 +42,7 @@ def complete_activity(pid: int, activity_id: int, reward_id: int, count: int):
     """
 
     cmd = f'addActivityProgress {pid} {activity_id} {reward_id} {count}'
-    execute_command(cmd)
+    __execute_command(cmd)
 
 
 def complete_target_task(pid: int, task_id: int, count: int):
@@ -50,7 +55,7 @@ def complete_target_task(pid: int, task_id: int, count: int):
     """
 
     cmd = f'addTaskProgress {pid} {task_id} {count}'
-    execute_command(cmd)
+    __execute_command(cmd)
 
 
 def set_main_task(pid: int, plot_id: int):
@@ -62,7 +67,7 @@ def set_main_task(pid: int, plot_id: int):
     """
 
     cmd = f'setMainTask {pid} {plot_id}'
-    execute_command(cmd)
+    __execute_command(cmd)
 
 
 def set_dungeon_progress(pid: int, level_type: int, chapter_index: int, level_count: int):
@@ -79,7 +84,7 @@ def set_dungeon_progress(pid: int, level_type: int, chapter_index: int, level_co
     if level_type not in [1, 2]:
         return
     cmd = f'setDungeonProgress {pid} {level_type} {chapter_index} {level_count}'
-    execute_command(cmd)
+    __execute_command(cmd)
 
 
 def set_hero_star(pid: int, count: int):
@@ -91,7 +96,7 @@ def set_hero_star(pid: int, count: int):
     """
 
     cmd = f'batchSetHeroAttr {pid} 505 {count}'
-    execute_command(cmd)
+    __execute_command(cmd)
 
 
 def set_hero_up(pid: int, count: int):
@@ -103,7 +108,7 @@ def set_hero_up(pid: int, count: int):
     """
 
     cmd = f'batchSetHeroAttr {pid} 502 {count}'
-    execute_command(cmd)
+    __execute_command(cmd)
 
 
 def set_hero_level(pid: int, count: int):
@@ -115,7 +120,7 @@ def set_hero_level(pid: int, count: int):
     """
 
     cmd = f'batchSetHeroAttr {pid} 501 {count}'
-    execute_command(cmd)
+    __execute_command(cmd)
 
 
 def clear_player(pid: int):
@@ -126,7 +131,7 @@ def clear_player(pid: int):
     """
 
     cmd = f'batchSetHeroAttr {pid}'
-    execute_command(cmd)
+    __execute_command(cmd)
 
 
 def set_server_time(pid: int, time_fmt: str):
@@ -142,7 +147,7 @@ def set_server_time(pid: int, time_fmt: str):
         pass
     year, month, day, hour, minute, second = time_fmt
     cmd = f'setServerTime {pid} {year} {month} {day} {hour} {minute} {second}'
-    execute_command(cmd)
+    __execute_command(cmd)
 
 
 def add_res(pid: int, res_type: int, point: int):
@@ -155,7 +160,7 @@ def add_res(pid: int, res_type: int, point: int):
     """
 
     cmd = f'addRes {pid} {res_type} {point}'
-    execute_command(cmd)
+    __execute_command(cmd)
 
 
 def refresh_opponent(pid: int, opponent_id: int):
@@ -167,7 +172,7 @@ def refresh_opponent(pid: int, opponent_id: int):
     """
 
     cmd = f'refreshOpponent {pid} {opponent_id}'
-    execute_command(cmd)
+    __execute_command(cmd)
 
 
 def set_arena_score(pid: int, score: int):
@@ -179,5 +184,5 @@ def set_arena_score(pid: int, score: int):
     """
 
     cmd = f'setArenaScore {pid} {score}'
-    execute_command(cmd)
+    __execute_command(cmd)
 
