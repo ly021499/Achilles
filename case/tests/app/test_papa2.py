@@ -12,7 +12,11 @@ class TestPapa2(Unity3dPocoUnit):
         self.login_page = LoginPage(self.poco)
 
     @logcase
-    def test_1_login_music(self):
+    def test_1_login_papa2(self):
+        self.login_page.transaction()
+
+    @logcase
+    def test_2_close_note(self):
         self.login_page.transaction()
 
 

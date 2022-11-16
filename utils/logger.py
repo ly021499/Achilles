@@ -9,6 +9,12 @@ import functools
 import time
 import os
 
+import logging
+
+# 设置airtest日志等级，debug会输出很多日志
+air_logger = logging.getLogger("airtest")
+air_logger.setLevel(logging.ERROR)
+
 
 class Logger:
 
@@ -68,7 +74,7 @@ def logwrap(msg: str = None) -> Callable:
             res = func(*args, **kwargs)
             end_time = time.time()
             duration = round(end_time - start_time, 2)
-            log.debug(f"📣 📣 📣  {msg}  ... - Func: {func.__name__} - duration: {duration} - end_time: {round(end_time)}")
+            log.debug(f"📣 📣 📣 operation: {msg}  ... - Func: {func.__name__} - duration: {duration} - end_time: {round(end_time)}")
             return res
         return inner
     return wrapper

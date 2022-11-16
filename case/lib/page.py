@@ -2,18 +2,33 @@
 # @Author : LOUIE
 # @Desc   : to do something ...
 import re
+import time
+from utils import log, NoSuchNodeException
+from poco.exceptions import PocoNoSuchNodeException
 
 
 class Page(object):
 
     def __init__(self, poco_instance):
         self.poco = poco_instance
-        self.identifier: str = '&'
-        self.index_compile = re.compile(r'(?<=\[)\d+?(?=\])')
+        self.identifier: str = '>'
+        self.index_compile = re.compile(r'(?<=\\[)\\d+?(?=\\])')
         self.chinese_compile = re.compile(r'^(?![a-z|A-Z|0-9])+?')
 
     def click(self, pos, focus=None, sleep_interval=None):
-        return self.__parser_pos(pos).click(focus, sleep_interval)
+        try:
+            log.debug(f"Click the element for the first time：{pos}")
+            return self.__parser_pos(pos).click(focus, sleep_interval)
+        except PocoNoSuchNodeException:
+            try:
+                time.sleep(1)
+                log.debug(f"Click the element for the second time：{pos}")
+                return self.__parser_pos(pos).click(focus, sleep_interval)
+            except PocoNoSuchNodeException:
+                raise NoSuchNodeException(f'Cannot find visible node by query UIObjectProxy of "{pos}"')
+
+    def exists(self, pos):
+        return self.__parser_pos(pos).exists()
 
     def long_click(self, pos, duration=2.0):
         return self.__parser_pos(pos).long_click(duration)
@@ -32,6 +47,10 @@ class Page(object):
 
     def pinch(self, pos, direction='in', percent=0.6, duration=2.0, dead_zone=0.1):
         return self.__parser_pos(pos).pinch(direction, percent, duration, dead_zone)
+
+    def sleep(self, secs: float = 1.0):
+        log.debug(f"sleep {secs} seconds .")
+        time.sleep(secs)
 
     def __regex_pos_index(self, pos: str):
         """
@@ -54,9 +73,13 @@ class Page(object):
         :param pos: 定位
         :return:
         """
-
-        if self.chinese_compile.match(pos):
-            return self.poco(text=pos)
+        if '=' in pos:
+            pos_type, pos = pos.split('=')
+            print(pos_type, pos)
+            if pos_type in ['texture', 'text']:
+                print(pos_type)
+                return self.poco(**{pos_type: pos})
+            raise TypeError("Position type error . type : [texture、text]")
 
         if self.identifier not in pos:
 
@@ -68,9 +91,7 @@ class Page(object):
 
         value_list = pos.split(self.identifier)
 
-        pos_list = []
-        for value in value_list:
-            pos_list.append(self.__regex_pos_index(value))
+        pos_list = [self.__regex_pos_index(value) for value in value_list]
 
         p0, n0 = pos_list[0]
         p1, n1 = pos_list[1]
