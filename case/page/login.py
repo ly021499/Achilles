@@ -7,7 +7,7 @@ from case.lib.page import Page
 
 
 pre_env_pos = 'Env 2>Checkbox'
-ok_btn_pos = "text=确定"
+confirm_btn_pos = "text=确定"
 enter_game_pos = "com.sangoku2.android:id/hrg_accountmenu_btn_enter"
 close_note_pos = 'Button_Close01n'
 click_enter_pos = "Btn_Enter"
@@ -23,8 +23,8 @@ class LoginPage(Page):
         self.click(pre_env_pos)
 
     @logwrap('点击确定')
-    def click_ok(self):
-        self.click(ok_btn_pos, sleep_interval=1)
+    def click_confirm(self):
+        self.click(confirm_btn_pos, sleep_interval=1)
 
     @logwrap('关闭公告')
     def close_note(self):
@@ -59,7 +59,7 @@ class LoginPage(Page):
 
     def transaction(self):
         self.choose_env()
-        self.click_ok()
+        self.click_confirm()
         self.enter_game()
         self.close_note()
         self.click_enter()

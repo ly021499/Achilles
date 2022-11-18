@@ -4,7 +4,7 @@
 
 from loguru import logger
 from typing import Callable
-from setting import REPORT_DIR, IS_WRITE, LOG_FORMAT
+from setting import REPORT_DIR, OUTPUT, LOG_FORMAT
 import functools
 import time
 import os
@@ -36,7 +36,7 @@ class Logger:
         """
         date = time.strftime("%Y-%m-%d %H-%M-%S", time.localtime(time.time()))
 
-        if IS_WRITE:
+        if OUTPUT:
             all_log_path = os.path.join(REPORT_DIR, "all.log")
             logger.add(all_log_path,     # 日志存放位置
                        retention=7,      # 清理周期
@@ -74,7 +74,7 @@ def logwrap(msg: str = None) -> Callable:
             res = func(*args, **kwargs)
             end_time = time.time()
             duration = round(end_time - start_time, 2)
-            log.debug(f"📣 📣 📣 operation: {msg}  ... - Func: {func.__name__} - duration: {duration} - end_time: {round(end_time)}")
+            log.debug(f"📣 📣 📣 operation: {msg}  ... - Func: {func.__name__} - duration: {duration} s")
             return res
         return inner
     return wrapper
@@ -93,7 +93,7 @@ def logcase(func: Callable[[str], str]) -> Callable:
         res = func(*args, **kwargs)
         end_time = time.time()
         duration = round(end_time - start_time, 2)
-        log.info(f"(ง •̀_•́)ง  End of running testcase : {func.__name__} ... [ Case duration: {duration} ]")
+        log.info(f"(ง •̀_•́)ง  End of running testcase : {func.__name__} ... [ Case duration: {duration} s ]")
         log.info(f"{'- ' * 16} 分割线 {' -' * 16}")
         return res
     return inner

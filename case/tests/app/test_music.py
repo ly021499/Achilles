@@ -9,11 +9,11 @@ class TestCloudMusic(AndroidPocoUnit):
         self.home_page = MusicPage(self.poco)
 
     @logcase
-    def test_1_login_music(self):
+    def test_a_login_music(self):
         self.home_page.transaction()
 
     @logcase
-    def test_2_add_my_favorite(self):
+    def test_b_add_my_favorite(self):
         self.home_page.transaction2()
 
 

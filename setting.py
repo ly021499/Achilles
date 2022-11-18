@@ -8,7 +8,7 @@ __TEST_CONFIG = {
     'wx_url': '',       # 企业微信请求地址
     'webhook': '',      # 企业微信webhook
     'output': False,    # 控制是否创建目录输出日志和报告
-    'android_device_host': 'Android:///127.0.0.1:7555',     # android设备地址
+    'android_device_host': 'Android:///127.0.0.1:5555',     # android设备地址
     'ios_device_host': 'iOS:///127.0.0.1:7555',             # iOS设备地址
     'cmd_conf': {       # GM命令配置
         'url': 'http://192.168.1.16/gmModuleapi/Gmcommand/command',

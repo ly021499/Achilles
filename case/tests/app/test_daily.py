@@ -12,11 +12,11 @@ class TestPapa2(Unity3dPocoUnit):
         self.daily_page = DailyPage(self.poco)
 
     @logcase
-    def test_1_receive_daily_rewards(self):
+    def test_a_receive_daily_rewards(self):
         self.daily_page.receive_daily_rewards()
 
     @logcase
-    def test_2_receive_mail_rewards(self):
+    def test_b_receive_mail_rewards(self):
         self.daily_page.receive_mail_rewards()
 
 
