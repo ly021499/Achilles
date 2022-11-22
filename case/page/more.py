@@ -1,6 +1,6 @@
 # @Time   : 2022/11/18 9:40
 # @Author : LOUIE
-# @Desc   : to do something ...
+# @Desc   : 更多
 from utils import logwrap
 from case.position import camera_pos, more_pos
 from case.lib.page import Page
@@ -22,7 +22,7 @@ class MorePage(Page):
 
 
 if __name__ == '__main__':
-    from case.lib.driver.unity_window import get_unity_window_poco_instance
+    from core.lib.driver.unity_window import get_unity_window_poco_instance
     page = MorePage(get_unity_window_poco_instance())
     # page.click_grade_reward()
     poco = get_unity_window_poco_instance()

@@ -1,6 +1,6 @@
 # @Time   : 2022/11/4 16:05
 # @Author : LOUIE
-# @Desc   : to do something ...
+# @Desc   : 固定视图
 from utils import logwrap
 from case.position import camera_pos
 from case.lib.page import Page

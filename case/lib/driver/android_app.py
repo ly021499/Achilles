@@ -4,10 +4,10 @@
 
 from poco.drivers.android.uiautomation import AndroidUiautomationPoco
 from airtest.core.api import device as current_device
-from core.app.airtest2 import connect_device, start_app, stop_app
-from setting import ANDROID_DEVICE_HOST, ANDROID_PACKAGE_NAME
-from core.app.poco2 import Poco2
+from setting import ANDROID_DEVICE_HOST
 from unittest import TestCase
+from core.air import connect_device
+from core.poco2 import Poco2
 
 
 class AndroidPoco(AndroidUiautomationPoco, Poco2):

@@ -1,6 +1,6 @@
 # @Time   : 2022/11/10 15:17
 # @Author : LOUIE
-# @Desc   : to do something ...
+# @Desc   : 每日日常
 from utils import logwrap
 from case.position import login_pos
 from case.lib.page import Page
@@ -61,7 +61,10 @@ class DailyPage(Page):
         self.close_task_page()
 
 
-
+if __name__ == '__main__':
+    from core.lib.driver.unity_window import get_unity_window_poco_instance
+    page = DailyPage(get_unity_window_poco_instance())
+    page.receive_daily_rewards()
 
 
 

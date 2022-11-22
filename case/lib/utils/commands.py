@@ -20,7 +20,7 @@ def __execute_command(cmd):
     data = {
         "id": 0,
         "server_type": "test",
-        "server_id": 80000337,
+        "server_id": 80002990,
         "exec_type": 1,
         "platform_id": 80,
         "game_id": 9,
@@ -28,13 +28,17 @@ def __execute_command(cmd):
         "command": cmd,
         "csv_file": ""
     }
-    return requests.post(url=url, data=data, headers=headers)
+    try:
+        requests.post(url=url, data=data, headers=headers)
+        return True
+    except:
+        return False
 
 
 def complete_activity(pid: int, activity_id: int, reward_id: int, count: int):
     """
     完成活动进度
-    :param pid:
+    :param pid: 玩家编号
     :param activity_id: 活动ID
     :param reward_id: 奖励ID
     :param count:
@@ -48,7 +52,7 @@ def complete_activity(pid: int, activity_id: int, reward_id: int, count: int):
 def complete_target_task(pid: int, task_id: int, count: int):
     """
     完成指定活动进度
-    :param pid:
+    :param pid: 玩家编号
     :param task_id: 任务ID
     :param count:
     :return:
@@ -61,7 +65,7 @@ def complete_target_task(pid: int, task_id: int, count: int):
 def set_main_task(pid: int, plot_id: int):
     """
     重置主线剧情到指定的剧情
-    :param pid:
+    :param pid: 玩家编号
     :param plot_id: 剧情ID
     :return:
     """
@@ -73,7 +77,7 @@ def set_main_task(pid: int, plot_id: int):
 def set_dungeon_progress(pid: int, level_type: int, chapter_index: int, level_count: int):
     """
     重置关卡到指定关卡(用完gm命令需要重新登录)
-    :param pid:
+    :param pid: 玩家编号
     :param level_type: 关卡类型: 1.普通 2.精英
     :param chapter_index: 章节索引
     :param level_count: 通关关卡数量
@@ -90,7 +94,7 @@ def set_dungeon_progress(pid: int, level_type: int, chapter_index: int, level_co
 def set_hero_star(pid: int, count: int):
     """
     设置英雄星级
-    :param pid:
+    :param pid: 玩家编号
     :param count: 星级数量
     :return:
     """
@@ -102,7 +106,7 @@ def set_hero_star(pid: int, count: int):
 def set_hero_up(pid: int, count: int):
     """
     设置英雄进阶
-    :param pid:
+    :param pid: 玩家编号
     :param count: 进阶数量
     :return:
     """
@@ -114,7 +118,7 @@ def set_hero_up(pid: int, count: int):
 def set_hero_level(pid: int, count: int):
     """
     设置英雄等级
-    :param pid:
+    :param pid: 玩家编号
     :param count: 等级数量
     :return:
     """
@@ -126,7 +130,7 @@ def set_hero_level(pid: int, count: int):
 def clear_player(pid: int):
     """
     清除账号信息
-    :param pid:
+    :param pid: 玩家编号
     :return:
     """
 
@@ -137,7 +141,7 @@ def clear_player(pid: int):
 def set_server_time(pid: int, time_fmt: str):
     """
     设置服务器时间
-    :param pid:
+    :param pid: 玩家编号
     :param time_fmt: 时间日期字符串
     :return:
     """
@@ -153,7 +157,7 @@ def set_server_time(pid: int, time_fmt: str):
 def add_res(pid: int, res_type: int, point: int):
     """
     添加资源命令
-    :param pid:
+    :param pid: 玩家编号
     :param res_type: 声望类型
     :param point: 声望值
     :return:
@@ -163,10 +167,36 @@ def add_res(pid: int, res_type: int, point: int):
     __execute_command(cmd)
 
 
+def add_hero():
+    """
+    添加资源命令
+    :param pid: 玩家编号
+    :param res_type: 声望类型
+    :param point: 声望值
+    :return:
+    """
+
+    cmd = f'addHero 55561040 199999 1'
+    __execute_command(cmd)
+
+
+def add_item(pid: int, res_type: int, point: int):
+    """
+    添加资源命令
+    :param pid: 玩家编号
+    :param res_type: 声望类型
+    :param point: 声望值
+    :return:
+    """
+
+    cmd = f'addItem {pid} {res_type} {point}'
+    __execute_command(cmd)
+
+
 def refresh_opponent(pid: int, opponent_id: int):
     """
     添加资源命令
-    :param pid:
+    :param pid: 玩家编号
     :param opponent_id: 对手ID
     :return:
     """
@@ -178,11 +208,19 @@ def refresh_opponent(pid: int, opponent_id: int):
 def set_arena_score(pid: int, score: int):
     """
     设置竞技场积分
-    :param pid:
+    :param pid: 玩家编号
     :param score: 积分数
     :return:
     """
 
     cmd = f'setArenaScore {pid} {score}'
     __execute_command(cmd)
+
+
+if __name__ == '__main__':
+    pid = 55529040
+    set_hero_level(pid, 60)
+    add_hero()
+
+
 

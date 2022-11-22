@@ -5,7 +5,7 @@
 from faker import Faker
 
 
-fake = Faker('zh_cn')
+fake = Faker()
 
 
 def random_phone_number() -> str:
@@ -169,6 +169,6 @@ def random_ipv4() -> str:
 
 
 if __name__ == '__main__':
-    v = random_unix_time()
+    v = random_name()
     print(v)
     print(type(v))

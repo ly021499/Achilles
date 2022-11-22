@@ -2,11 +2,10 @@
 # @Author : LOUIE
 # @Desc   : iOS 应用 diver
 
-from airtest.core.api import *
-from core.app.airtest2 import connect_device, start_app
+from core.air import connect_device, stop_app
+from core.poco2 import Poco2
 
 from poco.drivers.ios import iosPoco
-from core.app.poco2 import Poco2
 from setting import IOS_DEVICE_HOST, IOS_PACKAGE_NAME
 from unittest import TestCase
 

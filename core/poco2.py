@@ -4,15 +4,12 @@
 
 from poco import Poco
 from poco.exceptions import InvalidOperationException, PocoNoSuchNodeException
-from utils import log
+from utils import log, logwrap
 
 import time
 
 
 class Poco2(Poco):
-
-    def __init__(self, agent, **options):
-        super(Poco2, self).__init__(agent, **options)
 
     def click(self, pos: str):
         try:

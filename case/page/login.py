@@ -1,6 +1,6 @@
 # @Time   : 2022/11/10 15:17
 # @Author : LOUIE
-# @Desc   : to do something ...
+# @Desc   : 登录
 from utils import logwrap
 from case.position import login_pos
 from case.lib.page import Page
