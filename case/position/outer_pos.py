@@ -22,8 +22,8 @@ potion_pos = 'textMatches=药水研炼所'
 the_gold_pos = 'textMatches=黄金谷'
 
 # 虚影殿堂：捍卫者试炼、增援者试炼、射手试炼、法师试炼、刺客试炼、战士试炼
-fighter_pos = 'textMatches=战士试炼'
-defender_pos = 'textMatches=捍卫者试炼'
+fighter_pos = 'textMatches=捍卫者试炼'
+defender_pos = 'textMatches=增援者试炼'
 marksman_pos = 'textMatches=射手试炼'
 support_pos = 'textMatches=增援者试炼'
 mage_pos = 'textMatches=法师试炼'

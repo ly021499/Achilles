@@ -183,7 +183,7 @@ def add_value(pid: int, res_type: int, count: int):
     :return:
     """
 
-    cmd = f'addValue {pid} {res_type} {count}'
+    cmd = f'addValue {pid} 1009 {res_type} {count}'
     __execute_command(cmd)
 
 
@@ -264,7 +264,7 @@ def buy_gift_bag(pid: int, score: int):
 
 if __name__ == '__main__':
     play_id = 55561040
-    add_res(play_id, 10011, 1000)
+    add_value(play_id, 10021, 10)
     # add_hero(play_id)
 
 

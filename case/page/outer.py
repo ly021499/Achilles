@@ -8,31 +8,50 @@ from case.position import outer_pos, profile_pos
 from case.lib.page import Page
 
 
+"""
+前置操作：
+1. 新增秒杀英雄薇薇安
+2. 每个副本战斗英雄出厂配置需要设置好薇薇安
+3. 虚影殿堂中的副本顺序需要调整
+"""
+
+
 class OuterPage(Page):
 
     @logwrap('副本入口 - 塔尔魔术工坊')
     def magic_workshop(self):
         return self.click(outer_pos.magic_workshop_pos)
 
+    def retry(self, pos):
+        # 防止进入错误的副本，增加重试机制，最多五次
+        count = 0
+        while count < 5:
+            self.click(pos)
+            if not self.exists(pos):
+                self.close_page()
+                count += 1
+                continue
+            return
+
     @logwrap('副本入口 - 虚影殿堂')
     def the_shadow_keep(self):
-        return self.click(outer_pos.the_shadow_keep_pos)
+        return self.retry(outer_pos.the_shadow_keep_pos)
 
     @logwrap('副本入口 - 贪婪禁地')
     def forbidden_sector(self):
-        return self.click(outer_pos.forbidden_sector_pos)
+        return self.retry(outer_pos.forbidden_sector_pos)
 
     @logwrap('副本入口 - 茫然遗迹')
     def lost_sector(self):
-        return self.click(outer_pos.lost_sector_pos)
+        return self.retry(outer_pos.lost_sector_pos)
 
     @logwrap('副本入口 - 苍穹之城')
     def sky_city(self):
-        return self.click(outer_pos.sky_city_pos)
+        return self.retry(outer_pos.sky_city_pos)
 
     @logwrap('副本入口 - 元素峡谷')
     def elemental_valley(self):
-        return self.click(outer_pos.elemental_valley_pos)
+        return self.retry(outer_pos.elemental_valley_pos)
 
     def get_page_title(self):
         text = self.get_text(outer_pos.page_title_pos)
@@ -65,14 +84,20 @@ class OuterPage(Page):
     def fighting_and_back_trans(self):
         self.fighting()
         logstep('战斗开始，请耐心等待战斗结束 ...')
-        self.wait_for_appearance(outer_pos.continue_pos, timeout=20)
+        self.wait_for_appearance(outer_pos.continue_pos, timeout=25)
         logstep('战斗结束了，获得胜利 ...')
         while self.exists(outer_pos.continue_pos):
             self.touch_optional_position()
 
     def play_trans(self, *challenges):
         for challenge in challenges:
-            self.click(challenge)
+            if self.exists(challenge):
+
+                self.click(challenge)
+            # 判断是否是虚影殿堂副本，需要判断哪些副本可以进入，否则跳过
+            if self.exists(outer_pos.the_shadow_keep_pos):
+                if not self.exists(outer_pos.enter_btn_pos):
+                    continue
             logstep(f"选择关卡：{str(challenge).split('=')[1]} ...")
             # outer.choose_superheroes()
             self.enter_btn()
@@ -103,7 +128,12 @@ class OuterPage(Page):
     @logwrap('刷副本：虚影殿堂')
     def the_shadow_keep_trans(self):
         self.the_shadow_keep()
-        self.play_trans(outer_pos.fighter_pos, outer_pos.assassin_pos)
+        self.play_trans(outer_pos.mage_pos, outer_pos.defender_pos)
+
+    def find(self):
+        if self.exists(outer_pos.the_shadow_keep_pos):
+            if self.exists(outer_pos.fighter_pos) and self.exists(outer_pos.enter_btn_pos):
+                self.click(outer_pos.enter_btn_pos)
 
 
 if __name__ == '__main__':
@@ -113,6 +143,7 @@ if __name__ == '__main__':
     outer.forbidden_sector_trans()
     outer.lost_sector_trans()
     outer.the_shadow_keep_trans()
+
 
 
 
