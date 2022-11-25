@@ -84,7 +84,7 @@ class OuterPage(Page):
     def fighting_and_back_trans(self):
         self.fighting()
         logstep('战斗开始，请耐心等待战斗结束 ...')
-        self.wait_for_appearance(outer_pos.continue_pos, timeout=25)
+        self.wait_for_appearance(outer_pos.continue_pos, timeout=30)
         logstep('战斗结束了，获得胜利 ...')
         while self.exists(outer_pos.continue_pos):
             self.touch_optional_position()
