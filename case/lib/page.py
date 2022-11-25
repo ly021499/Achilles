@@ -2,8 +2,8 @@
 # @Author : LOUIE
 # @Desc   : to do something ...
 
-from utils import log, NoSuchNodeException
-from poco.exceptions import PocoNoSuchNodeException
+from utils import log, logstep, NoSuchNodeException
+from poco.exceptions import PocoNoSuchNodeException, PocoTargetRemovedException
 from case.lib.driver.android_app import get_android_poco_instance
 import re
 import time
@@ -18,7 +18,7 @@ class Page(object):
         self.chinese_compile = re.compile(r'^(?![a-z|A-Z|0-9])+?')
 
     def touch_optional_position(self):
-        log.debug("Click on the lower left corner")
+        logstep("点击任意位置继续 ...")
         return self.poco.click([0.2, 0.8])
 
     def click(self, pos: str, focus=None, sleep_interval: float = None):
@@ -26,13 +26,16 @@ class Page(object):
             return self.__parser_pos(pos).click(focus, sleep_interval)
         except PocoNoSuchNodeException:
             try:
-                log.debug(f"Try again, locate node：{pos}")
+                log.debug(f"Try locating the node： {pos} again")
                 return self.__parser_pos(pos).click(focus, sleep_interval)
             except PocoNoSuchNodeException:
                 raise NoSuchNodeException(f'Cannot find visible node by query UIObjectProxy of "{pos}"')
 
     def exists(self, pos: str):
-        return self.__parser_pos(pos).exists()
+        try:
+            return self.__parser_pos(pos).exists()
+        except (PocoTargetRemovedException, PocoNoSuchNodeException):
+            return False
 
     def long_click(self, pos: str, duration: float = 2.0):
         return self.__parser_pos(pos).long_click(duration)
@@ -53,7 +56,6 @@ class Page(object):
         return self.__parser_pos(pos).pinch(direction, percent, duration, dead_zone)
 
     def set_text(self, pos: str, text: str):
-        print(self.__parser_pos(pos).get_text())
         return self.__parser_pos(pos).set_text(text)
 
     def get_text(self, pos: str):
@@ -62,8 +64,17 @@ class Page(object):
     def get_name(self, pos: str):
         return self.__parser_pos(pos).get_name()
 
+    def drag_to(self, pos: str, target: str, duration=0.5):
+        return self.__parser_pos(pos).drag_to(self.__parser_pos(target), duration)
+
+    def wait_for_appearance(self, pos, timeout=30):
+        return self.__parser_pos(pos).wait_for_appearance(timeout)
+
+    def wait_for_disappearance(self, pos, timeout=30):
+        return self.__parser_pos(pos).wait_for_appearance(timeout)
+
     def sleep(self, secs: float = 1.0):
-        log.debug(f"sleep {secs} seconds .")
+        logstep(f"sleep {secs} seconds .")
         time.sleep(secs)
 
     def __regex_pos_index(self, pos: str):
@@ -97,10 +108,7 @@ class Page(object):
         """
         if '=' in pos:
             attr, pos = pos.split('=')
-            rep_pos, index = self.__regex_pos_index(pos)
-            print(f"keyword：self.poco({attr}={rep_pos})[{index}]")
-            return self.poco(**{attr: rep_pos})[index]
-            # return self.poco(**{attr: pos})
+            return self.poco(**{attr: pos})
 
         if self.identifier not in pos:
 

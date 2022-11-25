@@ -61,6 +61,10 @@ class Logger:
 log = Logger().get_logger()     # 日志记录器
 
 
+def logstep(msg: str):
+    log.debug(f'📣 📣 📣 ：{msg}')
+
+
 def logwrap(msg: str = None) -> Callable:
     """
     函数日志装饰器
@@ -74,7 +78,7 @@ def logwrap(msg: str = None) -> Callable:
             res = func(*args, **kwargs)
             end_time = time.time()
             duration = round(end_time - start_time, 2)
-            log.debug(f"📣 📣 📣 operation: {msg}  ... - Func: {func.__name__} - duration: {duration} s")
+            log.debug(f"📣 📣 📣 ： {msg}  ... - Func: {func.__name__} - duration: {duration} s")
             return res
         return inner
     return wrapper

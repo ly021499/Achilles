@@ -32,7 +32,27 @@ def __execute_command(cmd):
         requests.post(url=url, data=data, headers=headers)
         return True
     except:
-        return False
+        raise requests.exceptions.HTTPError
+
+
+def clear_hero(pid: int):
+    """
+    清空英雄
+    :param pid: 玩家编号
+    :return:
+    """
+    cmd = f'clearHero {pid}'
+    __execute_command(cmd)
+
+
+def clear_item(pid: int):
+    """
+    清空道具
+    :param pid: 玩家编号
+    :return:
+    """
+    cmd = f'clearItem {pid}'
+    __execute_command(cmd)
 
 
 def complete_activity(pid: int, activity_id: int, reward_id: int, count: int):
@@ -154,9 +174,22 @@ def set_server_time(pid: int, time_fmt: str):
     __execute_command(cmd)
 
 
+def add_value(pid: int, res_type: int, count: int):
+    """
+    增加资源
+    :param pid: 玩家编号
+    :param res_type: 声望类型
+    :param count: 声望值
+    :return:
+    """
+
+    cmd = f'addValue {pid} {res_type} {count}'
+    __execute_command(cmd)
+
+
 def add_res(pid: int, res_type: int, point: int):
     """
-    添加资源命令
+    添加普通资源
     :param pid: 玩家编号
     :param res_type: 声望类型
     :param point: 声望值
@@ -167,16 +200,16 @@ def add_res(pid: int, res_type: int, point: int):
     __execute_command(cmd)
 
 
-def add_hero():
+def add_hero(pid: int, hero_type: int = 199999, count: int = 1):
     """
     添加资源命令
-    :param pid: 玩家编号
-    :param res_type: 声望类型
-    :param point: 声望值
+    :param pid: 玩家编号: 我的编号 55561040
+    :param hero_type: 英雄类型 : 199999 - 秒杀英雄
+    :param count: 数量
     :return:
     """
 
-    cmd = f'addHero 55561040 199999 1'
+    cmd = f'addHero {pid} {hero_type} {count}'
     __execute_command(cmd)
 
 
@@ -217,10 +250,22 @@ def set_arena_score(pid: int, score: int):
     __execute_command(cmd)
 
 
+def buy_gift_bag(pid: int, score: int):
+    """
+    购买礼包
+    :param pid: 玩家编号
+    :param score: 积分数
+    :return:
+    """
+
+    cmd = f'buyGiftBag {pid} {score}'
+    __execute_command(cmd)
+
+
 if __name__ == '__main__':
-    pid = 55529040
-    set_hero_level(pid, 60)
-    add_hero()
+    play_id = 55561040
+    add_res(play_id, 10011, 1000)
+    # add_hero(play_id)
 
 
 
