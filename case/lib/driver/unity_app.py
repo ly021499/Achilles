@@ -32,7 +32,8 @@ class Unity3dPocoUnit(TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        cls.poco = get_unity3d_poco_instance()
+        from .unity_window import get_unity_window_poco_instance
+        cls.poco = get_unity_window_poco_instance()
         # cls.poco.sleep(10)
 
     # @classmethod

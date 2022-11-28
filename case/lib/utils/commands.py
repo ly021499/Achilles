@@ -28,11 +28,12 @@ def __execute_command(cmd):
         "command": cmd,
         "csv_file": ""
     }
-    try:
-        requests.post(url=url, data=data, headers=headers)
-        return True
-    except:
-        raise requests.exceptions.HTTPError
+    res = requests.post(url=url, data=data, headers=headers)
+    res.raise_for_status()
+    res = res.json()
+    if res['code'] != 0:
+        raise requests.exceptions.HTTPError(res['msg'])
+    return res
 
 
 def clear_hero(pid: int):
@@ -42,7 +43,7 @@ def clear_hero(pid: int):
     :return:
     """
     cmd = f'clearHero {pid}'
-    __execute_command(cmd)
+    return __execute_command(cmd)
 
 
 def clear_item(pid: int):
@@ -52,7 +53,7 @@ def clear_item(pid: int):
     :return:
     """
     cmd = f'clearItem {pid}'
-    __execute_command(cmd)
+    return __execute_command(cmd)
 
 
 def complete_activity(pid: int, activity_id: int, reward_id: int, count: int):
@@ -66,7 +67,7 @@ def complete_activity(pid: int, activity_id: int, reward_id: int, count: int):
     """
 
     cmd = f'addActivityProgress {pid} {activity_id} {reward_id} {count}'
-    __execute_command(cmd)
+    return __execute_command(cmd)
 
 
 def complete_target_task(pid: int, task_id: int, count: int):
@@ -79,7 +80,7 @@ def complete_target_task(pid: int, task_id: int, count: int):
     """
 
     cmd = f'addTaskProgress {pid} {task_id} {count}'
-    __execute_command(cmd)
+    return __execute_command(cmd)
 
 
 def set_main_task(pid: int, plot_id: int):
@@ -91,7 +92,7 @@ def set_main_task(pid: int, plot_id: int):
     """
 
     cmd = f'setMainTask {pid} {plot_id}'
-    __execute_command(cmd)
+    return __execute_command(cmd)
 
 
 def set_dungeon_progress(pid: int, level_type: int, chapter_index: int, level_count: int):
@@ -108,7 +109,7 @@ def set_dungeon_progress(pid: int, level_type: int, chapter_index: int, level_co
     if level_type not in [1, 2]:
         return
     cmd = f'setDungeonProgress {pid} {level_type} {chapter_index} {level_count}'
-    __execute_command(cmd)
+    return __execute_command(cmd)
 
 
 def set_hero_star(pid: int, count: int):
@@ -120,7 +121,7 @@ def set_hero_star(pid: int, count: int):
     """
 
     cmd = f'batchSetHeroAttr {pid} 505 {count}'
-    __execute_command(cmd)
+    return __execute_command(cmd)
 
 
 def set_hero_up(pid: int, count: int):
@@ -132,7 +133,7 @@ def set_hero_up(pid: int, count: int):
     """
 
     cmd = f'batchSetHeroAttr {pid} 502 {count}'
-    __execute_command(cmd)
+    return __execute_command(cmd)
 
 
 def set_hero_level(pid: int, count: int):
@@ -144,7 +145,7 @@ def set_hero_level(pid: int, count: int):
     """
 
     cmd = f'batchSetHeroAttr {pid} 501 {count}'
-    __execute_command(cmd)
+    return __execute_command(cmd)
 
 
 def clear_player(pid: int):
@@ -155,7 +156,7 @@ def clear_player(pid: int):
     """
 
     cmd = f'batchSetHeroAttr {pid}'
-    __execute_command(cmd)
+    return __execute_command(cmd)
 
 
 def set_server_time(pid: int, time_fmt: str):
@@ -171,7 +172,7 @@ def set_server_time(pid: int, time_fmt: str):
         pass
     year, month, day, hour, minute, second = time_fmt
     cmd = f'setServerTime {pid} {year} {month} {day} {hour} {minute} {second}'
-    __execute_command(cmd)
+    return __execute_command(cmd)
 
 
 def add_value(pid: int, res_type: int, count: int):
@@ -184,7 +185,7 @@ def add_value(pid: int, res_type: int, count: int):
     """
 
     cmd = f'addValue {pid} 1009 {res_type} {count}'
-    __execute_command(cmd)
+    return __execute_command(cmd)
 
 
 def add_res(pid: int, res_type: int, point: int):
@@ -197,7 +198,7 @@ def add_res(pid: int, res_type: int, point: int):
     """
 
     cmd = f'addRes {pid} {res_type} {point}'
-    __execute_command(cmd)
+    return __execute_command(cmd)
 
 
 def add_hero(pid: int, hero_type: int = 199999, count: int = 1):
@@ -210,7 +211,7 @@ def add_hero(pid: int, hero_type: int = 199999, count: int = 1):
     """
 
     cmd = f'addHero {pid} {hero_type} {count}'
-    __execute_command(cmd)
+    return __execute_command(cmd)
 
 
 def add_item(pid: int, res_type: int, point: int):
@@ -223,7 +224,7 @@ def add_item(pid: int, res_type: int, point: int):
     """
 
     cmd = f'addItem {pid} {res_type} {point}'
-    __execute_command(cmd)
+    return __execute_command(cmd)
 
 
 def refresh_opponent(pid: int, opponent_id: int):
@@ -235,7 +236,7 @@ def refresh_opponent(pid: int, opponent_id: int):
     """
 
     cmd = f'refreshOpponent {pid} {opponent_id}'
-    __execute_command(cmd)
+    return __execute_command(cmd)
 
 
 def set_arena_score(pid: int, score: int):
@@ -247,7 +248,7 @@ def set_arena_score(pid: int, score: int):
     """
 
     cmd = f'setArenaScore {pid} {score}'
-    __execute_command(cmd)
+    return __execute_command(cmd)
 
 
 def buy_gift_bag(pid: int, score: int):
@@ -259,13 +260,12 @@ def buy_gift_bag(pid: int, score: int):
     """
 
     cmd = f'buyGiftBag {pid} {score}'
-    __execute_command(cmd)
+    return __execute_command(cmd)
 
 
 if __name__ == '__main__':
     play_id = 55561040
-    add_value(play_id, 10021, 10)
-    # add_hero(play_id)
-
+    v = add_value(play_id, 10021, -99)
+    print(v)
 
 

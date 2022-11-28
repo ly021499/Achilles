@@ -20,6 +20,7 @@ stone_lord_pos = 'textMatches=土元素'
 # 贪婪禁地：药水研究所、黄金谷
 potion_pos = 'textMatches=药水研炼所'
 the_gold_pos = 'textMatches=黄金谷'
+golden_key_count_pos = 'TextLabel43'
 
 # 虚影殿堂：捍卫者试炼、增援者试炼、射手试炼、法师试炼、刺客试炼、战士试炼
 fighter_pos = 'textMatches=捍卫者试炼'

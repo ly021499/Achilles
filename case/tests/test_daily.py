@@ -6,20 +6,20 @@ from case.page.daily import DailyPage
 from utils import logcase
 
 
-class TestPapa2(Unity3dPocoUnit):
-
-    def setUp(self) -> None:
-        self.daily_page = DailyPage(self.poco)
-
-    @logcase
-    def test_a_receive_daily_rewards(self):
-        self.daily_page.receive_daily_rewards()
-
-    @logcase
-    def test_b_receive_mail_rewards(self):
-        self.daily_page.receive_mail_rewards()
-
-
-if __name__ == '__main__':
-    import unittest
-    unittest.main()
+# class TestPapa2(Unity3dPocoUnit):
+#
+#     def setUp(self) -> None:
+#         self.daily_page = DailyPage(self.poco)
+#
+#     @logcase
+#     def test_a_receive_daily_rewards(self):
+#         self.daily_page.receive_daily_rewards()
+#
+#     @logcase
+#     def test_b_receive_mail_rewards(self):
+#         self.daily_page.receive_mail_rewards()
+#
+#
+# if __name__ == '__main__':
+#     import unittest
+#     unittest.main()
