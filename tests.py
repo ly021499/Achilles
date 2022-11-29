@@ -1,17 +1,8 @@
-for i in range(10):
-    if i == 2:
-        continue
-    print(i)
+import re
 
-
-
-
-
-
-
-
-
-
+s = 'bida17'
+c = re.search(r'\d+\.?\d*', s).group()
+print(c)
 
 
 

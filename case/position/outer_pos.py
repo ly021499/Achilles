@@ -23,8 +23,8 @@ the_gold_pos = 'textMatches=黄金谷'
 golden_key_count_pos = 'TextLabel43'
 
 # 虚影殿堂：捍卫者试炼、增援者试炼、射手试炼、法师试炼、刺客试炼、战士试炼
-fighter_pos = 'textMatches=捍卫者试炼'
-defender_pos = 'textMatches=增援者试炼'
+fighter_pos = 'textMatches=战士试炼'
+defender_pos = 'textMatches=捍卫者试炼'
 marksman_pos = 'textMatches=射手试炼'
 support_pos = 'textMatches=增援者试炼'
 mage_pos = 'textMatches=法师试炼'
@@ -35,6 +35,7 @@ bihna_pos = 'textMatches=比娜'
 chester_pos = 'textMatches=切斯特'
 guule_pos = 'textMatches=戈乌拉'
 papillaire_pos = 'textMatches=巴比艾尔'
+energy_pos = golden_key_count_pos
 
 # 公共按钮：返回控件文本、返回上级、进入按钮、进入战斗、薇薇安、英雄名称、上场英雄、战斗按钮、点击任意
 page_title_pos = 'CloseButton'
@@ -47,6 +48,8 @@ close_hero_page_pos = 'CloseBtn'
 play_hero_pos = 'Frame_formation_default'
 fighting_pos = 'ButtonStart'
 continue_pos = 'textMatches=点击任意处继续'
+
+
 
 
 

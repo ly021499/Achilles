@@ -2,7 +2,7 @@
 # @Author : LOUIE
 # @Desc   : 每日日常
 from utils import logwrap
-from case.position import login_pos
+from case.position import reward_pos
 from case.lib.page import Page
 
 

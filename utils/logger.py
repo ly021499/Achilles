@@ -65,10 +65,6 @@ def logstep(msg: str):
     log.debug(f'📣 📣 📣 ：{msg}')
 
 
-def logstep(msg: str):
-    log.debug(f'📣 📣 📣 ：{msg}')
-
-
 def logwrap(msg: str = None) -> Callable:
     """
     函数日志装饰器

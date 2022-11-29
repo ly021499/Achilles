@@ -1,22 +1,11 @@
 # @Time   : 2022/11/10 15:17
 # @Author : LOUIE
-# @Desc   : 登录
+# @Desc   : 副本
 from utils import logwrap
-from case.position import login_pos
 from case.lib.page import Page
 
 
-pre_env_pos = 'Env 2>Checkbox'
-confirm_btn_pos = "text=确定"
-enter_game_pos = "com.sangoku2.android:id/hrg_accountmenu_btn_enter"
-close_note_pos = 'Button_Close01n'
-click_enter_pos = "Btn_Enter"
-close_reward_pos = 'Bg_Front>Close'
-close_hero_note = 'Button_Close'
-close_net_error = 'BtnConfirm'
-
-
-class LoginPage(Page):
+class InstancePage(Page):
 
     @logwrap('选择环境')
     def choose_env(self):
@@ -56,18 +45,6 @@ class LoginPage(Page):
         if self.exists(close_net_error):
             self.click(close_net_error)
         self.sleep(8)
-
-    def transaction(self):
-        self.choose_env()
-        self.click_confirm()
-        self.enter_game()
-        self.close_note()
-        self.click_enter()
-        self.close_net_error()
-
-    def close_note(self):
-        self.close_reward_note()
-        self.close_hero_note()
 
 
 

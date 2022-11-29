@@ -265,7 +265,7 @@ def buy_gift_bag(pid: int, score: int):
 
 if __name__ == '__main__':
     play_id = 55561040
-    v = add_value(play_id, 10021, -99)
+    v = add_value(play_id, 10011, -6067)
     print(v)
 
 

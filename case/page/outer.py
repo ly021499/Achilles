@@ -1,12 +1,14 @@
+# -*- coding: utf-8 -*-
 # @Time   : 2022/11/22 17:00
 # @Author : LOUIE
 # @Desc   : 飞空艇外围
+
 import time
 
 from utils import logwrap, logstep
 from case.position import outer_pos, profile_pos
 from case.lib.page import Page
-from case.lib.utils import commands as cmd
+from case.lib.utils import commands as cmd, assertion
 
 """
 前置操作：
@@ -101,6 +103,11 @@ class OuterPage(Page):
         self.the_shadow_keep()
         self._play_trans(outer_pos.mage_pos, outer_pos.defender_pos)
 
+    def get_current_energy_value(self):
+        text = self.get_text(outer_pos.energy_pos)
+        current_energy_value = text.split('/')[0]
+        return int(current_energy_value)
+
     def _is_have_golden_key(self, pid: int = 55561040):
         """判断能否挑战当前副本，例如：是否含有挑战次数"""
         text = self.get_text(outer_pos.golden_key_count_pos)
@@ -108,6 +115,7 @@ class OuterPage(Page):
         if int(text) < 1:
             cmd.add_value(pid, 10021, 99)
             logstep("增加金币钥匙数量: 99")
+        self.golden_key = self.get_text(outer_pos.golden_key_count_pos)
 
     def _find(self):
         if self.exists(outer_pos.the_shadow_keep_pos):
@@ -121,6 +129,7 @@ class OuterPage(Page):
                 self.click(challenge)
             else:
                 logstep('副本不存在，请检查错误')
+                raise ModuleNotFoundError('副本不存在，请检查错误')
 
             # 判断是否是虚影殿堂副本，需要判断哪些副本可以进入，否则跳过
             if self.exists(outer_pos.the_shadow_keep_pos):
@@ -155,14 +164,90 @@ class OuterPage(Page):
                 continue
             return
 
+    def verify_energy_consumption_of_lost_sector(self):
+        """
+        验证<茫然遗迹>的能量消耗值：10
+        """
+        self.lost_sector()
+        start_energy = self.get_current_energy_value()
+        self._play_trans(outer_pos.bihna_pos)
+        end_energy = self.get_current_energy_value()
+        assertion.assert_equal(start_energy - end_energy, 10)
+
+    def verify_energy_consumption_of_the_shadow_keep(self):
+        """
+        验证<虚影殿堂>的能量消耗值：10
+        """
+        self.the_shadow_keep()
+        start_energy = self.get_current_energy_value()
+        self._play_trans(outer_pos.fighter_pos)
+        end_energy = self.get_current_energy_value()
+        assertion.assert_equal(start_energy - end_energy, 10)
+
+    def verify_energy_consumption_of_potion(self):
+        """
+        验证<贪婪禁地-药水研究所>的能量消耗值：10
+        """
+        self.forbidden_sector()
+        start_energy = self.get_current_energy_value()
+        self._play_trans(outer_pos.potion_pos)
+        end_energy = self.get_current_energy_value()
+        assertion.assert_equal(start_energy - end_energy, 10)
+
+    def verify_energy_consumption_of_the_gold(self):
+        """
+        验证<贪婪禁地-黄金谷>的能量消耗值：1 key
+        """
+        self.forbidden_sector()
+        self.click(outer_pos.the_gold_pos)
+        logstep(f"选择关卡：{str(outer_pos.the_gold_pos).split('=')[1]} ...")
+        self.enter_btn()
+
+        # 判断是否有金币钥匙，如果没有则增加
+        if self.exists(outer_pos.the_gold_pos):
+            self._is_have_golden_key()
+
+        start_energy = self.get_current_energy_value()
+
+        # outer.choose_superheroes()
+
+        self.into_fight()
+        self.fighting_and_back_trans()
+
+        end_energy = self.get_current_energy_value()
+        assertion.assert_equal(start_energy - end_energy, 1)
+
+        if self.exists(outer_pos.into_fight_pos):
+            self.close_page()
+
+        self.close_page()
+        logstep('副本闯关完成 ...')
+
+    def verify_energy_consumption_of_elemental_valley(self):
+        """
+        验证<元素峡谷>的能量消耗值：15
+        """
+        self.elemental_valley()
+        start_energy = self.get_current_energy_value()
+        self._play_trans(outer_pos.frost_lord_pos)
+        end_energy = self.get_current_energy_value()
+        assertion.assert_equal(start_energy - end_energy, 15)
+
+    def verify_energy_consumption_of_sky_city(self):
+        """
+        验证<苍穹之城>的能量消耗值是否正确
+        """
+        raise NotImplementedError
+
 
 if __name__ == '__main__':
     from case.lib.driver.unity_window import get_unity_window_poco_instance
     outer = OuterPage(get_unity_window_poco_instance())
-    # outer.elemental_valley_trans()
-    # outer.forbidden_sector_trans()
-    # outer.lost_sector_trans()
-    # outer.the_shadow_keep_trans()
+    outer.verify_energy_consumption_of_lost_sector()
+    outer.verify_energy_consumption_of_the_shadow_keep()
+    outer.verify_energy_consumption_of_potion()
+    outer.verify_energy_consumption_of_the_gold()
+    outer.verify_energy_consumption_of_elemental_valley()
 
 
 

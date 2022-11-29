@@ -2,6 +2,7 @@
 # @Author : LOUIE
 # @Desc   : 断言方法
 from utils.exception import InvalidParamError
+from utils.logger import logstep
 import re
 
 
@@ -26,6 +27,10 @@ def __raise_exception(msg=None):
     raise AssertionError(msg)
 
 
+def __console_log(assert_type, msg):
+    logstep(f'{assert_type}: {msg}')
+
+
 def assert_equal(first, second, msg=None):
     """
 
@@ -34,11 +39,11 @@ def assert_equal(first, second, msg=None):
     :param msg: 消息
     :return:
     """
-    if not (first and second):
-        raise InvalidParamError(f"Invalid parameter .. {(first, second)}")
 
     if not first == second:
         __raise_exception(__format_message(msg, f'{first} == {second}'))
+    else:
+        __console_log('Assert Equal', __format_message(msg, f'{first} == {second}'))
 
 
 def assert_not_equal(first, second, msg=None):
@@ -50,11 +55,10 @@ def assert_not_equal(first, second, msg=None):
     :return:
     """
 
-    if not (first and second):
-        raise InvalidParamError(f"Invalid parameter .. {(first, second)}")
-
     if not first != second:
         __raise_exception(__format_message(msg, f'{first} != {second}'))
+    else:
+        __console_log('Assert Not Equal', __format_message(msg, f'{first} != {second}'))
 
 
 def assert_in(member, container, msg=None):
@@ -65,9 +69,12 @@ def assert_in(member, container, msg=None):
     :param msg: 消息
     :return:
     """
+    standard_msg = f'{member} not found in {container}'
+
     if member not in container:
-        standard_msg = f'{member} not found in {container}'
         __raise_exception(__format_message(msg, standard_msg))
+    else:
+        __console_log('Assert In', __format_message(msg, standard_msg))
 
 
 def assert_not_in(member, container, msg=None):
@@ -78,9 +85,11 @@ def assert_not_in(member, container, msg=None):
     :param msg: 消息
     :return:
     """
+    standard_msg = f'{member} unexpectedly found in {container}'
     if member in container:
-        standard_msg = f'{member} unexpectedly found in {container}'
         __raise_exception(__format_message(msg, standard_msg))
+    else:
+        __console_log('Assert Not In', __format_message(msg, standard_msg))
 
 
 def assert_is_none(obj, msg=None):
@@ -90,9 +99,11 @@ def assert_is_none(obj, msg=None):
     :param msg: 消息
     :return:
     """
+    standard_msg = f'{obj} is not None'
     if obj is not None:
-        standard_msg = f'{obj} is not None'
         __raise_exception(__format_message(msg, standard_msg))
+    else:
+        __console_log('Assert Is None', __format_message(msg, standard_msg))
 
 
 def assert_is_not_none(obj, msg=None):
@@ -102,9 +113,11 @@ def assert_is_not_none(obj, msg=None):
     :param msg: 消息
     :return:
     """
+    standard_msg = 'unexpectedly None'
     if obj is None:
-        standard_msg = 'unexpectedly None'
         __raise_exception(__format_message(msg, standard_msg))
+    else:
+        __console_log('Assert Is Not None', __format_message(msg, standard_msg))
 
 
 def assert_regex(text, expected_regex, msg=None):
@@ -120,10 +133,12 @@ def assert_regex(text, expected_regex, msg=None):
         assert expected_regex, "expected_regex must not be empty."
         expected_regex = re.compile(expected_regex)
 
+    standard_msg = f"Regex didn't match: {expected_regex.pattern} not found in {text}"
     if not expected_regex.search(text):
-        standard_msg = f"Regex didn't match: {expected_regex.pattern} not found in {text}"
         __raise_exception(__format_message(msg, standard_msg))
+    else:
+        __console_log('Assert Regex', __format_message(msg, standard_msg))
 
 
 if __name__ == '__main__':
-    assert_equal(1, 2)
+    assert_equal(1, 1)

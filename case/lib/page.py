@@ -9,13 +9,14 @@ import re
 import time
 
 
+identifier: str = '>'
+index_compile = re.compile(r'(?<=\[)\d+?(?=\])')
+
+
 class Page(object):
 
     def __init__(self, poco_instance):
         self.poco = poco_instance or get_android_poco_instance()
-        self.identifier: str = '>'
-        self.index_compile = re.compile(r'(?<=\[)\d+?(?=\])')
-        self.chinese_compile = re.compile(r'^(?![a-z|A-Z|0-9])+?')
 
     def touch_optional_position(self):
         logstep("点击任意位置继续 ...")
@@ -83,7 +84,7 @@ class Page(object):
         :param pos:
         :return:
         """
-        s = self.index_compile.search(pos)
+        s = index_compile.search(pos)
         if s:
             index = s.group()
             rep_pos = pos.replace(f"[{index}]", "")
@@ -110,23 +111,20 @@ class Page(object):
             attr, pos = pos.split('=')
             return self.poco(**{attr: pos})
 
-        if self.identifier not in pos:
+        if identifier not in pos:
 
-            if self.index_compile.search(pos):
+            if index_compile.search(pos):
                 rep_pos, index = self.__regex_pos_index(pos)
                 print(f"index pos: self.poco('{rep_pos}')[{index}]")
                 return self.poco(rep_pos)[index]
 
-            print(f"raw pos: self.poco('{pos}')")
             return self.poco(pos)
 
-        value_list = pos.split(self.identifier)
+        value_list = pos.split(identifier)
         pos_list = [self.__regex_pos_index(value) for value in value_list]
 
         p0, n0 = pos_list[0]
         p1, n1 = pos_list[1]
-
-        print(f"split pos: self.poco('{p0}')[{n0}].child('{p1}')[{n1}]")
 
         return self.poco(p0)[n0].child(p1)[n1]
 
