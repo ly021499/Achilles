@@ -5,7 +5,6 @@
 from utils.logger import log
 import setting
 import os
-import sys
 import pytest
 import shutil
 

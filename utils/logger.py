@@ -65,6 +65,14 @@ def logstep(msg: str):
     log.debug(f'📣 📣 📣 ：{msg}')
 
 
+def loginfo(msg: str):
+    log.debug(f'🌳 🌳 🌳 ：{msg}')
+
+
+def logerror(msg: str):
+    log.debug(f'😈 😈 😈 ：{msg}')
+
+
 def logwrap(msg: str = None) -> Callable:
     """
     函数日志装饰器
@@ -118,3 +126,4 @@ if __name__ == '__main__':
         return object
 
     login('louie', '123')
+    logerror(1111)

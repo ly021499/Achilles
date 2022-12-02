@@ -20,7 +20,7 @@ class Page(object):
 
     def touch_optional_position(self):
         logstep("点击任意位置继续 ...")
-        return self.poco.click([0.2, 0.8])
+        return self.poco.click([0.2, 0.82])
 
     def click(self, pos: str, focus=None, sleep_interval: float = None):
         try:

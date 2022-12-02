@@ -4,15 +4,15 @@
 
 import requests
 import setting
+from utils import logstep
 
 
-def __execute_command(cmd):
+def _execute_command(cmd):
     """
     执行GM命令，执行前必须配置好GM_COOKIE
     :param cmd:
     :return:
     """
-    url = setting.GM_URL
     headers = {
         "Content-Type": "application/x-www-form-urlencoded",
         "Cookie": setting.GM_COOKIE
@@ -20,19 +20,20 @@ def __execute_command(cmd):
     data = {
         "id": 0,
         "server_type": "test",
-        "server_id": 80002990,
+        "server_id": setting.GM_SERVER_ID,
         "exec_type": 1,
-        "platform_id": 80,
+        "platform_id": setting.GM_PLATFORM_ID,
         "game_id": 9,
         "action": "save",
         "command": cmd,
         "csv_file": ""
     }
-    res = requests.post(url=url, data=data, headers=headers)
+    res = requests.post(url=setting.GM_URL, data=data, headers=headers)
     res.raise_for_status()
     res = res.json()
     if res['code'] != 0:
         raise requests.exceptions.HTTPError(res['msg'])
+    logstep(f'Run the GM command : {cmd}')
     return res
 
 
@@ -43,7 +44,7 @@ def clear_hero(pid: int):
     :return:
     """
     cmd = f'clearHero {pid}'
-    return __execute_command(cmd)
+    return _execute_command(cmd)
 
 
 def clear_item(pid: int):
@@ -53,7 +54,7 @@ def clear_item(pid: int):
     :return:
     """
     cmd = f'clearItem {pid}'
-    return __execute_command(cmd)
+    return _execute_command(cmd)
 
 
 def complete_activity(pid: int, activity_id: int, reward_id: int, count: int):
@@ -67,7 +68,7 @@ def complete_activity(pid: int, activity_id: int, reward_id: int, count: int):
     """
 
     cmd = f'addActivityProgress {pid} {activity_id} {reward_id} {count}'
-    return __execute_command(cmd)
+    return _execute_command(cmd)
 
 
 def complete_target_task(pid: int, task_id: int, count: int):
@@ -80,19 +81,20 @@ def complete_target_task(pid: int, task_id: int, count: int):
     """
 
     cmd = f'addTaskProgress {pid} {task_id} {count}'
-    return __execute_command(cmd)
+    return _execute_command(cmd)
 
 
-def set_main_task(pid: int, plot_id: int):
+def set_main_task(pid: int, chapter: int, plot_id: int):
     """
     重置主线剧情到指定的剧情
     :param pid: 玩家编号
+    :param chapter: 章节ID
     :param plot_id: 剧情ID
     :return:
     """
 
-    cmd = f'setMainTask {pid} {plot_id}'
-    return __execute_command(cmd)
+    cmd = f'setMainTask {pid} {chapter} {plot_id}'
+    return _execute_command(cmd)
 
 
 def set_dungeon_progress(pid: int, level_type: int, chapter_index: int, level_count: int):
@@ -109,7 +111,7 @@ def set_dungeon_progress(pid: int, level_type: int, chapter_index: int, level_co
     if level_type not in [1, 2]:
         return
     cmd = f'setDungeonProgress {pid} {level_type} {chapter_index} {level_count}'
-    return __execute_command(cmd)
+    return _execute_command(cmd)
 
 
 def set_hero_star(pid: int, count: int):
@@ -121,7 +123,7 @@ def set_hero_star(pid: int, count: int):
     """
 
     cmd = f'batchSetHeroAttr {pid} 505 {count}'
-    return __execute_command(cmd)
+    return _execute_command(cmd)
 
 
 def set_hero_up(pid: int, count: int):
@@ -133,7 +135,7 @@ def set_hero_up(pid: int, count: int):
     """
 
     cmd = f'batchSetHeroAttr {pid} 502 {count}'
-    return __execute_command(cmd)
+    return _execute_command(cmd)
 
 
 def set_hero_level(pid: int, count: int):
@@ -145,18 +147,18 @@ def set_hero_level(pid: int, count: int):
     """
 
     cmd = f'batchSetHeroAttr {pid} 501 {count}'
-    return __execute_command(cmd)
+    return _execute_command(cmd)
 
 
-def clear_player(pid: int):
+def clear_player(pid):
     """
     清除账号信息
     :param pid: 玩家编号
     :return:
     """
 
-    cmd = f'batchSetHeroAttr {pid}'
-    return __execute_command(cmd)
+    cmd = f'clearPlayer {pid}'
+    return _execute_command(cmd)
 
 
 def set_server_time(pid: int, time_fmt: str):
@@ -172,7 +174,7 @@ def set_server_time(pid: int, time_fmt: str):
         pass
     year, month, day, hour, minute, second = time_fmt
     cmd = f'setServerTime {pid} {year} {month} {day} {hour} {minute} {second}'
-    return __execute_command(cmd)
+    return _execute_command(cmd)
 
 
 def add_value(pid: int, res_type: int, count: int):
@@ -185,7 +187,7 @@ def add_value(pid: int, res_type: int, count: int):
     """
 
     cmd = f'addValue {pid} 1009 {res_type} {count}'
-    return __execute_command(cmd)
+    return _execute_command(cmd)
 
 
 def add_res(pid: int, res_type: int, point: int):
@@ -198,7 +200,7 @@ def add_res(pid: int, res_type: int, point: int):
     """
 
     cmd = f'addRes {pid} {res_type} {point}'
-    return __execute_command(cmd)
+    return _execute_command(cmd)
 
 
 def add_hero(pid: int, hero_type: int = 199999, count: int = 1):
@@ -211,7 +213,7 @@ def add_hero(pid: int, hero_type: int = 199999, count: int = 1):
     """
 
     cmd = f'addHero {pid} {hero_type} {count}'
-    return __execute_command(cmd)
+    return _execute_command(cmd)
 
 
 def add_item(pid: int, res_type: int, point: int):
@@ -224,7 +226,7 @@ def add_item(pid: int, res_type: int, point: int):
     """
 
     cmd = f'addItem {pid} {res_type} {point}'
-    return __execute_command(cmd)
+    return _execute_command(cmd)
 
 
 def refresh_opponent(pid: int, opponent_id: int):
@@ -236,7 +238,7 @@ def refresh_opponent(pid: int, opponent_id: int):
     """
 
     cmd = f'refreshOpponent {pid} {opponent_id}'
-    return __execute_command(cmd)
+    return _execute_command(cmd)
 
 
 def set_arena_score(pid: int, score: int):
@@ -248,7 +250,7 @@ def set_arena_score(pid: int, score: int):
     """
 
     cmd = f'setArenaScore {pid} {score}'
-    return __execute_command(cmd)
+    return _execute_command(cmd)
 
 
 def buy_gift_bag(pid: int, score: int):
@@ -260,12 +262,84 @@ def buy_gift_bag(pid: int, score: int):
     """
 
     cmd = f'buyGiftBag {pid} {score}'
-    return __execute_command(cmd)
+    return _execute_command(cmd)
+
+
+def run_batch_cmd(pid, cmd):
+    """
+    通关主线等等...
+    :param pid: 玩家编号
+    :param cmd: 命令: 666666 777777 888888 999999
+    :return:
+    """
+
+    cmd = f'runBatchCmd {pid} {cmd}'
+    return _execute_command(cmd)
+
+
+class Player:
+
+    def __init__(self, pid):
+        self.pid = pid
+
+    @staticmethod
+    def execute_command(cmd):
+        """添加能量"""
+        return _execute_command(cmd)
+
+    def add_hero_level(self, count=100000):
+        """提升人物等级"""
+        return add_res(self.pid, 101, count)
+
+    def add_energy(self, count=1000):
+        """添加能量"""
+        return add_value(self.pid, 10011, count)
+
+    def add_coins(self, count=5000):
+        """添加金币"""
+        return add_value(self.pid, 10011, count)
+
+    def add_jewel(self, count=5000):
+        """添加钻石"""
+        return add_value(self.pid, 10011, count)
+
+    def add_hero(self, count=1):
+        """添加英雄"""
+        return add_hero(self.pid, 199999, count)
+
+    def clear_player(self):
+        """添加英雄"""
+        return clear_player(self.pid)
+
+    def clear_item(self):
+        """清理道具"""
+        return clear_item(self.pid)
+
+    def run_batch_cmd(self, cmd=666666):
+        """通过主线"""
+        return run_batch_cmd(self.pid, cmd)
+
+    def set_main_task(self, chapter: int, plot_id: int):
+        """通过主线任务"""
+        return set_main_task(self.pid, chapter, plot_id)
+
+    def set_dungeon_progress(self, level_type: int, chapter_index: int, level_count: int):
+        """
+        重置关卡到指定关卡(用完gm命令需要重新登录)
+        """
+        return set_dungeon_progress(self.pid, level_type, chapter_index, level_count)
 
 
 if __name__ == '__main__':
-    play_id = 55561040
-    v = add_value(play_id, 10011, -6067)
-    print(v)
-
+    player_id = 55679568
+    player1 = Player(pid=player_id)
+    # player1.clear_player()
+    # player1.add_energy()
+    player1.add_hero_level(-500000)
+    # player1.run_batch_cmd()
+    # 1. 通关所有的关卡 2. 添加超级英雄 3. 清理背包
+    # player1.add_hero()
+    # player1.set_main_task(11012, 14120460)
+    # player1.set_dungeon_progress(1, 11, 18)
+    # player1.clear_item()
 

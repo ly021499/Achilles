@@ -4,6 +4,7 @@
 
 from airtest.core import api as air
 from utils.logger import log, logwrap
+import time
 
 
 def init_device(platform=None, uuid=None, **kwargs):
@@ -16,12 +17,12 @@ def init_device(platform=None, uuid=None, **kwargs):
 
 
 def connect_device(uri):
-    log.info('ready to connect device host ...')
+    log.info('🍇 🍈 🍉 ready to connect device host ...')
     try:
         air.connect_device(uri)
-        log.info(f'connection device succeeded... host: {uri}')
+        log.info(f'🍉 🍊 🍋 connect device succeeded... host: {uri}')
     except ConnectionError as e:
-        log.info(f'connecting device failed... host: {uri}')
+        log.error(f'connect device failed... host: {uri}')
         raise ConnectionError from e
 
 
@@ -159,7 +160,6 @@ def text(value, enter=True, **kwargs):
 
 
 def sleep(secs=1.0):
-    import time
     time.sleep(secs)
     log.info(f'time sleep {secs} seconds')
 

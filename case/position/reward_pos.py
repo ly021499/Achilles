@@ -8,7 +8,6 @@ reward_name_pos = 'TextName'
 lost_reward_name_pos = 'Name'
 battle_reward_pos = "ItemComponentMedium_"
 data_btn_pos = 'DataBtn'
-lost_level_pos = "20"
 level_name_pos = "LevelName"
 power_pos = 'Power'
 

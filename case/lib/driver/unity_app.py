@@ -10,6 +10,12 @@ from unittest import TestCase
 from core.air import connect_device
 from core.poco2 import Poco2
 
+import logging
+
+# 设置airtest日志等级，debug会输出很多日志
+air_logger = logging.getLogger("airtest")
+air_logger.setLevel(logging.ERROR)
+
 
 class Unity3dPoco(UnityPoco, Poco2):
 
