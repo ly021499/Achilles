@@ -1,6 +1,6 @@
 # @Time   : 2022/11/14 15:47
 # @Author : LOUIE
-# @Desc   : to do something ...
+# @Desc   : 基于poco对象、airtest二次封装的操作方法
 
 from utils import log, logstep, NoSuchNodeException
 from poco.exceptions import PocoNoSuchNodeException, PocoTargetRemovedException

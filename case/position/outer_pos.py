@@ -53,6 +53,10 @@ play_hero_pos = 'Frame_formation_default'
 fighting_pos = 'ButtonStart'
 continue_pos = 'nameMatches=TapClickTip'
 energy_pos = golden_key_count_pos
+reward_icon_pos = "itemRoot(Clone)"
+reward_name_pos = 'TextName'
+lost_reward_name_pos = 'Name'
+battle_reward_pos = "ItemComponentMedium_"
 
 
 

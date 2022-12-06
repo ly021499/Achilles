@@ -17,10 +17,10 @@ def init_device(platform=None, uuid=None, **kwargs):
 
 
 def connect_device(uri):
-    log.info('🍇 🍈 🍉 ready to connect device host ...')
+    log.info('🍇 🍉 ready to connect device host ...')
     try:
         air.connect_device(uri)
-        log.info(f'🍉 🍊 🍋 connect device succeeded... host: {uri}')
+        log.info(f'🍊 🍋 connect device succeeded... host: {uri}')
     except ConnectionError as e:
         log.error(f'connect device failed... host: {uri}')
         raise ConnectionError from e

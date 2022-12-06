@@ -66,6 +66,33 @@ class OuterPage(Page):
             self.click(outer_pos.close_hero_page_pos)
             self.drag_to(outer_pos.wwa_hero_pos, outer_pos.play_hero_pos)
 
+    @logwrap('获取掉落奖励预览')
+    def get_reward_preview(self):
+        poss = self.poco(outer_pos.reward_icon_pos)
+        reward_preview_list = []
+        for pos in poss:
+            pos.click()
+            reward_preview_list.append(self.get_text(outer_pos.reward_name_pos))
+            self.touch_optional_position()
+        return reward_preview_list
+
+    @logwrap('战斗已结束，获取战斗奖励')
+    def get_battle_reward(self):
+        poss = self.poco(nameMatches=outer_pos.battle_reward_pos)
+        battle_reward_list = []
+        for pos in poss:
+            pos.click()
+
+            reward_name = None
+            if self.exists(outer_pos.reward_name_pos):
+                reward_name = self.get_text(outer_pos.reward_name_pos)
+            elif self.exists(outer_pos.lost_reward_name_pos):
+                reward_name = self.get_text(outer_pos.lost_reward_name_pos)
+            if reward_name not in battle_reward_list:
+                battle_reward_list.append(reward_name)
+                print(reward_name)
+        return battle_reward_list
+
     @logwrap('战斗一触即发...')
     def fighting(self):
         self.click(outer_pos.fighting_pos)
@@ -75,9 +102,15 @@ class OuterPage(Page):
         logstep('战斗开始，请耐心等待战斗结束 ...')
         self.wait_for_appearance(outer_pos.continue_pos, timeout=60)
         logstep('战斗结束了，获得胜利 ...')
+        self.sleep(0.68)
+        self.click(outer_pos.continue_pos)
+
+        battle_reward_list = self.get_battle_reward()
+
         while self.exists(outer_pos.continue_pos):
             self.click(outer_pos.continue_pos)
             logstep('点击任意位置继续 ...')
+        return battle_reward_list
 
     @logwrap('刷副本：茫然遗迹')
     def lost_sector_trans(self):

@@ -1,6 +1,6 @@
 # @Time   : 2022/11/11 10:37
 # @Author : LOUIE
-# @Desc   : GM命令调用
+# @Desc   : GM命令调用工具类
 
 import requests
 import setting

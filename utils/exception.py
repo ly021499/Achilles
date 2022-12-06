@@ -1,3 +1,6 @@
+# @Time   : 2022/11/2 21:05
+# @Author : LOUIE
+# @Desc   : 自定义异常类
 
 class LRunException(Exception):
 

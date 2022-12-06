@@ -3,7 +3,7 @@
 # @Desc   : android 应用 diver
 
 from poco.drivers.android.uiautomation import AndroidUiautomationPoco
-from airtest.core.api import device as current_device
+
 from setting import ANDROID_DEVICE_HOST
 from unittest import TestCase
 from core.air import connect_device
@@ -15,9 +15,8 @@ class AndroidPoco(AndroidUiautomationPoco, Poco2):
 
 
 def get_android_poco_instance():
-    if not current_device():  # 判断 device 是否为空，如果为空则连接默认地址
-        device_host = ANDROID_DEVICE_HOST
-        connect_device(device_host)
+    device_host = ANDROID_DEVICE_HOST
+    connect_device(device_host)
 
     return AndroidPoco(screenshot_each_action=False)  # 实例化poco对象
 
