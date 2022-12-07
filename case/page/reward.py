@@ -2,7 +2,7 @@
 # @Author : LOUIE
 # @Desc   : 掉落奖励
 import re
-from utils import logwrap, logerror, logstep
+from utils import logwrap, logstep
 from utils.plugins.parser import get_reward_config, get_target_reward_data
 from case.position import reward_pos, outer_pos
 from case.lib.page import Page
@@ -30,6 +30,7 @@ class RewardPage(Page):
         self.outer_page.into_fight()
         return self.outer_page.fighting_and_back_trans()
 
+    @logwrap('升序执行 当前副本下的所有关卡')
     def execute_instance_in_asc(self, max_level_pos):
         """
         升序执行 当前副本下的所有关卡
@@ -69,15 +70,15 @@ class RewardPage(Page):
             self.battle()
             current_level += 1
 
-    def execute_instance_in_desc(self, start_level: int, max_level: int, instance: str):
+    @logwrap('降序执行 当前副本下的所有关卡')
+    def execute_instance_in_desc(self, max_level: int, instance: str):
         """
         降序执行 当前副本下的所有关卡
-        :param start_level: 起始关卡
         :param max_level: 当前副本最大关卡数
         :param instance: 副本名称
         :return:
         """
-        start_level = start_level or 1
+        start_level = 8
         while start_level <= int(max_level):
             self.sleep(0.88)
             poco_instance = self.poco(textMatches=str(f'{start_level}'))
@@ -87,10 +88,6 @@ class RewardPage(Page):
 
             # 判断 准备通关关卡是否与选中关卡一致
             level_name = self.get_text(reward_pos.level_name_pos).split('-')[1]
-            level_number = re.search(r'\d+\.?\d*', level_name).group()
-            # if int(current_level) != int(level_number):
-            #     logerror(f'当前选中关卡：{current_level} 与 关卡名称：{level_name} 不匹配.')
-            #     raise NameError(f'当前选中关卡：{current_level}， 关卡名称：{level_name}')
 
             logstep(f'当前选中关卡：{start_level}， 关卡名称：{level_name}')
             battle_reward_list = self.battle()
@@ -102,30 +99,31 @@ class RewardPage(Page):
 
             # 获取表格中的数据
             reward_config = get_reward_config(instance)
-            print(level_name)
             preview_reward_list = get_target_reward_data(reward_config, level_name)
-            preview_reward_list.extend(['金币', '体力'])
+            surprise_drop_item = preview_reward_list[-1]
+            preview_reward_list.extend(['金币', '体力', '钻石', '普通核铁'])
 
-            print(preview_reward_list)
-
-            for reward in battle_reward_list:
-                assertion.assert_in(reward, preview_reward_list)
-
+            for reward_ in battle_reward_list:
+                if reward_[0] == '常规':
+                    assertion.assert_in(reward_[1], preview_reward_list)
+                elif reward_[0] == '首次':
+                    assertion.assert_in(reward_[1], surprise_drop_item)
+                else:
+                    logstep(f'惊喜掉落物品：{reward_}')
             start_level += 1
 
-    def bina(self, instance_type, level_pos, *instances):
+    def execute_instance(self, instance_type, level_pos, instance):
         self.outer_page.retry(instance_type)
         sheet_name = instance_type.split('=')[1]
-        for instance in instances:
-            self.click(instance)
-            self.outer_page.enter_btn()
-            self.execute_instance_in_desc(level_pos, sheet_name)
+        self.click(instance)
+        self.outer_page.enter_btn()
+        self.execute_instance_in_desc(level_pos, sheet_name)
 
 
 if __name__ == '__main__':
     from case.lib.driver.unity_app import get_unity3d_poco_instance
     reward = RewardPage(get_unity3d_poco_instance())
-    reward.bina(outer_pos.lost_sector_pos, outer_pos.elemental_valley_level_pos, outer_pos.guule_pos)
+    reward.execute_instance(outer_pos.lost_sector_pos, outer_pos.lost_sector_level_pos, outer_pos.papillaire_pos)
     # reward.run_from_top_to_bottom(12)
     # reward.get_battle_reward()
 

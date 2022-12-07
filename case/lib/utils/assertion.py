@@ -153,7 +153,7 @@ def assert_less_equal(a, b, msg=None):
     :param msg: 消息
     :return:
     """
-    if not a <= b:
+    if not 0 < a <= b:
         standard_msg = f'{a} not less than or equal to {b}'
         __raise_exception(__format_message(msg, standard_msg))
     else:

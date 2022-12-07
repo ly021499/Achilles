@@ -1,4 +1,5 @@
 from .logger import log, logwrap, logcase, logstep, logerror
+from .excel_tool import ExcelTool
 from .wechat import wechat
 from .mail import EMail
 from . import factory

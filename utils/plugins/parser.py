@@ -9,128 +9,140 @@ import os
 import setting
 
 
-target_drop_bag_path = os.path.join(setting.RES_DIR, 'excel/mapping.xlsx')
-drop_bag_path = 'D:\MainTrunk\Excels\Dev\CfgDropBag.xlsx'
-equipment_path = 'D:\MainTrunk\Excels\Dev\CfgEquipment.xlsx'
-language_path = 'D:\MainTrunk\Excels\Dev\CfgLanguage.xlsx'
+target_drop_bag_path = os.path.join(setting.RES_DIR, 'excel\\mapping.xlsx')
+drop_bag_path = 'D:\\MainTrunk\\Excels\\Dev\\CfgDropBag.xlsx'
+equipment_path = 'D:\\MainTrunk\\Excels\\Dev\\CfgEquipment.xlsx'
+language_path = 'D:\\MainTrunk\\Excels\\Dev\\CfgLanguage.xlsx'
+item_path = 'D:\\MainTrunk\\Excels\\Dev\\CfgItem.xlsx'
 
 
 def parser_string(string: str):
     """
     正则匹配item的id
     """
-    items = re.findall('\{(\d+?)\,', string)
+    items = re.findall(r'\{(\d+?)\,', string)
     return items
+
+
+def get_workbook_instance(excel_path):
+    """
+    获得EXCEL workbook操作对象
+    """
+    workbook = load_workbook(excel_path, data_only=True)
+    return workbook
 
 
 def get_worksheet_instance(excel_path, sheet_name):
     """
     获得EXCEL表中的sheet操作对象
     """
-    workbook = load_workbook(excel_path, data_only=True)
+    workbook = get_workbook_instance(excel_path)
     worksheet = workbook[sheet_name]
-    return worksheet, workbook
+    return worksheet
 
 
-def get_drop_item():
+def get_target_sheet_data(excel_path, sheet_name, idx, column_key, column_value, is_parser=True):
+    """
+    公共方法
+    获取指定excel中的指定sheet表中的指定列的数据
+    """
+    ws = get_worksheet_instance(excel_path, sheet_name)
+    ws_rows_max = ws.max_row
+    idx = idx
+    items = {}
+    while idx <= ws_rows_max:
+        item_key = ws.cell(row=idx, column=column_key).value
+        item_value = ws.cell(row=idx, column=column_value).value
+        if is_parser:
+            items.update({item_key: parser_string(item_value)})
+        else:
+            items.update({item_key: item_value})
+        idx += 1
+    return items
+
+
+def get_first_drop_items():
+    """
+    获取 CfgItem 工作簿中的 CfgItem 中的 drop_item_id 和 drop_item数据
+    """
+    return get_target_sheet_data(item_path, 'CfgItem', 4, 2, 4, is_parser=False)
+
+
+def get_drop_items():
     """
     获取 CfgDropBag 工作簿中的 掉落母表 中的 drop_item_id 和 drop_item数据
     """
-    ws, wb = get_worksheet_instance(drop_bag_path, '掉落母表')
-    ws_rows_max = ws.max_row
-    idx = 2
-    drop_item = {}
-    while idx <= ws_rows_max:
-        drop_item_name = ws.cell(row=idx, column=2).value
-        drop_item = ws.cell(row=idx, column=7).value
-
-        drop_item.update({drop_item_name: parser_string(drop_item)})
-        idx += 1
-    return drop_item
+    return get_target_sheet_data(drop_bag_path, '掉落母表', 2, 2, 7)
 
 
 def get_target_regular_drop_item(sheet_name):
     """
-    获取 mapping 表中 对应sheet_name 我想要的数据名称
+    获取常规掉落物品items
     """
-    ws, wb = get_worksheet_instance(target_drop_bag_path, sheet_name)
-    ws_rows_max = ws.max_row
-    idx = 2
-    target_regular_drop_item = {}
-    target_first_drop_item = {}
+    return get_target_sheet_data(target_drop_bag_path, sheet_name, 2, 1, 5)
 
-    while idx <= ws_rows_max:
-        drop_item_name = ws.cell(row=idx, column=1).value
-        regular_drop_item = ws.cell(row=idx, column=5).value
-        first_drop_item = ws.cell(row=idx, column=8).value
 
-        target_regular_drop_item.update({drop_item_name: parser_string(regular_drop_item)})
-        target_first_drop_item.update({drop_item_name: parser_string(first_drop_item)})
-
-        idx += 1
-    return target_regular_drop_item, target_first_drop_item
+def get_target_first_drop_item(sheet_name):
+    """
+    获取首通掉落物品items
+    """
+    return get_target_sheet_data(target_drop_bag_path, sheet_name, 2, 1, 9)
 
 
 def get_equipment_identifier():
     """
     获取 CfgEquipment 工作簿中的 CfgEquipment 表的 穿戴物ID、穿戴物名称
     """
-    ws, wb = get_worksheet_instance(equipment_path, 'CfgEquipment')
-    ws_rows_max = ws.max_row
-    idx = 4
-    data = {}
-    while idx <= ws_rows_max:
-        item_id = ws.cell(row=idx, column=2).value
-        item_identifier = ws.cell(row=idx, column=8).value
-        data.update({item_id: item_identifier})
-        idx += 1
-    return data
+    return get_target_sheet_data(equipment_path, 'CfgEquipment', 2, 2, 8, is_parser=False)
 
 
 def get_item_ch_language():
     """
     获取 CfgLanguage 工作簿中的 CfgLanSystem 表的 序号、中文
     """
-    ws, wb = get_worksheet_instance(language_path, 'CfgLanSystem')
-    ws_rows_max = ws.max_row
-    idx = 4
-    data = {}
-    while idx <= ws_rows_max:
-        item_identifier = ws.cell(row=idx, column=2).value
-        item_zh = ws.cell(row=idx, column=5).value
-        data.update({item_identifier: item_zh})
-        idx += 1
-    return data
+    return get_target_sheet_data(language_path, 'CfgLanSystem', 4, 2, 5, is_parser=False)
 
 
-def get_mapping_drop_items(sheet_name):
+def traverse_dict(target_dict, drop_items):
+    mapping_drop_items = {}
+    for target_key, target_items in target_dict.items():
+        for target_item in target_items:
+            for current_key, current_items in drop_items.items():
+                if str(target_item) == str(current_key):
+                    mapping_drop_items.update({target_key: current_items})
+
+    return mapping_drop_items
+
+
+def get_regular_mapping_drop__items(sheet_name):
     """
     从表中拿到对应的名称，再到 CfgDropBag.xlsx - 掉落母表 ，获取名称映射到的 DropItem
     """
-    target_regular_drop_items, target_first_drop_items = get_target_regular_drop_item(sheet_name)
-    drop_items = get_drop_item()
 
-    start_time = time.time()
+    target_regular_drop_items = get_target_regular_drop_item(sheet_name)
+    drop_items = get_drop_items()
     # 第一步：拿到我需要的数据表
-    regular_mapping_drop_items = {}
-    for level_name, target_drop_items in target_regular_drop_items.items():
-        for target_drop_item_id in target_drop_items:
-            for k, equ_id in drop_items.items():
-                if str(target_drop_item_id) == str(k):
-                    regular_mapping_drop_items.update({level_name: equ_id})
+    regular_mapping_drop_items = traverse_dict(target_regular_drop_items, drop_items)
 
-    first_mapping_drop_items = {}
-    for level_name, target_drop_items in target_first_drop_items.items():
-        for target_drop_item_id in target_drop_items:
-            for k, equ_id in drop_items.items():
-                if str(target_drop_item_id) == str(k):
-                    first_mapping_drop_items.update({level_name: equ_id})
+    return regular_mapping_drop_items
 
-    end_time = time.time()
-    duration = round(end_time - start_time, 2)
-    print(f'duration : {duration} s')
 
-    return regular_mapping_drop_items, first_mapping_drop_items
+def get_first_mapping_drop_items(sheet_name):
+    """
+    从表中拿到对应的名称，再到 CfgDropBag.xlsx - 掉落母表 ，获取名称映射到的 DropItem， 要到两张表里取
+    """
+    # 这里拿到的首通的id后，到对应的表取名称标志符，drop_items错了
+
+    target_first_drop_items = get_target_first_drop_item(sheet_name)
+    first_drop_items = get_first_drop_items()
+    equipment_identifier = get_equipment_identifier()
+
+    first_mapping_drop_items_1 = traverse_dict(target_first_drop_items, first_drop_items)
+    first_mapping_drop_items_2 = traverse_dict(target_first_drop_items, equipment_identifier)
+
+    first_mapping_drop_items = dict(**first_mapping_drop_items_1, **first_mapping_drop_items_2)
+
+    return first_mapping_drop_items
 
 
 def get_mapping_equipment_ident(mapping_drop_items):
@@ -149,41 +161,42 @@ def get_mapping_equipment_ident(mapping_drop_items):
 
 def get_mapping_ch_name(equipment_ident_dict):
     equipment_ch_name = get_item_ch_language()
-
-    ch_name_dict = {}
+    mapping_ch_name_dict = {}
     for level_name, identifiers in equipment_ident_dict.items():
         ch_name_list = []
+        if isinstance(identifiers, str):
+            identifiers = [identifiers]
         for identifier in identifiers:
             for ident, ch_name in equipment_ch_name.items():
                 if str(ident) == str(identifier):
                     ch_name_list.append(ch_name)
 
-        ch_name_dict.update({level_name: ch_name_list})
-    return ch_name_dict
+        mapping_ch_name_dict.update({level_name: ch_name_list})
+    return mapping_ch_name_dict
 
 
 def write_to_excel(sheet_name):
     """
     将数据写入excel
     """
-    target_regular_drop_items, target_first_drop_items = get_mapping_drop_items(sheet_name)
+    # target_regular_drop_items = get_regular_mapping_drop__items(sheet_name)
+    # regular_equipment_ident_dict = get_mapping_equipment_ident(target_regular_drop_items)
+    # regular_ch_name_dict = get_mapping_ch_name(regular_equipment_ident_dict)
+    # regular_items_data_list = [i for i in regular_ch_name_dict.values()]
 
-    regular_equipment_ident_dict = get_mapping_equipment_ident(target_regular_drop_items)
-    regular_ch_name_dict = get_mapping_ch_name(regular_equipment_ident_dict)
+    target_first_drop_items = get_first_mapping_drop_items(sheet_name)
+    first_ch_name_dict = get_mapping_ch_name(target_first_drop_items)
 
-    first_equipment_ident_dict = get_mapping_equipment_ident(target_regular_drop_items)
-    first_ch_name_dict = get_mapping_ch_name(first_equipment_ident_dict)
+    wb = get_workbook_instance(target_drop_bag_path)
 
-    regular_items_data_list = [i for i in regular_ch_name_dict.values()]
-    first_items_data_list = [i for i in first_ch_name_dict.values()]
-
-    ws, wb = get_worksheet_instance(target_drop_bag_path, sheet_name)
+    ws = wb[sheet_name]
     ws_rows_max = ws.max_row
     idx = 2
 
     while idx <= ws_rows_max:
-        ws.cell(row=idx, column=8).value = str(regular_items_data_list[idx-2])
-        ws.cell(row=idx, column=8).value = str(first_items_data_list[idx-2])
+        # ws.cell(row=idx, column=8).value = str(regular_items_data_list[idx-2])
+        key = ws.cell(row=idx, column=1).value
+        ws.cell(row=idx, column=10).value = str(first_ch_name_dict[key])
         idx += 1
 
     wb.save(target_drop_bag_path)
@@ -193,15 +206,22 @@ def get_reward_config(sheet_name: str):
     """
     读取奖励的配置数据
     """
-    ws, wb = get_worksheet_instance(target_drop_bag_path, sheet_name)
+    ws = get_worksheet_instance(target_drop_bag_path, sheet_name)
     ws_rows_max = ws.max_row
     idx = 2
 
     reward_dict = {}
     while idx <= ws_rows_max:
         level_name = ws.cell(row=idx, column=7).value
-        reward_list = ws.cell(row=idx, column=8).value
-        reward_dict.update({level_name: reward_list})
+        regular_reward_list = ws.cell(row=idx, column=8).value
+        first_reward_list = ws.cell(row=idx, column=10).value
+        data = {
+            level_name: {
+                'regular': regular_reward_list,
+                'first': first_reward_list
+            }
+        }
+        reward_dict.update(data)
 
         idx += 1
 
@@ -210,9 +230,11 @@ def get_reward_config(sheet_name: str):
 
 def get_target_reward_data(reward_dict: dict, level_name: str):
 
-    for level, reward_list in reward_dict.items():
+    for level, reward_dict in reward_dict.items():
         if level == level_name:
-            return eval(reward_list)
+            regular_reward = eval(reward_dict['regular'])
+            regular_reward.extend(eval(reward_dict['first']))
+            return regular_reward
     return []
 
 
@@ -223,11 +245,15 @@ def init_reward_data():
     """
     初始化mapping表中的奖励数据
     """
+    start_time = time.time()
     write_to_excel('元素峡谷')
-    write_to_excel('贪婪禁地')
-    write_to_excel('茫然遗迹')
-    write_to_excel('苍穹之城')
-    write_to_excel('虚影殿堂')
+    # write_to_excel('贪婪禁地')
+    # write_to_excel('茫然遗迹')
+    # write_to_excel('苍穹之城')
+    # write_to_excel('虚影殿堂')
+    end_time = time.time()
+    duration = round(end_time - start_time, 2)
+    print('duration: ', duration)
 
 
 def struct_reward_data():
@@ -244,9 +270,10 @@ def get_reward_data():
     pass
 
 
-items = get_reward_config('茫然遗迹')
-print(get_target_reward_data(items, '戈乌拉1'))
-# print(type(get_target_level_reward_list(items, '比娜1')))
+if __name__ == '__main__':
+    # init_reward_data()
+    print(get_target_reward_data(get_reward_config('茫然遗迹'), '比娜16'))
+
 
 
 

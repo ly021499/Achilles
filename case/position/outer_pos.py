@@ -57,6 +57,7 @@ reward_icon_pos = "itemRoot(Clone)"
 reward_name_pos = 'TextName'
 lost_reward_name_pos = 'Name'
 battle_reward_pos = "ItemComponentMedium_"
+reward_type_pos = "LabelText"
 
 
 
