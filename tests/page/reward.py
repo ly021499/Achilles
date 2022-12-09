@@ -4,7 +4,8 @@
 import re
 from utils import logwrap, logstep
 from utils.plugins.parser import get_reward_config, get_target_reward_data
-from tests.position import reward_pos, outer_pos
+from tests.position import reward_pos
+from tests.position.outer_pos import Sky, Shadow, Lost, Public, Magic, Element
 from tests.lib.page import Page
 from tests.page.outer import OuterPage
 from tests.lib.utils import assertion
@@ -26,7 +27,6 @@ class RewardPage(Page):
         else:
             self.poco.swipe(bottom, top, duration=0.1)
 
-    @logwrap("获取掉落奖励")
     def get_reward_preview(self):
         reward_preview_list = []
         rewards_preview = self.poco(reward_pos.reward_icon_pos)
@@ -35,10 +35,9 @@ class RewardPage(Page):
             reward_preview.click()
             reward_preview_list.append((reward_type, self.get_text(reward_pos.reward_name_pos)))
 
-        logstep(f'奖励预览: {reward_preview_list}')
+        logstep(f'获取掉落奖励: {reward_preview_list}')
         return reward_preview_list
 
-    @logwrap("战斗已结束，获取战斗奖励")
     def get_battle_reward(self):
         battle_reward_list = []
         # 拿到多个元素定位，遍历获取战斗奖励物品
@@ -55,7 +54,7 @@ class RewardPage(Page):
                 battle_reward.click()
             battle_reward_list.append((reward_type, reward_name))
 
-        logstep(f'战斗奖励: {battle_reward_list}')
+        logstep(f'战斗结束了，获取战斗奖励: {battle_reward_list}')
         return battle_reward_list
 
     @logwrap('升序执行 当前副本下的所有关卡')
@@ -99,11 +98,12 @@ class RewardPage(Page):
             current_level += 1
 
     @logwrap('降序执行 当前副本下的所有关卡')
-    def execute_instance_in_desc(self, max_level: int, instance: str):
+    def execute_instance_in_desc(self, max_level: int, instance: str, consume_energy: int):
         """
         降序执行 当前副本下的所有关卡
         :param max_level: 当前副本最大关卡数
         :param instance: 副本名称
+        :param consume_energy: 副本消耗
         :return:
         """
         current_level = self.outer_page.search_current_level_number()
@@ -117,7 +117,7 @@ class RewardPage(Page):
             level_name = self.outer_page.get_current_level_name()
             self.outer_page.enter_btn()
             self.outer_page.fighting()
-            self.click(outer_pos.continue_pos)
+            self.click(Public.continue_pos)
             battle_reward_list = self.get_battle_reward()
             self.outer_page.click_continue()
 
@@ -139,20 +139,24 @@ class RewardPage(Page):
             current_level += 1
 
             logstep(f'校验能量值消耗数值是否正确 ...')
-            assertion.assert_less_equal(start_energy - end_energy, 10)
+            assertion.assert_less_equal(start_energy - end_energy, consume_energy)
+        self.outer_page.back_to_outer()
 
-    def execute_instance(self, instance_type, level_pos, instance):
+    def brush_instance(self, instance_type, max_level_pos, instance, consume_energy):
         self.outer_page.retry(instance_type)
         sheet_name = instance_type.split('=')[1]
         self.click(instance)
         self.outer_page.enter_btn()
-        self.execute_instance_in_desc(level_pos, sheet_name)
+        self.execute_instance_in_desc(max_level_pos, sheet_name, consume_energy)
 
 
 if __name__ == '__main__':
     from tests.lib.driver.unity_app import get_unity3d_poco_instance
     reward = RewardPage(get_unity3d_poco_instance())
-    reward.execute_instance(outer_pos.lost_sector_pos, outer_pos.lost_sector_level_pos, outer_pos.papillaire_pos)
+    reward.brush_instance(
+        Element.element_valley_pos, Element.element_level_pos,
+        Element.fire_element_pos, Element.element_energy_pos
+    )
     # battle_reward_list = reward.get_battle_reward()
     # reward_preview_list = reward.get_reward_preview()
 

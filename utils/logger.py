@@ -87,7 +87,7 @@ def logwrap(msg: str = None) -> Callable:
             res = func(*args, **kwargs)
             end_time = time.time()
             duration = round(end_time - start_time, 2)
-            log.debug(f"📣 📣 📣 ： {msg}  ... - Func: {func.__name__} - duration: {duration} s")
+            log.debug(f"📣 📣 📣 ： {msg} - func: {func.__name__} - duration: {duration} s")
             return res
         return inner
     return wrapper

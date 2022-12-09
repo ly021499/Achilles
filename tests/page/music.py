@@ -2,7 +2,7 @@
 # @Author : LOUIE
 # @Desc   : to do something ...
 from utils import logwrap
-from tests.position import tast_pos
+from tests.position import battle_pos
 from tests.lib.page import Page
 
 

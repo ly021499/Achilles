@@ -12,9 +12,6 @@ class TestConsumeEnergy(Unity3dPocoUnit):
     def setUp(self) -> None:
         self.energy = EnergyProxy(self.poco)
 
-    def tearDown(self) -> None:
-        self.energy.back_outer_view()
-
     @logcase
     def test_a_verify_energy_consumption_of_lost_sector(self):
         self.energy.verify_energy_consumption_of_lost_sector()
@@ -28,8 +25,8 @@ class TestConsumeEnergy(Unity3dPocoUnit):
         self.energy.verify_energy_consumption_of_the_gold()
 
     @logcase
-    def test_d_verify_energy_consumption_of_elemental_valley(self):
-        self.energy.verify_energy_consumption_of_elemental_valley()
+    def test_d_verify_energy_consumption_of_element_valley(self):
+        self.energy.verify_energy_consumption_of_element_valley()
 
     @logcase
     def test_e_verify_energy_consumption_of_the_shadow_keep(self):
