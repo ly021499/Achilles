@@ -86,11 +86,13 @@ class EnergyProxy:
         self.op.close_page()
         logstep('副本闯关完成 ...')
 
-        # 黄金谷如果是首次通关，不扣钥匙
-        if int(current_level) < int(Forbid.gold_level_pos):
-            gold_key = 0
-        else:
-            gold_key = 1
+        if self.op.exists(Forbid.gold_pos):
+            # 黄金谷如果是首次通关，不扣钥匙
+            if int(current_level) < int(Forbid.gold_level_pos):
+                gold_key = 0
+            else:
+                gold_key = 1
+
         assertion.assert_equal(start_energy - end_energy, gold_key)
 
     @logwrap('验证<元素峡谷-冰元素>的能量消耗值：15')

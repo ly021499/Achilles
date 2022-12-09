@@ -22,7 +22,13 @@
 
 # 环境配置
 1. 克隆代码
+```commandline
+git clone 
+```
 
 2. 安装依赖文件
+```commandline
+pip install -r .\requirements.txt
+```
 
 3. 熟悉/res/doc/下的文件

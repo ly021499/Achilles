@@ -2,6 +2,8 @@ from poco import Poco
 from poco.proxy import UIObjectProxy
 import warnings
 import re
+from poco.drivers.android.uiautomation import AndroidUiautomationPoco
+
 
 identifier: str = '>'
 index_compile = re.compile(r'(?<=\[)\d+?(?=\])')
@@ -13,21 +15,25 @@ class Poco2(Poco):
         pass
 
 
+poco = AndroidUiautomationPoco()
+
+
 class Ark:
 
-    def __call__(self, poco, name=None, **kwargs):
-        if not name and len(kwargs) == 0:
+    def __init__(self, poco_instance):
+        self.poco = poco_instance
+
+    def __call__(self, pos=None, **kwargs):
+        if not pos and len(kwargs) == 0:
             warnings.warn("Wildcard selector may cause performance trouble. Please give at least one condition to "
                           "shrink range of results")
 
-        position = self.__parser_pos(name)
-
-        return UIObjectProxy(poco, position, **kwargs)
+        return self.__parser_pos(pos)
 
     def __parser_pos(self, pos: str):
         if '=' in pos:
             attr, pos = pos.split('=')
-            return UIObjectProxy(attr=pos)
+            return self.poco(attr=pos)
 
         if identifier not in pos:
             if index_compile.search(pos):
@@ -59,8 +65,4 @@ class Ark:
 
 
 if __name__ == '__main__':
-    a = b = []
-    a.append(1)
-    b.append(2)
-    print(a)
-    print(b)
+    ark = Ark()
