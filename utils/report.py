@@ -42,7 +42,7 @@ def main(env: str = None):
     options = ["--alluredir={}".format(output_dir), "--clean-alluredir", setting.CASE_DIR]
     log.info("options list: {}".format(options))
 
-    log.info(" = " * 8 + " Process started, Running tests  " + " = " * 8)
+    log.info(" = " * 8 + " Process started, Running case  " + " = " * 8)
     pytest.main(options)
     log.info(" = " * 8 + " Process finished, Testing is completed " + " = " * 8)
     open_allure()

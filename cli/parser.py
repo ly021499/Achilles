@@ -13,7 +13,7 @@ def get_parser():
     parser.add_argument(
         '--not-save-log', default='INFO', help="Specify logging level, default is INFO.")
     parser.add_argument(
-        '--failfast', action='store_true', default=False, help="Stop the test run on the first error or failure.")
+        '--failfast', action='store_true', default=False, help="Stop the tests run on the first error or failure.")
 
     args = parser.parse_args()
     return args

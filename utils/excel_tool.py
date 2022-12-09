@@ -127,7 +127,7 @@ class ExcelTool:
 
 
 if __name__ == '__main__':
-    excel_path = './test.xlsx'
+    excel_path = './tests.xlsx'
     workbook = ExcelTool(excel_path)
 
     # 获取指定sheet

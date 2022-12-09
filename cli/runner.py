@@ -44,7 +44,7 @@ class AirtestCase(unittest.TestCase):
             for k, dev in enumerate(G.DEVICE_LIST):
                 # 录屏文件保存的命名规则：
                 # 如果未指定文件名，只传了--recording，就默认用recording_手机序列号.mp4来命名
-                # 如果指定了文件名--recording test.mp4，且超过一台手机，就命名为 手机序列号_test.mp4
+                # 如果指定了文件名--recording tests.mp4，且超过一台手机，就命名为 手机序列号_test.mp4
                 # 否则直接用指定的文件名保存录屏，必须是mp4结尾
                 try:
                     if isinstance(self.args.recording, six.string_types) and self.args.recording.endswith(".mp4"):
@@ -74,7 +74,7 @@ class AirtestCase(unittest.TestCase):
 
     @classmethod
     def exec_other_script(cls, scriptpath):
-        """run other script in test script"""
+        """run other script in tests script"""
 
         warnings.simplefilter("always")
         warnings.warn("please use using() api instead.", PendingDeprecationWarning)
@@ -148,7 +148,7 @@ def setup_by_args(args):
 
 
 def run_script(parsed_args, testcase_cls=AirtestCase):
-    global args  # make it global deliberately to be used in AirtestCase & test scripts
+    global args  # make it global deliberately to be used in AirtestCase & tests scripts
     args = parsed_args
     suite = unittest.TestSuite()
     suite.addTest(testcase_cls())

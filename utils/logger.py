@@ -22,6 +22,7 @@ class Logger:
     通过单例模式，只实例化一个日志对象
     直接调用log实例对象进行日志调用
     """
+
     def __new__(cls, *args, **kwargs):
         
         if not hasattr(cls, '_instance'):
@@ -100,12 +101,12 @@ def logcase(func: Callable[[str], str]) -> Callable:
     """
     @functools.wraps(func)
     def inner(*args, **kwargs):
-        log.info(f"(`･ω･´)ゞ  Start of running testcase: {func.__name__}")
+        log.info(f"(`･ω･´)ゞ  Start running testcase: {func.__name__}")
         start_time = time.time()
         res = func(*args, **kwargs)
         end_time = time.time()
         duration = round(end_time - start_time, 2)
-        log.info(f"(ง •̀_•́)ง  End of running testcase : {func.__name__} ... [ Case duration: {duration} s ]")
+        log.info(f"(ง •̀_•́)ง  End running testcase : {func.__name__} ... [ Case duration: {duration} s ]")
         log.info(f"{'- ' * 16} 分割线 {' -' * 16}")
         return res
     return inner

@@ -15,7 +15,7 @@ __TEST_CONFIG = {
     'ios_device_host': 'iOS:///127.0.0.1:5555',             # iOS设备地址
     'cmd_conf': {       # GM命令配置
         'url': 'http://192.168.1.16/gmModuleapi/Gmcommand/command',
-        'cookie': "oss3_session=0margnvt480mlp9e97d57nof61395bd4",
+        'cookie': "oss3_session=d9fqom8peip43ra177i2nvnqqgnl71bp",  # cookie时效只有一天，需要定期更换
         'platform_id': 80,
         'server_id': 80002990
     }
@@ -29,7 +29,7 @@ __PRE_CONFIG = {
     'ios_device_host': 'iOS:///127.0.0.1:7555',
     'cmd_conf': {
         'url': 'https://oss3.hrgame.com.cn/gmModuleapi/Gmcommand/command',
-        'cookie': "oss3_session=bi1a9blettt7dq1r00gev37j6rgu2e42",
+        'cookie': "oss3_session=k55ih9sarta31bun945un5n8f9et06ms",
         'platform_id': 14,
         'server_id': 14102992
     }
@@ -76,7 +76,7 @@ def __get_result_path():
 
 # Path
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-CASE_DIR = os.path.join(BASE_DIR, "case\\tests")
+CASE_DIR = os.path.join(BASE_DIR, "tests\\case")
 LOG_DIR = os.path.join(BASE_DIR, "report\\logs")
 RES_DIR = os.path.join(BASE_DIR, "res")
 REPORT_DIR = __get_result_path()

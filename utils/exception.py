@@ -9,42 +9,42 @@ class LRunException(Exception):
 
 class NoSuchNodeException(LRunException):
     """
-        This is NoSuchNodeException
+    This is NoSuchNodeException
     """
     pass
 
 
 class InvalidOperationException(LRunException):
     """
-        This is InvalidOperationException
+    This is InvalidOperationException
     """
     pass
 
 
 class TargetTimeout(LRunException):
     """
-        This is TargetTimeout
+    This is TargetTimeout
     """
     pass
 
 
 class ConnectError(LRunException):
     """
-        This is ConnectError
+    This is ConnectError
     """
     pass
 
 
 class AdbError(LRunException):
     """
-        This is AdbError
+    This is AdbError
     """
     pass
 
 
 class InvalidParamError(LRunException):
     """
-        This is InvalidParamError
+    This is InvalidParamError
     """
     pass
 
