@@ -1,7 +1,7 @@
 # @Time   : 2022/11/10 15:17
 # @Author : LOUIE
 # @Desc   : 每日日常
-from utils import logwrap
+from utils import log
 from tests.position import reward_pos
 from tests.lib.page import Page
 
@@ -18,31 +18,31 @@ read_all_pos = 'Button_ReadAll'
 
 class DailyPage(Page):
 
-    @logwrap('每日登录')
+    @log.wrap('每日登录')
     def daily_item(self):
         self.click(daily_item_pos)
 
-    @logwrap('领取奖励')
+    @log.wrap('领取奖励')
     def receive_rewards(self):
         self.click(receive_rewards_pos)
 
-    @logwrap('关闭任务页面')
+    @log.wrap('关闭任务页面')
     def close_task_page(self):
         self.click(close_task_btn_pos)
 
-    @logwrap('打开系统邮件')
+    @log.wrap('打开系统邮件')
     def open_system_mail(self):
         self.click(system_mail_pos)
 
-    @logwrap("一键领取")
+    @log.wrap("一键领取")
     def express_receipt(self):
         self.click(express_receipt_pos)
 
-    @logwrap("点击战报")
+    @log.wrap("点击战报")
     def close_hero_note(self):
         self.click(war_report_pos)
 
-    @logwrap("一键阅读")
+    @log.wrap("一键阅读")
     def read_all(self):
         if self.exists(read_all_pos):
             self.click(read_all_pos)

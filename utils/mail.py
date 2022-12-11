@@ -5,7 +5,7 @@
 from email.mime.multipart import MIMEMultipart
 from email.mime.application import MIMEApplication
 from email.mime.text import MIMEText
-from utils.logger import log
+from utils import log
 from smtplib import SMTP
 import setting
 import os

@@ -3,7 +3,7 @@
 # @Desc   : airtest核心api的二次封装
 
 from airtest.core import api as air
-from utils.logger import log, logwrap
+from utils.logger import log
 import time
 
 

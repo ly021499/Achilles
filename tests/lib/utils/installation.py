@@ -1,5 +1,4 @@
 from airtest.utils.apkparser.apk import APK
-
 import re
 
 

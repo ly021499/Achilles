@@ -1,7 +1,7 @@
 from tests.page.outer import OuterPage
 from tests.position.outer_pos import *
 from tests.lib.utils import assertion
-from utils import logwrap, logstep
+from utils import log
 
 
 class EnergyProxy:
@@ -19,7 +19,7 @@ class EnergyProxy:
 
         start_energy = self.op.get_current_energy_value()
 
-        logstep(f"选择副本类型：{str(instance_type).split('=')[1]} ...")
+        log.step(f"选择副本类型：{str(instance_type).split('=')[1]} ...")
 
         self.op.enter_btn()
         self.op.into_battle()
@@ -31,11 +31,11 @@ class EnergyProxy:
 
         end_energy = self.op.get_current_energy_value()
 
-        logstep('副本闯关完成 ...')
+        log.step('副本闯关完成 ...')
         self.op.back_to_outer()
         return start_energy - end_energy
 
-    @logwrap('验证<茫然遗迹-比娜>的能量消耗值：10')
+    @log.wrap('验证<茫然遗迹-比娜>的能量消耗值：10')
     def verify_energy_consumption_of_lost_sector(self):
         """
         验证<茫然遗迹>的能量消耗值：10
@@ -44,7 +44,7 @@ class EnergyProxy:
         consume_energy = self.brush_instance_zones(Lost.bihna_pos)
         assertion.assert_less_equal(consume_energy, 10)
 
-    @logwrap('验证<虚影殿堂->的能量消耗值：10')
+    @log.wrap('验证<虚影殿堂->的能量消耗值：10')
     def verify_energy_consumption_of_the_shadow_keep(self):
         """
         验证<虚影殿堂>的能量消耗值：10
@@ -53,7 +53,7 @@ class EnergyProxy:
         consume_energy = self.brush_instance_zones(Shadow.mage_pos)
         assertion.assert_less_equal(consume_energy, 10)
 
-    @logwrap('验证<贪婪禁地-药水研究所>的能量消耗值：10')
+    @log.wrap('验证<贪婪禁地-药水研究所>的能量消耗值：10')
     def verify_energy_consumption_of_potion(self):
         """
         验证<贪婪禁地-药水研究所>的能量消耗值：10
@@ -62,7 +62,7 @@ class EnergyProxy:
         consume_energy = self.brush_instance_zones(Forbid.potion_pos)
         assertion.assert_less_equal(consume_energy, 10)
 
-    @logwrap('验证<贪婪禁地-黄金谷>的能量消耗值：1 key')
+    @log.wrap('验证<贪婪禁地-黄金谷>的能量消耗值：1 key')
     def verify_energy_consumption_of_the_gold(self):
         """
         验证<贪婪禁地-黄金谷>的能量消耗值：1 key
@@ -84,7 +84,7 @@ class EnergyProxy:
             self.op.close_page()
 
         self.op.close_page()
-        logstep('副本闯关完成 ...')
+        log.step('副本闯关完成 ...')
 
         # 黄金谷如果是首次通关，不扣钥匙
         if int(current_level) < int(Forbid.gold_level_pos):
@@ -93,7 +93,7 @@ class EnergyProxy:
             gold_key = 1
         assertion.assert_equal(start_energy - end_energy, gold_key)
 
-    @logwrap('验证<元素峡谷-冰元素>的能量消耗值：15')
+    @log.wrap('验证<元素峡谷-冰元素>的能量消耗值：15')
     def verify_energy_consumption_of_element_valley(self):
         """
         验证<元素峡谷>的能量消耗值：15
@@ -102,7 +102,7 @@ class EnergyProxy:
         consume_energy = self.brush_instance_zones(Element.ice_element_pos)
         assertion.assert_less_equal(consume_energy, Element.element_energy_pos)
 
-    @logwrap('验证<苍穹之城>的能量消耗值：15')
+    @log.wrap('验证<苍穹之城>的能量消耗值：15')
     def verify_energy_consumption_of_sky_city(self):
         """
         验证<苍穹之城>的能量消耗值是否正确
