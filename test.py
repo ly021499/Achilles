@@ -1,5 +1,6 @@
 from poco import Poco
 from poco.proxy import UIObjectProxy
+from tests.lib.driver.android_app import get_android_poco_instance
 import warnings
 import re
 
@@ -15,19 +16,16 @@ class Poco2(Poco):
 
 class Ark:
 
-    def __call__(self, poco, name=None, **kwargs):
-        if not name and len(kwargs) == 0:
-            warnings.warn("Wildcard selector may cause performance trouble. Please give at least one condition to "
-                          "shrink range of results")
+    def __init__(self, poco):
+        self.poco = poco or get_android_poco_instance()
 
-        position = self.__parser_pos(name)
-
-        return UIObjectProxy(poco, position, **kwargs)
+    def __call__(self, pos, **kwargs):
+        return self.__parser_pos(pos)
 
     def __parser_pos(self, pos: str):
         if '=' in pos:
             attr, pos = pos.split('=')
-            return UIObjectProxy(attr=pos)
+            return self.poco(attr=pos)
 
         if identifier not in pos:
             if index_compile.search(pos):
@@ -58,9 +56,14 @@ class Ark:
         return pos, 0
 
 
-if __name__ == '__main__':
-    a = b = []
-    a.append(1)
-    b.append(2)
-    print(a)
-    print(b)
+class ArkPage():
+
+    def __init__(self, poco):
+        self.ark = Ark(poco)
+
+    def close_page(self):
+        self.ark('aaa').click()
+
+
+
+

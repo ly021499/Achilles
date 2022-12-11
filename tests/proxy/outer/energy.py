@@ -100,7 +100,7 @@ class EnergyProxy:
         """
         self.op.element_valley()
         consume_energy = self.brush_instance_zones(Element.ice_element_pos)
-        assertion.assert_less_equal(consume_energy, 15)
+        assertion.assert_less_equal(consume_energy, Element.element_energy_pos)
 
     @logwrap('验证<苍穹之城>的能量消耗值：15')
     def verify_energy_consumption_of_sky_city(self):

@@ -5,11 +5,25 @@
 import re
 
 
-def search(expr, obj):
-    return re.search(expr, obj)
+def __search(regex, string):
+    _compile = re.compile(f'{regex}')
+    match_obj = _compile.search(string)
+    if match_obj:
+        return match_obj.group()
+    return None
 
 
-def search_number(expr, a):
-    pass
+def match_index(string: str):
+    """
+    正则匹配定位的下标
+    :param pos:
+    :return:
+    """
+    return __search(r'=\[)\d+?(?=(?<\])', string)
+
+
+def match_number(string: str):
+    return __search(r'\d+', string)
+
 
 

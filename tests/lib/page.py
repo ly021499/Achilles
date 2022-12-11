@@ -18,6 +18,9 @@ class Page(object):
     def __init__(self, poco_instance):
         self.poco = poco_instance or get_android_poco_instance()
 
+    def get_poco(self, pos: str):
+        return self.__parser_pos(pos)
+
     def touch_optional_position(self):
         logstep("点击任意位置继续 ...")
         return self.poco.click([0.2, 0.82])

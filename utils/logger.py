@@ -62,6 +62,22 @@ class Logger:
 log = Logger().get_logger()     # 日志记录器
 
 
+class Log:
+
+    def step(self):
+        pass
+
+    def info(self):
+        pass
+
+    def debug(self):
+        pass
+
+    def warning(self):
+        pass
+
+
+
 def logstep(msg: str):
     log.debug(f'📣 📣 📣 ：{msg}')
 
@@ -110,21 +126,3 @@ def logcase(func: Callable[[str], str]) -> Callable:
         log.info(f"{'- ' * 16} 分割线 {' -' * 16}")
         return res
     return inner
-
-
-if __name__ == '__main__':
-    # 测试代码
-    log.info(1111)
-    log.warning(1111)
-    log.critical(1111)
-    log.error(1111)
-    log.debug(1111)
-
-    @logcase
-    @logwrap('hello louie')
-    def login(username, password):
-        print(username, password)
-        return object
-
-    login('louie', '123')
-    logerror(1111)
