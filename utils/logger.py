@@ -56,75 +56,63 @@ class Logger:
                        )
 
     def get_logger(self) -> logger:
-        return logger
+        return Logger()
+
+    def step(self, msg):
+        logger.info(f'📢 📢 📢 ：{msg}')
+
+    def warn(self, msg):
+        logger.warning(f'🍊 🍋 🍋 ：{msg}')
+
+    def error(self, msg):
+        logger.error(f'😈 😈 😈 ：{msg}')
+
+    def wrap(self, msg: str = None) -> Callable:
+        """
+        函数日志装饰器
+        :param msg: 消息内容
+        :return:
+        """
+        def wrapper(func):
+            @functools.wraps(func)
+            def inner(*args, **kwargs):
+                start_time = time.time()
+                res = func(*args, **kwargs)
+                end_time = time.time()
+                duration = round(end_time - start_time, 2)
+                self.step(f"{msg} - func: {func.__name__} - duration: {duration} s")
+                return res
+            return inner
+        return wrapper
+
+    def case(self, func: Callable[[str], str]) -> Callable:
+        """
+        测试用例日志装饰器
+        :param func: 用例函数对象
+        :return:
+        """
+        @functools.wraps(func)
+        def inner(*args, **kwargs):
+            self.info(f"Start running testcase: {func.__name__}")
+            start_time = time.time()
+            res = func(*args, **kwargs)
+            end_time = time.time()
+            duration = round(end_time - start_time, 2)
+            self.info(f"End running testcase : {func.__name__} [ Case duration: {duration} s ]")
+            self.info(f"{'- ' * 16} 分割线 {' -' * 16}")
+            return res
+        return inner
 
 
 log = Logger().get_logger()     # 日志记录器
 
 
-def logstep(msg: str):
-    log.debug(f'📣 📣 📣 ：{msg}')
-
-
-def loginfo(msg: str):
-    log.debug(f'🌳 🌳 🌳 ：{msg}')
-
-
-def logerror(msg: str):
-    log.debug(f'😈 😈 😈 ：{msg}')
-
-
-def logwrap(msg: str = None) -> Callable:
-    """
-    函数日志装饰器
-    :param msg: 消息内容
-    :return:
-    """
-    def wrapper(func):
-        @functools.wraps(func)
-        def inner(*args, **kwargs):
-            start_time = time.time()
-            res = func(*args, **kwargs)
-            end_time = time.time()
-            duration = round(end_time - start_time, 2)
-            log.debug(f"📣 📣 📣 ： {msg} - func: {func.__name__} - duration: {duration} s")
-            return res
-        return inner
-    return wrapper
-
-
-def logcase(func: Callable[[str], str]) -> Callable:
-    """
-    测试用例日志装饰器
-    :param func: 用例函数对象
-    :return:
-    """
-    @functools.wraps(func)
-    def inner(*args, **kwargs):
-        log.info(f"(`･ω･´)ゞ  Start running testcase: {func.__name__}")
-        start_time = time.time()
-        res = func(*args, **kwargs)
-        end_time = time.time()
-        duration = round(end_time - start_time, 2)
-        log.info(f"(ง •̀_•́)ง  End running testcase : {func.__name__} ... [ Case duration: {duration} s ]")
-        log.info(f"{'- ' * 16} 分割线 {' -' * 16}")
-        return res
-    return inner
-
-
 if __name__ == '__main__':
-    # 测试代码
-    log.info(1111)
-    log.warning(1111)
-    log.critical(1111)
-    log.error(1111)
-    log.debug(1111)
+    log.error('aaaa')
+    log.info('aaaa')
 
-    @logcase
-    @logwrap('hello louie')
-    def login(username, password):
-        print(username, password)
-        return object
+    @log.case
+    def test():
+        log.debug(111)
 
-    login('louie', '123')
-    logerror(1111)
+    test()

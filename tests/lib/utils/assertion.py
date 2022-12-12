@@ -2,7 +2,7 @@
 # @Author : LOUIE
 # @Desc   : 断言工具类
 
-from utils.logger import logstep, logerror
+from utils.logger import log
 import re
 
 
@@ -24,12 +24,12 @@ def __raise_exception(msg=None):
     :param msg:
     :return:
     """
-    logerror(msg)
+    log.error(msg)
     raise AssertionError(msg)
 
 
 def __console_log(assert_type, msg):
-    logstep(f'{assert_type}: {msg}')
+    log.step(f'{assert_type}: {msg}')
 
 
 def assert_equal(first, second, msg=None):

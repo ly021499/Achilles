@@ -4,7 +4,7 @@
 
 import requests
 import setting
-from utils import logstep
+from utils import log
 
 
 def _execute_command(cmd):
@@ -33,7 +33,7 @@ def _execute_command(cmd):
     res = res.json()
     if res['code'] != 0:
         raise requests.exceptions.HTTPError(res['msg'])
-    logstep(f'Run the GM command : {cmd}')
+    log.step(f'Run the GM command : {cmd}')
     return res
 
 

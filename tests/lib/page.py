@@ -2,7 +2,7 @@
 # @Author : LOUIE
 # @Desc   : 基于poco对象、airtest二次封装的操作方法
 
-from utils import log, logstep, NoSuchNodeException
+from utils import log, NoSuchNodeException
 from poco.exceptions import PocoNoSuchNodeException, PocoTargetRemovedException
 from tests.lib.driver.android_app import get_android_poco_instance
 import re
@@ -18,8 +18,11 @@ class Page(object):
     def __init__(self, poco_instance):
         self.poco = poco_instance or get_android_poco_instance()
 
-    def touch_optional_position(self):
-        logstep("点击任意位置继续 ...")
+    def get_poco(self, pos: str):
+        return self.__parser_pos(pos)
+
+    def tap_anywhere(self):
+        log.step("tap anywhere on the screen to continue .")
         return self.poco.click([0.2, 0.82])
 
     def click(self, pos: str, focus=None, sleep_interval: float = None):
@@ -27,10 +30,10 @@ class Page(object):
             return self.__parser_pos(pos).click(focus, sleep_interval)
         except PocoNoSuchNodeException:
             try:
-                log.debug(f"Try locating the node： {pos} again")
+                log.debug(f"try locating the node： {pos} again")
                 return self.__parser_pos(pos).click(focus, sleep_interval)
             except PocoNoSuchNodeException:
-                raise NoSuchNodeException(f'Cannot find visible node by query UIObjectProxy of "{pos}"')
+                raise NoSuchNodeException(f'cannot find visible node by query UIObjectProxy of "{pos}"')
 
     def exists(self, pos: str):
         try:
@@ -75,7 +78,7 @@ class Page(object):
         return self.__parser_pos(pos).wait_for_appearance(timeout)
 
     def sleep(self, secs: float = 1.0):
-        logstep(f"sleep {secs} seconds .")
+        log.step(f"sleep {secs} seconds .")
         time.sleep(secs)
 
     def __regex_pos_index(self, pos: str):

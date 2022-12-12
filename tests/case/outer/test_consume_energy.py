@@ -4,7 +4,7 @@
 
 from tests.lib.driver.unity_app import Unity3dPocoUnit
 from tests.proxy.outer.energy import EnergyProxy
-from utils import logcase
+from utils import log
 
 
 class TestConsumeEnergy(Unity3dPocoUnit):
@@ -12,23 +12,23 @@ class TestConsumeEnergy(Unity3dPocoUnit):
     def setUp(self) -> None:
         self.energy = EnergyProxy(self.poco)
 
-    @logcase
+    @log.case
     def test_a_verify_energy_consumption_of_lost_sector(self):
         self.energy.verify_energy_consumption_of_lost_sector()
 
-    @logcase
+    @log.case
     def test_b_verify_energy_consumption_of_potion(self):
         self.energy.verify_energy_consumption_of_potion()
 
-    @logcase
+    @log.case
     def test_c_verify_energy_consumption_of_the_gold(self):
         self.energy.verify_energy_consumption_of_the_gold()
 
-    @logcase
+    @log.case
     def test_d_verify_energy_consumption_of_element_valley(self):
         self.energy.verify_energy_consumption_of_element_valley()
 
-    @logcase
+    @log.case
     def test_e_verify_energy_consumption_of_the_shadow_keep(self):
         self.energy.verify_energy_consumption_of_the_shadow_keep()
 

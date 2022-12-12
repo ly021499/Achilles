@@ -4,7 +4,7 @@
 
 from tests.lib.driver.unity_app import Unity3dPocoUnit
 from tests.proxy.outer.instance import InstanceProxy
-from utils import logcase
+from utils import log
 
 
 class TestElementValley(Unity3dPocoUnit):
@@ -15,19 +15,19 @@ class TestElementValley(Unity3dPocoUnit):
     def tearDown(self) -> None:
         self.instance.reward.outer_page.back_to_outer()
 
-    @logcase
+    @log.case
     def test_a_verify_brush_instance_of_ice(self):
         self.instance.verify_brush_instance_of_ice()
 
-    @logcase
+    @log.case
     def test_b_verify_brush_instance_of_fire(self):
         self.instance.verify_brush_instance_of_fire()
 
-    @logcase
+    @log.case
     def test_c_verify_brush_instance_of_wind(self):
         self.instance.verify_brush_instance_of_wind()
 
-    @logcase
+    @log.case
     def test_d_verify_brush_instance_of_soil(self):
         self.instance.verify_brush_instance_of_soil()
 

@@ -129,20 +129,3 @@ class ExcelTool:
 if __name__ == '__main__':
     excel_path = './tests.xlsx'
     workbook = ExcelTool(excel_path)
-
-    # 获取指定sheet
-    workbook.get_sheet('Sheet1')
-
-    # 获取指定cell的值
-    data = workbook.get_cell_value(1, 3)
-    print("data:", data)
-
-    # 获取当前sheet某一行、列的数据
-    key = workbook.get_row_data(0)
-    print('第1行的数据为:', data)
-
-    v = workbook.get_row_data(1)
-    print('第2行的数据为:', data)
-
-    c = dict(zip(key, v))
-    print(c)

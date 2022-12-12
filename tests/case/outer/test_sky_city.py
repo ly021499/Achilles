@@ -4,7 +4,7 @@
 
 from tests.lib.driver.unity_app import Unity3dPocoUnit
 from tests.proxy.outer.instance import InstanceProxy
-from utils import logcase
+from utils import log
 
 
 class TestSkyCity(Unity3dPocoUnit):
@@ -12,19 +12,19 @@ class TestSkyCity(Unity3dPocoUnit):
     def setUp(self) -> None:
         self.instance = InstanceProxy(self.poco)
 
-    @logcase
+    @log.case
     def test_a_verify_brush_instance_of_bihna(self):
         self.instance.verify_brush_instance_of_bihna()
 
-    @logcase
+    @log.case
     def test_b_verify_brush_instance_of_chester(self):
         self.instance.verify_brush_instance_of_chester()
 
-    @logcase
+    @log.case
     def test_c_verify_brush_instance_of_guule(self):
         self.instance.verify_brush_instance_of_guule()
 
-    @logcase
+    @log.case
     def test_d_verify_brush_instance_of_papillaire(self):
         self.instance.verify_brush_instance_of_papillaire()
 
