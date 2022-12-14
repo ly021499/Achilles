@@ -15,7 +15,7 @@ __TEST_CONFIG = {
     'ios_device_host': 'iOS:///127.0.0.1:5555',             # iOS设备地址
     'cmd_conf': {       # GM命令配置
         'url': 'http://192.168.1.16/gmModuleapi/Gmcommand/command',
-        'cookie': "oss3_session=d9fqom8peip43ra177i2nvnqqgnl71bp",  # cookie时效只有一天，需要定期更换
+        'cookie': "oss3_session=38gloqpl90urnilj7upcnd36dqr5o32q",  # cookie时效只有一天，需要定期更换
         'platform_id': 80,
         'server_id': 80002990
     }

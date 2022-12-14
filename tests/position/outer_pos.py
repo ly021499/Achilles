@@ -8,9 +8,13 @@ class Magic:
     magic_workshop_pos = 'textMatches=塔尔魔术工坊'
 
 
-# 苍穹之城
+# 苍穹之城：已通关
 class Sky:
     sky_city_pos = 'textMatches=苍穹之城'
+    clear_the_level = '已通关'
+    battle_btn_pos = 'BattleBtn'
+    sky_level_pos = '100'
+    sky_energy_pos = 5
 
 
 # 元素峡谷：关卡等级、能量消耗、冰元素、火元素、风元素、土元素
@@ -39,8 +43,10 @@ class Forbid:
 class Shadow:
     # 虚影殿堂：关卡等级、能量消耗、捍卫者试炼、增援者试炼、射手试炼、法师试炼、刺客试炼、战士试炼
     shadow_keep_pos = 'textMatches=虚影殿堂'
-    shadow_keep_level_pos = '8'
+    shadow_level_pos = '8'
     shadow_energy_pos = 10
+    first_instance_pos = 'TextLabel0'
+    second_instance_pos = 'TextLabel0[1]'
     fighter_pos = 'textMatches=战士试炼'
     defender_pos = 'textMatches=捍卫者试炼'
     marksman_pos = 'textMatches=射手试炼'
@@ -60,8 +66,8 @@ class Lost:
     papillaire_pos = 'textMatches=巴比艾尔'
 
 
-# 公共按钮：返回控件文本、返回上级页面、进入按钮、进入战斗、薇薇安、英雄名称、上场英雄、战斗按钮、点击任意、能量值
 class Public:
+    # 公共按钮：返回控件文本、返回上级页面、进入按钮、进入战斗、薇薇安、英雄名称、上场英雄、战斗按钮、点击任意继续、能量值、# 副本关卡名称
     page_title_pos = 'CloseButton>Text'
     close_page_pos = 'Back_02_btn'
     enter_btn_pos = 'textMatches=进入'
@@ -73,12 +79,22 @@ class Public:
     fighting_pos = 'ButtonStart'
     continue_pos = 'nameMatches=TapClickTip'
     energy_pos = Forbid.golden_key_count_pos
-
-    # 副本关卡名称
     level_name_pos = 'LevelName'
 
 
+class Battle:
+    is_save_title_pos = 'Desc'
+    save_btn_pos = 'OkBtn'
 
 
+class Reward:
+    # 奖励图标、奖励名称、战斗奖励、奖励类型、副本名称、能量
+    reward_icon_pos = "itemRoot(Clone)"
+    reward_name_pos = 'TextName'
+    lost_reward_name_pos = 'Name'
+    battle_reward_pos = "ItemComponentMedium_"
+    reward_type_pos = "LabelText"
+    data_btn_pos = 'DataBtn'
+    power_pos = 'Power'
 
 

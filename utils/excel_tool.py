@@ -15,7 +15,7 @@ class ExcelTool:
         加载文件, 创建一个workbook对象
         :param filepath, excel文件路径
         """
-        self.workbook = openpyxl.load_workbook(filepath)
+        self.workbook = openpyxl.load_workbook(filepath, data_only=True)
         self.worksheet = None
 
     def get_sheet(self, var):
@@ -43,6 +43,23 @@ class ExcelTool:
             return self.worksheet.cell(row=row, column=col).value
         except Exception as e:
             return None
+
+    def get_col_data(self, col, row_idx=1, end_idx=None):
+        """
+        获取指定列的所有数据
+        :param col: 指定列, 如'A'
+        :param row_idx: 指定列, 如'A'
+        :param end_idx: 指定列, 如'A'
+        :return: 所有列数据组成的列表
+        """
+        if row_idx < end_idx:
+            return None
+        max_row = end_idx or self.get_max_row()
+        col_data_list = []
+        while row_idx <= max_row:
+            var = self.get_cell_value(row=row_idx, col=col)
+            col_data_list.append(var)
+        return col_data_list
 
     def get_max_row(self):
         """
@@ -87,28 +104,6 @@ class ExcelTool:
         """
         return list(self.get_all_value()[row])
 
-    def get_col_data(self, col):
-        """
-        获取指定列的所有数据
-        :param col: 指定列, 如'A'
-        :return: 所有列数据组成的列表
-        """
-        col_data_list = []
-        for _ in self.worksheet[col]:
-            col_data_list.append(_.value)
-        return col_data_list
-
-    def get_special_length_col_data(self, col):
-        """
-        获取指定列的所有数据
-        :param col: 指定列, 如'A'
-        :return: 所有列数据组成的列表
-        """
-        col_data_list = []
-        for _ in self.worksheet[col]:
-            col_data_list.append(_.value)
-        return col_data_list
-
     def write_data(self, row, col, value, path):
         """
         写入数据
@@ -127,5 +122,9 @@ class ExcelTool:
 
 
 if __name__ == '__main__':
-    excel_path = './tests.xlsx'
-    workbook = ExcelTool(excel_path)
+    import os
+    import setting
+    excel_path = mapping_path = os.path.join(setting.RES_DIR, 'excel\\mapping.xlsx')
+    wb = ExcelTool(excel_path)
+    ws = wb.get_sheet('贪婪禁地')
+    print(wb.get_col_data('F')[1:])

@@ -28,12 +28,12 @@ def _execute_command(cmd):
         "command": cmd,
         "csv_file": ""
     }
+    log.step(f'Run the GM command : {cmd}')
     res = requests.post(url=setting.GM_URL, data=data, headers=headers)
     res.raise_for_status()
     res = res.json()
     if res['code'] != 0:
         raise requests.exceptions.HTTPError(res['msg'])
-    log.step(f'Run the GM command : {cmd}')
     return res
 
 
@@ -108,8 +108,6 @@ def set_dungeon_progress(pid: int, level_type: int, chapter_index: int, level_co
         example: setDungeonProgress 95756 1 11 6
     """
 
-    if level_type not in [1, 2]:
-        return
     cmd = f'setDungeonProgress {pid} {level_type} {chapter_index} {level_count}'
     return _execute_command(cmd)
 
@@ -291,7 +289,7 @@ class Player:
         """提升人物等级"""
         return add_res(self.pid, 101, count)
 
-    def add_energy(self, count=1000):
+    def add_energy(self, count=5000):
         """添加能量"""
         return add_value(self.pid, 10011, count)
 
@@ -328,9 +326,7 @@ class Player:
         return set_main_task(self.pid, chapter, plot_id)
 
     def set_dungeon_progress(self, level_type: int, chapter_index: int, level_count: int):
-        """
-        重置关卡到指定关卡(用完gm命令需要重新登录)
-        """
+        """重置关卡到指定关卡(用完gm命令需要重新登录)"""
         return set_dungeon_progress(self.pid, level_type, chapter_index, level_count)
 
 
@@ -339,12 +335,19 @@ if __name__ == '__main__':
     player1 = Player(pid=player_id)
     # player1.clear_player()
     # player1.add_energy()
-    # player1.add_hero_level(-500000)
     # player1.run_batch_cmd()
-    # 1. 通关所有的关卡 2. 添加超级英雄 3. 清理背包
+    # 1. 通关所有的关卡 2. 添加超级英雄 3. 清理背包 4. 添加金钥和能量 5. 过主线任务
     # player1.add_hero()
-    player1.set_main_task(11012, 14120460)
+    # player1.set_main_task(11012, 14120460)
     # player1.set_dungeon_progress(1, 11, 18)
+    # player1.set_dungeon_progress(3, 11, 6)
     # player1.add_gold_key()
+    player1.add_energy()
+
+
+
+
+
+
 
 

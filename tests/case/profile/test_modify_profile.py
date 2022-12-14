@@ -7,7 +7,7 @@ from tests.proxy.profile import ProfileProxy
 from utils import log
 
 
-class Test_Modify_profile(Unity3dPocoUnit):
+class TestModifyProfile(Unity3dPocoUnit):
 
     def setUp(self) -> None:
         self.profile = ProfileProxy(self.poco)

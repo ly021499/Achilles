@@ -7,9 +7,10 @@ import time
 from openpyxl import load_workbook
 import os
 import setting
+from utils.excel_tool import ExcelTool
 
 
-target_drop_bag_path = os.path.join(setting.RES_DIR, 'excel\\mapping.xlsx')
+mapping_path = os.path.join(setting.RES_DIR, 'excel\\mapping.xlsx')
 drop_bag_path = 'D:\\MainTrunk\\Excels\\Dev\\CfgDropBag.xlsx'
 equipment_path = 'D:\\MainTrunk\\Excels\\Dev\\CfgEquipment.xlsx'
 language_path = 'D:\\MainTrunk\\Excels\\Dev\\CfgLanguage.xlsx'
@@ -79,14 +80,14 @@ def get_target_regular_drop_item(sheet_name):
     """
     获取常规掉落物品items
     """
-    return get_target_sheet_data(target_drop_bag_path, sheet_name, 2, 1, 5)
+    return get_target_sheet_data(mapping_path, sheet_name, 2, 1, 5)
 
 
 def get_target_first_drop_item(sheet_name):
     """
     获取首通掉落物品items
     """
-    return get_target_sheet_data(target_drop_bag_path, sheet_name, 2, 1, 9)
+    return get_target_sheet_data(mapping_path, sheet_name, 2, 1, 9)
 
 
 def get_equipment_identifier():
@@ -175,54 +176,67 @@ def get_mapping_ch_name(equipment_ident_dict):
     return mapping_ch_name_dict
 
 
+def get_mapping_shadow_data():
+    mapping_data = get_target_sheet_data(mapping_path, '虚影殿堂', 2, 1, 5, True)
+    target_data = get_target_sheet_data(item_path, 'CfgItem', 4, 2, 3, False)
+
+    mapping_dict = {}
+    for level_name, items_id in mapping_data.items():
+        items_list = []
+        for item_id in items_id:
+            for ident_id, reward_name in target_data.items():
+                if str(ident_id) == str(item_id):
+                    items_list.append(reward_name)
+
+        mapping_dict.update({level_name: items_list})
+    return mapping_dict
+
+
 def write_to_excel(sheet_name):
     """
     将数据写入excel
     """
-    # target_regular_drop_items = get_regular_mapping_drop__items(sheet_name)
-    # regular_equipment_ident_dict = get_mapping_equipment_ident(target_regular_drop_items)
-    # regular_ch_name_dict = get_mapping_ch_name(regular_equipment_ident_dict)
-    # regular_items_data_list = [i for i in regular_ch_name_dict.values()]
+    target_regular_drop_items = get_regular_mapping_drop__items(sheet_name)
+    regular_equipment_ident_dict = get_mapping_equipment_ident(target_regular_drop_items)
+    regular_ch_name_dict = get_mapping_ch_name(regular_equipment_ident_dict)
+    regular_items_data_list = [i for i in regular_ch_name_dict.values()]
 
     target_first_drop_items = get_first_mapping_drop_items(sheet_name)
     first_ch_name_dict = get_mapping_ch_name(target_first_drop_items)
 
-    wb = get_workbook_instance(target_drop_bag_path)
+    wb = get_workbook_instance(mapping_path)
 
     ws = wb[sheet_name]
     ws_rows_max = ws.max_row
     idx = 2
 
     while idx <= ws_rows_max:
-        # ws.cell(row=idx, column=8).value = str(regular_items_data_list[idx-2])
+        ws.cell(row=idx, column=8).value = str(regular_items_data_list[idx-2])
         key = ws.cell(row=idx, column=1).value
         ws.cell(row=idx, column=10).value = str(first_ch_name_dict[key])
         idx += 1
 
-    wb.save(target_drop_bag_path)
+    wb.save(mapping_path)
 
 
 def get_reward_config(sheet_name: str):
     """
     读取奖励的配置数据
     """
-    ws = get_worksheet_instance(target_drop_bag_path, sheet_name)
+    ws = get_worksheet_instance(mapping_path, sheet_name)
     ws_rows_max = ws.max_row
     idx = 2
 
     reward_dict = {}
     while idx <= ws_rows_max:
         level_name = ws.cell(row=idx, column=7).value
-        regular_reward_list = ws.cell(row=idx, column=8).value
+        regular_reward_list = eval(ws.cell(row=idx, column=8).value)
         first_reward_list = ws.cell(row=idx, column=10).value
-        data = {
-            level_name: {
-                'regular': regular_reward_list,
-                'first': first_reward_list
-            }
-        }
-        reward_dict.update(data)
-
+        if first_reward_list:
+            regular_reward_list.extend(eval(first_reward_list))
+        reward_dict.update(
+            {level_name: regular_reward_list}
+        )
         idx += 1
 
     return reward_dict
@@ -232,13 +246,13 @@ def get_target_reward_data(reward_dict: dict, level_name: str):
 
     for level, reward_dict in reward_dict.items():
         if level == level_name:
-            regular_reward = eval(reward_dict['regular'])
-            regular_reward.extend(eval(reward_dict['first']))
+            regular_reward = reward_dict
             return regular_reward
     return []
 
 
 # 分成三个步骤：1.初始化表数据，写入表数据后，存储 2.启动程序后，直接读取表中数据存储为生成器或者字典映射对象 3.每次要拿数据再去生成器中去取就可以了。
+from utils.parser_excel import write_shadow_data, write_sky_data, write_forbid_data
 
 
 def init_reward_data():
@@ -247,10 +261,10 @@ def init_reward_data():
     """
     start_time = time.time()
     write_to_excel('元素峡谷')
-    # write_to_excel('贪婪禁地')
-    # write_to_excel('茫然遗迹')
-    # write_to_excel('苍穹之城')
-    # write_to_excel('虚影殿堂')
+    write_to_excel('茫然遗迹')
+    write_shadow_data()
+    write_sky_data()
+    write_forbid_data()
     end_time = time.time()
     duration = round(end_time - start_time, 2)
     print('duration: ', duration)
@@ -272,7 +286,9 @@ def get_reward_data():
 
 if __name__ == '__main__':
     # init_reward_data()
-    print(get_target_reward_data(get_reward_config('茫然遗迹'), '比娜16'))
+    reward_config = get_reward_config('苍穹之城')
+    print(reward_config)
+    print(get_target_reward_data(reward_config, '苍穹之城60'))
 
 
 

@@ -12,6 +12,9 @@ class TestLostCity(Unity3dPocoUnit):
     def setUp(self) -> None:
         self.instance = InstanceProxy(self.poco)
 
+    def tearDown(self) -> None:
+        self.instance.reward.outer_page.back_to_outer()
+
     @log.case
     def test_a_verify_brush_instance_of_bihna(self):
         self.instance.verify_brush_instance_of_bihna()

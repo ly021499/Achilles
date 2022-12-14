@@ -65,5 +65,3 @@ class ArkPage():
         self.ark('aaa').click()
 
 
-
-

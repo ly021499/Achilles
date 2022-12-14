@@ -1,6 +1,7 @@
 # @Time   : 2022/11/10 19:05
 # @Author : LOUIE
 # @Desc   : 日志工具
+import random
 
 from loguru import logger
 from typing import Callable
@@ -56,16 +57,26 @@ class Logger:
                        )
 
     def get_logger(self) -> logger:
-        return Logger()
+        return logger
+
+    def random_emoji(self):
+        emoji = '🍇🍈🍉🍊🍋🍌🍍🥭🍎🍏🍑🍒🍓🥝🍅🥥🥑🍆🥔🥕🌽🥒🥬🥦🧄🧅🍄🎃🎄🎆🎇🧨✨🎈🎉🎊🎋🎍🎎🎏🍖🍗🥩🥓🍔🍟🍕'
+        return random.choice(emoji)
 
     def step(self, msg):
-        logger.info(f'📢 📢 📢 ：{msg}')
+        logger.info(f'{" ".join(self.random_emoji() * 2)} ：{msg}')
+
+    def info(self, msg):
+        logger.info(msg)
+
+    def debug(self, msg):
+        logger.debug(msg)
 
     def warn(self, msg):
-        logger.warning(f'🍊 🍋 🍋 ：{msg}')
+        logger.warning(f'{" ".join(self.random_emoji() * 2)} ：{msg}')
 
     def error(self, msg):
-        logger.error(f'😈 😈 😈 ：{msg}')
+        logger.error(f'😈 😈 ：{msg}')
 
     def wrap(self, msg: str = None) -> Callable:
         """
@@ -93,26 +104,27 @@ class Logger:
         """
         @functools.wraps(func)
         def inner(*args, **kwargs):
-            self.info(f"Start running testcase: {func.__name__}")
+            self.step(f"Start running testcase: {func.__name__}")
             start_time = time.time()
             res = func(*args, **kwargs)
             end_time = time.time()
             duration = round(end_time - start_time, 2)
-            self.info(f"End running testcase : {func.__name__} [ Case duration: {duration} s ]")
-            self.info(f"{'- ' * 16} 分割线 {' -' * 16}")
+            self.step(f"End running testcase : {func.__name__} [ Case duration: {duration} s ]")
+            self.step(f"{'- ' * 16} 分割线 {' -' * 16}")
             return res
         return inner
 
 
-log = Logger().get_logger()     # 日志记录器
+log = Logger()
 
 
 if __name__ == '__main__':
     log.error('aaaa')
-    log.info('aaaa')
+    log.step('aaaa')
 
     @log.case
     def test():
         log.debug(111)
 
     test()
+

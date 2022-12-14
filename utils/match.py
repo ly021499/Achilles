@@ -16,7 +16,7 @@ def __search(regex, string):
 def match_index(string: str):
     """
     正则匹配定位的下标
-    :param pos:
+    :param string:
     :return:
     """
     return __search(r'=\[)\d+?(?=(?<\])', string)

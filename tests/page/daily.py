@@ -2,7 +2,6 @@
 # @Author : LOUIE
 # @Desc   : 每日日常
 from utils import log
-from tests.position import reward_pos
 from tests.lib.page import Page
 
 

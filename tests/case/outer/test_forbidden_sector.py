@@ -12,13 +12,16 @@ class TestForbiddenSector(Unity3dPocoUnit):
     def setUp(self) -> None:
         self.instance = InstanceProxy(self.poco)
 
-    @log.case
-    def test_a_verify_brush_instance_of_bihna(self):
-        self.instance.verify_brush_instance_of_bihna()
+    def tearDown(self) -> None:
+        self.instance.reward.outer_page.back_to_outer()
+
+    # @log.case
+    # def test_a_verify_brush_instance_of_potion(self):
+    #     self.instance.verify_brush_instance_of_potion()
 
     @log.case
-    def test_b_verify_brush_instance_of_chester(self):
-        self.instance.verify_brush_instance_of_chester()
+    def test_b_verify_brush_instance_of_gold(self):
+        self.instance.verify_brush_instance_of_gold()
 
 
 if __name__ == '__main__':
