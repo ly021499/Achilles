@@ -1,6 +1,7 @@
 # @Time   : 2022/11/21 16:16
 # @Author : LOUIE
 # @Desc   : 属性：体力、金币、钻石
+
 from utils import log
 from tests.position import profile_pos
 from tests.lib.page import Page

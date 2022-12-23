@@ -26,4 +26,13 @@ def match_number(string: str):
     return __search(r'\d+', string)
 
 
+def match_string(string: str):
+    """
+    正则匹配item的id
+    """
+    items = re.findall(r'\{(\d+?)\,', string)
+    return items
+
+
+
 

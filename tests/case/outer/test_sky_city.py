@@ -26,7 +26,7 @@ class TestSkyCity(Unity3dPocoUnit):
 
     @log.case
     def test_d_brush_sky_city_100(self):
-        self.reward.brush_sky_city(60, 100)
+        self.reward.brush_sky_city(91, 100)
 
 
 if __name__ == '__main__':

@@ -1,6 +1,7 @@
 # @Time   : 2022/11/4 16:05
 # @Author : LOUIE
 # @Desc   : 固定视图
+
 from utils import log
 from tests.position import camera_pos
 from tests.lib.page import Page

@@ -2,11 +2,12 @@
 # @Author : LOUIE
 # @Desc   : 掉落奖励
 from utils import log
-from utils.parser import get_reward_config, get_target_reward_data
+from utils.parser import get_reward_config, get_target_reward_data, write_assert_result
 from tests.position.outer_pos import *
 from tests.lib.page import Page
 from tests.page.outer import OuterPage
 from tests.lib.utils import assertion
+import unittest
 
 
 class RewardPage(Page):
@@ -15,28 +16,40 @@ class RewardPage(Page):
         super(RewardPage, self).__init__(poco_instance)
         self.outer_page = OuterPage(poco_instance)
 
+    def get_assert_result(self, battle_reward_list, preview_reward_list):
+        try:
+            for reward_ in battle_reward_list:
+                if reward_[0] == '常规':
+                    assertion.assert_in(reward_[1], preview_reward_list)
+                elif reward_[0] == '首次':
+                    assertion.assert_in(reward_[1], preview_reward_list)
+                else:
+                    log.step(f'惊喜掉落物品：{reward_}')
+            return 'PASS'
+        except:
+            return 'FAILED'
+
     def assert_rewards(self, instance, level_name, battle_reward_list):
         """校验奖励物品是否与配置一致"""
         # 获取表格中的数据
         reward_config = get_reward_config(instance)
         preview_reward_list = get_target_reward_data(reward_config, level_name)
         preview_reward_list.extend(['金币', '钻石', '普通核铁'])
-
-        for reward_ in battle_reward_list:
-            if reward_[0] == '常规':
-                assertion.assert_in(reward_[1], preview_reward_list)
-            elif reward_[0] == '首次':
-                assertion.assert_in(reward_[1], preview_reward_list)
-            else:
-                log.step(f'惊喜掉落物品：{reward_}')
+        assert_result = self.get_assert_result(battle_reward_list, preview_reward_list)
+        # 写入excel
+        write_assert_result(instance, level_name, assert_result, preview_reward_list)
 
     def assert_energy(self, battle_reward_list, actual, expected):
         """校验能量消耗是否正确，存在奖品中有体力返回的情况，所以需要增加判断"""
         log.step(f'校验能量值消耗数值是否正确 ...')
-        if '体力' in str(battle_reward_list):
-            assertion.assert_less_equal(actual, 0)
-        else:
-            assertion.assert_less_equal(actual, expected)
+        try:
+            if '体力' in str(battle_reward_list):
+                assertion.assert_less_equal(actual, 0)
+            else:
+                assertion.assert_less_equal(actual, expected)
+            return 'PASS'
+        except:
+            return 'FAILED'
 
     def get_battle_reward_list(self):
         """获取战斗后的奖励"""
@@ -111,30 +124,17 @@ class RewardPage(Page):
             end_energy = self.outer_page.get_current_energy_value()
 
             # 断言战斗奖励和能量值消耗
-            self.assert_energy(start_energy - end_energy, Sky.sky_energy_pos)
+            self.assert_energy(battle_reward_list, start_energy - end_energy, Sky.sky_energy_pos)
             self.assert_rewards('苍穹之城', level_name, battle_reward_list)
 
             current_level += 1
 
         self.outer_page.back_to_outer()
 
-    def brush_the_shadow(self):
-        self.common_brush_instance(
-            Shadow.shadow_keep_pos, Shadow.shadow_level_pos,
-            Shadow.first_instance_pos, Shadow.shadow_energy_pos
-        )
-
 
 if __name__ == '__main__':
     from tests.lib.driver.unity_app import get_unity3d_poco_instance
     reward = RewardPage(get_unity3d_poco_instance())
-    # reward.brush_instance(
-    #     Element.element_valley_pos, Element.element_level_pos,
-    #     Element.fire_element_pos, Element.element_energy_pos
-    # )
-    # reward.brush_sky_city(Sky.sky_level_pos, Sky.sky_energy_pos)
-    # reward.brush_the_shadow()
-    # reward.brush_sky_city(28, 30)
     reward.get_battle_reward_list()
 
 

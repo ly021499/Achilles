@@ -64,4 +64,7 @@ class ArkPage():
     def close_page(self):
         self.ark('aaa').click()
 
+if __name__ == '__main__':
+    import datetime
 
+    print(datetime.date.today())

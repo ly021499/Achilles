@@ -3,6 +3,7 @@
 # @Desc   : excel操作工具类
 
 import openpyxl
+from utils.match import match_string
 
 
 class ExcelTool:
@@ -44,22 +45,39 @@ class ExcelTool:
         except Exception as e:
             return None
 
-    def get_col_data(self, col, row_idx=1, end_idx=None):
+    def get_col_list(self, col, start_row=2, end_row=None, is_parser_value=False):
         """
         获取指定列的所有数据
         :param col: 指定列, 如'A'
-        :param row_idx: 指定列, 如'A'
-        :param end_idx: 指定列, 如'A'
+        :param start_row: 指定列, 如'A'
+        :param end_row: 指定列, 如'A'
+        :param is_parser_value: 指定列, 如'A'
         :return: 所有列数据组成的列表
         """
-        if row_idx < end_idx:
+
+        if end_row is None:
+            max_row = self.get_max_row()
+        else:
+            max_row = end_row
+
+        if start_row > max_row:
             return None
-        max_row = end_idx or self.get_max_row()
+
         col_data_list = []
-        while row_idx <= max_row:
-            var = self.get_cell_value(row=row_idx, col=col)
-            col_data_list.append(var)
+        while start_row <= max_row:
+            var = self.get_cell_value(row=start_row, col=col)
+            if is_parser_value is True:
+                col_data_list.append(match_string(var))
+            else:
+                col_data_list.append(var)
+            start_row += 1
         return col_data_list
+
+    def get_col_dict(self, col_key, col_var, start_row=2, end_row=None, is_parser_value=False):
+        col_key = self.get_col_list(col_key, start_row, end_row)
+        col_var = self.get_col_list(col_var, start_row, end_row, is_parser_value=is_parser_value)
+        col_dict = dict(zip(col_key, col_var))
+        return col_dict
 
     def get_max_row(self):
         """
@@ -74,20 +92,6 @@ class ExcelTool:
         :return: 最小行数
         """
         return self.worksheet.min_row
-
-    def get_max_col(self):
-        """
-        获取最大列数
-        :return: 最大列数
-        """
-        return self.worksheet.max_column
-
-    def get_min_col(self):
-        """
-        获取最小列数
-        :return: 最小列数
-        """
-        return self.worksheet.min_column
 
     def get_all_value(self):
         """
@@ -127,4 +131,4 @@ if __name__ == '__main__':
     excel_path = mapping_path = os.path.join(setting.RES_DIR, 'excel\\mapping.xlsx')
     wb = ExcelTool(excel_path)
     ws = wb.get_sheet('贪婪禁地')
-    print(wb.get_col_data('F')[1:])
+    print(wb.get_col_dict(1, 5, is_parser_value=True))
