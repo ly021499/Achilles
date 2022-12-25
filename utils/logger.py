@@ -2,12 +2,12 @@
 # @Author : LOUIE
 # @Desc   : 日志工具
 import random
-
-from loguru import logger
+import loguru
 from typing import Callable
 from setting import REPORT_DIR, OUTPUT, LOG_FORMAT
 import functools
 import time
+import sys
 import os
 
 import logging
@@ -36,47 +36,51 @@ class Logger:
         日志分类型存储，一份完整日志，一份错误日志
         通过读取配置文件中的 IS_WRITE 判断是否需要写入文件，便于调试
         """
+
+        self.logger = loguru.logger
         date = time.strftime("%Y-%m-%d %H-%M-%S", time.localtime(time.time()))
 
         if OUTPUT:
             all_log_path = os.path.join(REPORT_DIR, "all.log")
-            logger.add(all_log_path,     # 日志存放位置
-                       retention=7,      # 清理周期
-                       level="DEBUG",     # 日志级别
-                       enqueue=True,      # 具有使日志记录调用非阻塞的优点
-                       encoding="utf-8",
-                       format=LOG_FORMAT
-                       )
+            self.logger.add(
+                all_log_path,  # 日志存放位置
+                retention=7,  # 清理周期
+                level="DEBUG",  # 日志级别
+                enqueue=True,  # 具有使日志记录调用非阻塞的优点
+                encoding="utf-8",
+                format=LOG_FORMAT
+            )
             error_log_path = os.path.join(REPORT_DIR, "error.log")
-            logger.add(error_log_path,
-                       retention=7,
-                       level="ERROR",
-                       enqueue=True,
-                       encoding="utf-8",
-                       format=LOG_FORMAT
-                       )
+            self.logger.add(
+                error_log_path,
+                retention=7,
+                level="ERROR",
+                enqueue=True,
+                encoding="utf-8",
+                format=LOG_FORMAT
+            )
 
-    def get_logger(self) -> logger:
-        return logger
+    def get_logger(self):
+        return self.logger
 
     def random_emoji(self):
         emoji = '🍇🍈🍉🍊🍋🍌🍍🥭🍎🍏🍑🍒🍓🥝🍅🥥🥑🍆🥔🥕🌽🥒🥬🥦🧄🧅🍄🎃🎄🎆🎇🧨✨🎈🎉🎊🎋🎍🎎🎏🍖🍗🥩🥓🍔🍟🍕'
         return random.choice(emoji)
 
     def step(self, msg):
-        logger.info(f'{" ".join(self.random_emoji() * 2)} ：{msg}')
+        self.logger.info(f'{" ".join(self.random_emoji() * 2)} ：{msg}')
 
     def info(self, msg):
-        logger.info(msg)
+        self.logger.info(msg)
 
     def debug(self, msg):
-        logger.debug(msg)
+        self.logger.debug(msg)
 
     def warn(self, msg):
-        logger.warning(f'{" ".join(self.random_emoji() * 2)} ：{msg}')
+        self.logger.warning(f'{" ".join(self.random_emoji() * 2)} ：{msg}')
 
     def error(self, msg):
-        logger.error(f'😈 😈 ：{msg}')
+        self.logger.error(f'😈 😈 ：{msg}')
 
     def wrap(self, msg: str = None) -> Callable:
         """
@@ -119,7 +123,9 @@ log = Logger()
 
 
 if __name__ == '__main__':
+    log.info('aaaa')
     log.error('aaaa')
+    log.warn('aaaa')
     log.step('aaaa')
 
     @log.case
