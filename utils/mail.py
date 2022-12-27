@@ -1,7 +1,6 @@
 # @Time   : 2022/11/4 15:46
 # @Author : LOUIE
 # @Desc   : 邮件发送
-
 from email.mime.multipart import MIMEMultipart
 from email.mime.application import MIMEApplication
 from email.mime.text import MIMEText

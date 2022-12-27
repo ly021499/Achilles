@@ -1,7 +1,6 @@
 # @Time   : 2022/11/2 21:05
 # @Author : LOUIE
 # @Desc   : 解析excel数据
-
 from utils.match import match_string
 import time
 from openpyxl import load_workbook
@@ -10,13 +9,13 @@ import os
 import setting
 
 
-EXCEL_PATH = 'D:\\MainTrunk\\Excels\\Dev'
-mapping_path = os.path.join(setting.RES_DIR, 'excel\\mapping.xlsx')
-drop_bag_path = os.path.join(EXCEL_PATH, 'CfgDropBag.xlsx')
-equipment_path = os.path.join(EXCEL_PATH, 'CfgEquipment.xlsx')
-language_path = os.path.join(EXCEL_PATH, 'CfgLanguage.xlsx')
-item_path = os.path.join(EXCEL_PATH, 'CfgItem.xlsx')
-dungeon_path = os.path.join(EXCEL_PATH, 'CfgDungeon.xlsx')
+EXCEL_PATH = 'D:\\MainTrunk\\Excels\\Dev'   # EXCEL存放基础目录
+MAPPING_PATH = os.path.join(setting.RES_DIR, 'excel\\mapping.xlsx') # 终端映射表
+DROP_BAG_PATH = os.path.join(EXCEL_PATH, 'CfgDropBag.xlsx') # 掉落包表
+EQUIPMENT_PATH = os.path.join(EXCEL_PATH, 'CfgEquipment.xlsx')  # 装备表
+LANGUAGE_PATH = os.path.join(EXCEL_PATH, 'CfgLanguage.xlsx')    # 语言匹配表
+ITEM_PATH = os.path.join(EXCEL_PATH, 'CfgItem.xlsx')            # 物品表
+DUNGEON_PATH = os.path.join(EXCEL_PATH, 'CfgDungeon.xlsx')      # 地牢表（我也不知道是啥）
 
 
 def get_workbook_instance(filepath):
@@ -60,7 +59,7 @@ def get_equipment_identifier():
     """
     获取 CfgEquipment 工作簿中的 CfgEquipment 表的 穿戴物ID、穿戴物名称
     """
-    return get_target_sheet_data(equipment_path, 'CfgEquipment', 2, 2, 8, is_parser=False)
+    return get_target_sheet_data(EQUIPMENT_PATH, 'CfgEquipment', 2, 2, 8, is_parser=False)
 
 
 def traverse_dict(target_dict, drop_items):
@@ -79,8 +78,8 @@ def get_regular_mapping_drop_items(sheet_name):
     从表中拿到对应的名称，再到 CfgDropBag.xlsx - 掉落母表 ，获取名称映射到的 DropItem
     """
 
-    target_regular_drop_items = get_target_sheet_data(mapping_path, sheet_name, 2, 1, 2)
-    drop_items = get_target_sheet_data(drop_bag_path, '掉落母表', 2, 2, 7)
+    target_regular_drop_items = get_target_sheet_data(MAPPING_PATH, sheet_name, 2, 1, 2)
+    drop_items = get_target_sheet_data(DROP_BAG_PATH, '掉落母表', 2, 2, 7)
     # 第一步：拿到我需要的数据表
     regular_mapping_drop_items = traverse_dict(target_regular_drop_items, drop_items)
 
@@ -93,8 +92,8 @@ def get_first_mapping_drop_items(sheet_name):
     """
     # 这里拿到的首通的id后，到对应的表取名称标志符，drop_items错了
 
-    target_first_drop_items = get_target_sheet_data(mapping_path, sheet_name, 2, 1, 5)
-    first_drop_items = get_target_sheet_data(item_path, 'CfgItem', 4, 2, 4, is_parser=False)
+    target_first_drop_items = get_target_sheet_data(MAPPING_PATH, sheet_name, 2, 1, 5)
+    first_drop_items = get_target_sheet_data(ITEM_PATH, 'CfgItem', 4, 2, 4, is_parser=False)
     equipment_identifier = get_equipment_identifier()
 
     first_mapping_drop_items_1 = traverse_dict(target_first_drop_items, first_drop_items)
@@ -122,7 +121,7 @@ def get_mapping_equipment_ident(mapping_drop_items):
 
 def get_mapping_ch_name(equipment_ident_dict):
     """获取对应的中文名称"""
-    equipment_ch_name = get_target_sheet_data(language_path, 'CfgLanSystem', 4, 2, 5, is_parser=False)
+    equipment_ch_name = get_target_sheet_data(LANGUAGE_PATH, 'CfgLanSystem', 4, 2, 5, is_parser=False)
     mapping_ch_name_dict = {}
     for level_name, identifiers in equipment_ident_dict.items():
         ch_name_list = []
@@ -149,7 +148,7 @@ def write_to_excel(sheet_name):
     target_first_drop_items = get_first_mapping_drop_items(sheet_name)
     first_ch_name_dict = get_mapping_ch_name(target_first_drop_items)
 
-    wb = get_workbook_instance(mapping_path)
+    wb = get_workbook_instance(MAPPING_PATH)
 
     ws = wb[sheet_name]
     ws_rows_max = ws.max_row
@@ -161,14 +160,14 @@ def write_to_excel(sheet_name):
         ws.cell(row=idx, column=6).value = str(first_ch_name_dict[key])
         idx += 1
 
-    wb.save(mapping_path)
+    wb.save(MAPPING_PATH)
 
 
 def get_reward_config(sheet_name: str):
     """
     读取奖励的配置数据
     """
-    ws = get_worksheet_instance(mapping_path, sheet_name)
+    ws = get_worksheet_instance(MAPPING_PATH, sheet_name)
     ws_rows_max = ws.max_row
     idx = 2
 
@@ -188,7 +187,10 @@ def get_reward_config(sheet_name: str):
 
 
 def write_assert_result(sheet_name, target_level_name, result, reward):
-    et = ExcelTool(mapping_path)
+    """
+    写入断言的结果
+    """
+    et = ExcelTool(MAPPING_PATH)
     ws = et.get_sheet(sheet_name)
     ws_rows_max = ws.max_row
     idx = 2
@@ -207,11 +209,13 @@ def write_assert_result(sheet_name, target_level_name, result, reward):
 
         idx += 1
 
-    et.workbook.save(mapping_path)
+    et.workbook.save(MAPPING_PATH)
 
 
 def get_target_reward_data(reward_dict: dict, level_name: str):
-
+    """
+    获取mapping表中指定sheet表中的物品
+    """
     for level, reward_dict in reward_dict.items():
         if level == level_name:
             regular_reward = reward_dict
@@ -238,11 +242,14 @@ def mapping_ident_dict(mapping_data, target_data):
 
 
 def get_row_shadow_data():
+    """
+    获取原生的虚影殿堂的数据，并写入mapping表里
+    """
 
-    wb = ExcelTool(dungeon_path)
+    wb = ExcelTool(DUNGEON_PATH)
     ws = wb.get_sheet('CfgDungeonLevel')
 
-    wb2 = ExcelTool(mapping_path)
+    wb2 = ExcelTool(MAPPING_PATH)
     ws2 = wb2.get_sheet('虚影殿堂')
 
     start_idx = 85
@@ -261,14 +268,16 @@ def get_row_shadow_data():
         ws2.cell(row=idx, column=1).value = key
         ws2.cell(row=idx, column=6).value = value
         idx += 1
-
-    wb2.workbook.save(mapping_path)
+    wb2.workbook.save(MAPPING_PATH)
 
     return item
 
 
 def mapping_shadow_drop_item(item: dict):
-    wb = ExcelTool(drop_bag_path)
+    """
+    匹配虚影殿堂的物品掉落数据
+    """
+    wb = ExcelTool(DROP_BAG_PATH)
     ws = wb.get_sheet('掉落母表')
     start_idx = 1650
     end_idx = 1739
@@ -281,50 +290,53 @@ def mapping_shadow_drop_item(item: dict):
                 items2.update({key: item_value})
         start_idx += 1
 
-    wb2 = ExcelTool(mapping_path)
+    wb2 = ExcelTool(MAPPING_PATH)
     ws2 = wb2.get_sheet('虚影殿堂')
     idx = 2
     for k, v in items2.items():
         ws2.cell(row=idx, column=5).value = v
         idx += 1
 
-    wb2.workbook.save(mapping_path)
+    wb2.workbook.save(MAPPING_PATH)
     return items2
 
 
 def write_data(mapping_dict, sheet_name, column=4, idx=2):
+    """
+    写入茫然遗迹和元素峡谷的映射数据
+    """
     items_list = [i for i in mapping_dict.values()]
-    wb = ExcelTool(mapping_path)
+    wb = ExcelTool(MAPPING_PATH)
     ws = wb.get_sheet(sheet_name)
     ws_rows_max = ws.max_row
     while idx <= ws_rows_max:
         ws.cell(row=idx, column=column).value = str(items_list[idx-2])
         idx += 1
-    wb.workbook.save(mapping_path)
+    wb.workbook.save(MAPPING_PATH)
 
 
 def write_shadow_data():
     sheet_name = '虚影殿堂'
-    mapping_data = get_target_sheet_data(mapping_path, sheet_name, 2, 1, 2, True)
-    target_data = get_target_sheet_data(item_path, 'CfgItem', 4, 2, 3, False)
+    mapping_data = get_target_sheet_data(MAPPING_PATH, sheet_name, 2, 1, 2, True)
+    target_data = get_target_sheet_data(ITEM_PATH, 'CfgItem', 4, 2, 3, False)
     mapping_dict = mapping_ident_dict(mapping_data, target_data)
     write_data(mapping_dict, sheet_name, 4)
 
 
 def write_forbid_data():
     sheet_name = '贪婪禁地'
-    mapping_data = get_target_sheet_data(mapping_path, sheet_name, 2, 1, 2, True)
-    target_data = get_target_sheet_data(item_path, 'CfgItem', 4, 2, 3, False)
+    mapping_data = get_target_sheet_data(MAPPING_PATH, sheet_name, 2, 1, 2, True)
+    target_data = get_target_sheet_data(ITEM_PATH, 'CfgItem', 4, 2, 3, False)
     mapping_dict = mapping_ident_dict(mapping_data, target_data)
     write_data(mapping_dict, sheet_name, 4)
 
 
 def write_sky_data():
     sheet_name = '苍穹之城'
-    mapping_data = get_target_sheet_data(mapping_path, sheet_name, 2, 1, 2, True)
-    target_data = get_target_sheet_data(item_path, 'CfgItem', 4, 2, 4, False)
+    mapping_data = get_target_sheet_data(MAPPING_PATH, sheet_name, 2, 1, 2, True)
+    target_data = get_target_sheet_data(ITEM_PATH, 'CfgItem', 4, 2, 4, False)
     mapping_dict = mapping_ident_dict(mapping_data, target_data)
-    language_data = get_target_sheet_data(language_path, 'CfgLanItem', 4, 2, 4, False)
+    language_data = get_target_sheet_data(LANGUAGE_PATH, 'CfgLanItem', 4, 2, 4, False)
 
     dic_ = {}
     for k, v in mapping_dict.items():

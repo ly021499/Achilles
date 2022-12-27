@@ -1,7 +1,6 @@
 # @Time   : 2022/11/14 15:47
 # @Author : LOUIE
 # @Desc   : 基于poco对象、airtest二次封装的操作方法
-
 from utils import log, NoSuchNodeException
 from poco.exceptions import PocoNoSuchNodeException, PocoTargetRemovedException
 from tests.lib.driver.android_app import get_android_poco_instance

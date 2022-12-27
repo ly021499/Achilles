@@ -82,14 +82,14 @@ RES_DIR = os.path.join(BASE_DIR, "res")
 REPORT_DIR = __get_result_path()
 
 
-# Device
+# Device Config
 ANDROID_DEVICE_HOST = CONF.get('android_device_host')
 ANDROID_PACKAGE_NAME = 'com.netease.cloudmusic'
 IOS_DEVICE_HOST = CONF.get('ios_device_host')
 IOS_PACKAGE_NAME = 'com.netease.cloudmusic'
 
 
-# Log
+# Log Config
 OUTPUT = CONF.get('output')
 LOG_FORMAT = "<green>{time:YYYY-MM-DD HH:mm:ss}</green> | " \
              "<green>{level: <8}</green> | " \
@@ -98,7 +98,7 @@ LOG_FORMAT = "<green>{time:YYYY-MM-DD HH:mm:ss}</green> | " \
 SYSTEM = platform.system()
 
 
-# Report
+# Report Config
 TESTER = 'LOUIE'
 TITLE = 'Achilles Report'
 DESCRIPTION = 'Before the Trojan War broke out, Tethys heard a prophecy about Achilles'
@@ -106,7 +106,8 @@ RERUN = 1
 WX_URL = CONF.get('wx_url')
 WEBHOOK = CONF.get('webhook')
 
-# GM
+
+# GM Config
 GM_URL = CONF['cmd_conf'].get('url')
 GM_COOKIE = CONF['cmd_conf'].get('cookie')
 GM_PLATFORM_ID = CONF['cmd_conf'].get('platform_id')

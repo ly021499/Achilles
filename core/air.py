@@ -1,7 +1,6 @@
 # @Time   : 2022/11/4 14:14
 # @Author : LOUIE
 # @Desc   : airtest核心api的二次封装
-
 from airtest.core import api as air
 from utils.logger import log
 import time

@@ -1,3 +1,6 @@
+# @Time   : 2022/11/11 10:37
+# @Author : LOUIE
+# @Desc   : 安装apk的工具函数
 from airtest.utils.apkparser.apk import APK
 import re
 

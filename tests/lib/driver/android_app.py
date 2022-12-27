@@ -1,7 +1,6 @@
 # @Time   : 2022/11/4 14:13
 # @Author : LOUIE
 # @Desc   : android 原生应用 diver
-
 from poco.drivers.android.uiautomation import AndroidUiautomationPoco
 
 from setting import ANDROID_DEVICE_HOST

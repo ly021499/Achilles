@@ -1,7 +1,6 @@
 # @Time   : 2022/11/4 14:13
 # @Author : LOUIE
 # @Desc   : iOS 应用 diver
-
 from core.air import connect_device, stop_app
 from core.poco2 import Poco2
 

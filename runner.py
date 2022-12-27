@@ -1,7 +1,6 @@
 # @Time   : 2022/11/09 19:05
 # @Author : LOUIE
 # @Desc   : 日志工具
-
 from utils import log, wechat
 from XTestRunner import HTMLTestRunner
 import unittest

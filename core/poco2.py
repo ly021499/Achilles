@@ -1,7 +1,6 @@
 # @Time   : 2022/11/4 14:14
 # @Author : LOUIE
 # @Desc   : 基于全局的poco核心api的二次封装
-
 from poco import Poco
 from poco.exceptions import InvalidOperationException, PocoNoSuchNodeException
 from utils import log
