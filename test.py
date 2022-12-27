@@ -14,10 +14,10 @@ class Poco2(Poco):
         pass
 
 
-class Ark:
+class Achilles:
 
     def __init__(self, poco):
-        self.poco = poco or get_android_poco_instance()
+        self.poco = poco
 
     def __call__(self, pos, **kwargs):
         return self.__parser_pos(pos)
@@ -59,16 +59,9 @@ class Ark:
 class ArkPage():
 
     def __init__(self, poco):
-        self.ark = Ark(poco)
+        self.ark = Achilles(poco)
 
     def close_page(self):
         self.ark('aaa').click()
 
-if __name__ == '__main__':
-    import datetime
 
-    print(datetime.date.today())
-    from itertools import product
-
-    for x, y in product('123', '456'):
-        print(x, y)

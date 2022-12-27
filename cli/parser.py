@@ -27,5 +27,7 @@ def runner_parser():
         print('testcase_path')
 
 
-if __name__ == '__main__':
-    runner_parser()
+from itertools import product
+
+for x, y in product('123', '456'):
+    print(x, y)
