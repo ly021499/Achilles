@@ -68,3 +68,7 @@ if __name__ == '__main__':
     import datetime
 
     print(datetime.date.today())
+    from itertools import product
+
+    for x, y in product('123', '456'):
+        print(x, y)
