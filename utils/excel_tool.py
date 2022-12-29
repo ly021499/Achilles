@@ -44,7 +44,10 @@ class ExcelTool:
         except Exception as e:
             return None
 
-    def get_col_list(self, col, start_row=2, end_row=None, is_parser_value=False):
+    def get_col_list(self, col, start_row=2, end_row=None):
+        return self.get_parser_col_list( col, start_row=start_row, end_row=end_row, is_parser_value=False)
+
+    def get_parser_col_list(self, col, start_row=2, end_row=None, is_parser_value=True):
         """
         获取指定列的所有数据
         :param col: 指定列, 如'A'

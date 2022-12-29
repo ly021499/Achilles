@@ -8,6 +8,10 @@ import setting
 import os
 import logging
 
+# 设置airtest日志等级，debug会输出很多日志
+logger = logging.getLogger("airtest")
+logger.setLevel(logging.INFO)
+
 
 class Runner:
 
@@ -64,10 +68,6 @@ class Runner:
         :param case_dir: 用例目录
         :return:
         """
-        # 设置airtest日志等级，debug会输出很多日志
-        logger = logging.getLogger("airtest")
-        logger.setLevel(logging.INFO)
-
         case_dir = case_dir or setting.CASE_DIR
 
         log.info(" = " * 8 + " Program started, Running testcases  " + " = " * 8)
